@@ -29,20 +29,19 @@
             上傳圖片：<input type="file" id="eatPic" name="eatPic" th:field="*{eatPic}" accept="image/jpeg, image/png, image/jpg" />-->
             <p />
             <!-- 店名 -->
-            餐廳名稱：<input type="text" id="resName" name="resName" th:field="*{resName}" />
+            餐廳名稱：<input type="text" id="resName" name="resName" th:field="*{resData.resName}" />
             <p />
             <!-- 地址(googlemap) -->
-            餐廳地址：<input type="text" id="resAddress" name="resAddress" th:field="*{resAddress}" />
+            餐廳地址：<input type="text" id="resAddress" name="resAddress" th:field="*{resData.resAddress}" />
             <p />
             <!-- 品嘗日期 -->
             品嘗日期：<input type="date" id="eatDate" name="eatDate" th:field="*{eatDate}" />
             <p />
             <!-- 價位 -->
-            價位：<select id="Price" name="Price" th:field="*{priceId}">
+            價位：<select id="priceId" name="priceId" th:field="*{priceId}">
             <option th:each="price : ${prices}"
                     th:value="${price.id}"
                     th:text="${price.name}">
-
             </option>
         </select> <p />
             <!-- 標籤 -->

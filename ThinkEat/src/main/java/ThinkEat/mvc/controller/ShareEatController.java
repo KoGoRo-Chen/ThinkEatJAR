@@ -18,18 +18,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
 public class ShareEatController {
 
-    @Autowired
-    @Qualifier("shareEatDaoImplInMemory")
-    private ShareEatDao shareEatDao;
+    private final EatDataDao eatDataDao;
+    private final ShareEatDao shareEatDao;
 
+    // 使用建構子注入EatDataDao和ShareEatDao
     @Autowired
-    @Qualifier("eatDataDaoImplInMemory")
-    private EatDataDao eatDataDao;
+    public ShareEatController(EatDataDao eatDataDao, ShareEatDao shareEatDao) {
+        this.eatDataDao = eatDataDao;
+        this.shareEatDao = shareEatDao;
+    }
 
     //顯示ShareEat頁面
     @GetMapping("/ShareEat")
@@ -42,56 +45,52 @@ public class ShareEatController {
         return "ShareEat";
     };
 
-    //新增ShareEatBean(食記)
+    // 表單提交處理
     @PostMapping("/AddEatRepo")
-    public String AddEatRepo(@ModelAttribute("eatRepo") EatRepo eatRepo,
+    public String addEatRepo(@ModelAttribute("eatRepo") EatRepo eatRepo,
                              //@RequestParam("eatPic") MultipartFile eatPic,
                              RedirectAttributes redirectAttributes, Model model) {
-        List<PriceData> prices = eatDataDao.findAllPriceDatas();
-        List<TagData> tags = eatDataDao.findAllTagDatas();
+        System.out.println("接收到priceID為" + eatRepo.getPriceId());
+        System.out.println("接收到tagID為"+ eatRepo.getTagIds());
 
-        // 表單新增過程中只有帶到ID沒有帶到name，故需要額外處理
-        // 處理 price (從 priceId -> price)
-        PriceData priceData = eatDataDao.getPriceDataById(eatRepo.getPriceId()).get();
-        eatRepo.setPrice(priceData);
+        // 處理價格和標籤
+        Optional<PriceData> priceData = eatDataDao.getPriceDataById(eatRepo.getPriceId());
+        if (priceData.isPresent()) {
+            PriceData price = priceData.get();
+            eatRepo.setPrice(price);
+        }
 
-        // 處理 tags (從 tagId -> tags)
-        List<TagData> tagDatas = new ArrayList<>();
-        for(Integer tagId: eatRepo.getTagIds()) {
-            TagData tagData = eatDataDao.getTagDataById(tagId).get();
-            tagDatas.add(tagData);
-            ;		}
-        eatRepo.setTags(tagDatas);
+        List<TagData> selectedTags = new ArrayList<>();
+        for (Integer tagId : eatRepo.getTagIds()) {
+            Optional<TagData> tagDataOptional = eatDataDao.getTagDataById(tagId);
+            tagDataOptional.ifPresent(selectedTags::add);
+        }
+        eatRepo.setTags(selectedTags);
 
-		 /* 處理圖片上傳
-	    if (!eatPic.isEmpty()) {
-	        try {
-	            // 可以使用檔案工具類處理檔案，例如 Apache Commons IO
-	            byte[] eatPicBytes = eatPic.getBytes();
-	            // 這裡你可以將 eatPicBytes 存儲到資料庫或檔案系統中
-	            String base64Image = Base64.getEncoder().encodeToString(eatPicBytes);
+        /*
+        // 處理圖片上傳
+        if (!eatPic.isEmpty()) {
+            try {
+                byte[] eatPicBytes = eatPic.getBytes();
+                String base64Image = Base64.getEncoder().encodeToString(eatPicBytes);
 
-	            // 更新 shareEatBean 中的圖片屬性
-	            shareEatBean.setEatPicBytes(eatPicBytes);
-	            shareEatBean.setEatPicBase64(base64Image);
-	        } catch (IOException e) {
-	            e.printStackTrace(); // 適當的錯誤處理
-	        }
-	    }*/
+                eatRepo.setEatPicBytes(eatPicBytes);
+                eatRepo.setEatPicBase64(base64Image);
+            } catch (IOException e) {
+                e.printStackTrace(); // 適當的錯誤處理
+            }
+        }
+         */
 
+        // 將食記保存到資料庫
         int rowcount = shareEatDao.addEat(eatRepo);
         System.out.println(eatRepo);
-        System.out.println("add ShareEat rowcount = " + rowcount);
+        System.out.println("Add ShareEat rowcount = " + rowcount);
 
-
-        // 將 ShareEatBean 添加到模型中
-        model.addAttribute("eatRepo", eatRepo);
-        model.addAttribute("prices", prices);
-        model.addAttribute("tags",  tags);
-
-        // 將新建的食記 ID 添加到重定向 URL 的查詢字符串中
+        // 將新增的食記 ID 添加到重定向 URL 的查詢字符串中
         redirectAttributes.addAttribute("eatRepoId", eatRepo.getEatRepoId());
 
-        return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}"; // 重導到文章瀏覽頁面
+        // 重導到文章瀏覽頁面
+        return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";
     }
 }

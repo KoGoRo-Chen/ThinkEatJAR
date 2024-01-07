@@ -36,6 +36,8 @@ public class ShareEatDaoImplInMemory implements ShareEatDao{
 
 		ResData resBean = new ResData();
 		resBean.setResId(resId);
+		resBean.setResName(eatRepo.getResData().getResName());  // 設置餐廳名稱
+		resBean.setResAddress(eatRepo.getResData().getResAddress());  // 設置餐廳地址
 
 		eatRepo.setEatRepoId(eatRepoId);
 		eatRepo.setResData(resBean);

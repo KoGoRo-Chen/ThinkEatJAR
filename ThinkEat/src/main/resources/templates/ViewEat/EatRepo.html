@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>食紀</title>
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
-            rel="stylesheet">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script
-            src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 </head>
 <body>
 <header>
@@ -23,44 +18,42 @@
     <div class="container-fluid d-flex flex-column"
          style="min-height: 100vh; background-color: rgb(240, 240, 240)">
         <div class="returnToResView">
-            <input type="button" value="返回 ${eatRepo.getResName()}" th:onclick="location.href='@{/ThinkEat/ViewEat/}'"></input>
+            <input type="button" th:value="'返回 ' + ${eatRepo.getResName()}" th:onclick="location.href='@{/ThinkEat/ViewEat/}'"></input>
         </div>
         <div class="repoTitleArea">
-            placeholder
-            <!--<h3 th:text="${ eatRepo.eatRepoTitle }"></h3>-->
+            <h3 th:text="${eatRepo.eatRepoTitle}"></h3>
         </div>
         <section class="d-flex justify-content-center bg-light">
-            <div class="eatPicArea mx-2"  style="width: 500px; height: 500px;">
-                <img alt="" class="Eatpic img-fluid"
-                     src="data:image/png;base64,${shareEatBean.eatPicBase64}" />
+            <div class="eatPicArea mx-2" style="width: 500px; height: 500px;">
+                <img alt="" class="Eatpic img-fluid" th:src="@{'data:image/png;base64,' + ${eatRepo.eatPicBase64}}" />
             </div>
             <div class="eatInfoArea mx-2">
                 <table>
-                    <tr style="display: none">
+                    <tr>
                         <td>文章Id：</td>
-                        <!--<td th:text="${ eatRepo.eatRepoId }"></td>-->
+                        <td th:text="${eatRepo.eatRepoId}"></td>
                     </tr>
                     <tr>
                         <td>餐廳名稱：</td>
-                        <!--<td th:text="${eatRepo.getResName()}"></td>-->
+                        <td th:text="${eatRepo.getResName()}"></td>
                     </tr>
                     <tr>
                         <td>地址：</td>
-                        <!--<td th:text="${eatRepo.getResAddress()}"></td>-->
+                        <td th:text="${eatRepo.getResAddress()}"></td>
                     </tr>
                     <tr>
                         <td>用餐日期：</td>
-                        <!--<td>
+                        <td>
                             <span th:text="${#dates.format(eatRepo.eatDate, 'yyyy-MM-dd E')}"></span>
-                        </td>-->
+                        </td>
                     </tr>
                     <tr>
                         <td>價位：</td>
-                        <!--<td th:text="${eatRepo.getPriceName()}"></td>-->
+                        <td th:text="${eatRepo.getPriceName()}"></td>
                     </tr>
                     <tr>
                         <td>標籤：</td>
-                        <!--<td th:text="${eatRepo.getAllTagNames()}"></td>-->
+                        <td th:text="${eatRepo.getAllTagNames()}"></td>
                     </tr>
                 </table>
             </div>
@@ -76,12 +69,11 @@
                     </tr>
                     <tr>
                         <td>使用者名稱：</td>
-                        <td th:text="${eatRepo.getPriceName()}"></td>-->
+                        <td th:text="${eatRepo.user?.getUsername()}"></td>
                     </tr>
                 </table>
             </div>
         </section>
-
 
         <!-- 留言區 -->
         <section class="cmtArea ">

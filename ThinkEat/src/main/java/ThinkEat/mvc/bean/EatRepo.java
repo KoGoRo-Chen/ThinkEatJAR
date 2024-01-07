@@ -71,16 +71,6 @@ public class EatRepo {
         return resData.getResAddress();
     }
 
-    public Integer getPriceId() {
-        PriceData price = getPrice();
-
-        if (price == null) {
-            return null;
-        }
-
-        return price.getId();
-    }
-
     public String getPriceName() {
         PriceData price = getPrice();
 
@@ -89,13 +79,6 @@ public class EatRepo {
         }
 
         return price.getName();
-    }
-
-    public List<Integer> getAllTagIds() {
-        if (tagIds != null && tagIds.length > 0) {
-            return Arrays.asList(tagIds);
-        }
-        return Collections.emptyList();
     }
 
     public String getAllTagNames() {
