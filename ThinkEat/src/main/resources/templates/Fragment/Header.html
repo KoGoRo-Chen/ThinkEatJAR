@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>頁首</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+            src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+</head>
+<body th:fragment="header">
+    <nav class="navbar navbar-expand-md navbar-light bg-warning">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/ThinkEat/Index}">想想三餐🤔</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/ThinkEat/ViewEat/ShowEat}">瀏覽美食</a>
+                    </li>
+                </ul>
+                <form class="d-flex mx-2">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/ThinkEat/MyFavEat}">我的收藏</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/ThinkEat/ShareEat}">發表食記</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">美食抽選</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/ThinkEat/Account/AccountCenter}">
+                            <i class="bi bi-person-square"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

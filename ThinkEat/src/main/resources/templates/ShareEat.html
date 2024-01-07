@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>發表食記</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+</head>
+<body>
+<header>
+    <div th:insert="~{Fragment/Header :: header}"></div>
+</header>
+
+<main>
+    <form th:object="${eatRepo}" method="post" th:action="@{/ThinkEat/AddEatRepo}" enctype="multipart/form-data">
+        <fieldset>
+            <!-- 餐廳名 -->
+            標題：<input type="text" id="eatRepoTitle" name="eatRepoTitle" th:field="*{eatRepoTitle}" />
+            <p />
+            <!-- 食記ID -->
+            <input id="EatRepoId" name="EatRepoId" th:field="*{eatRepoId}" type="hidden" />
+            <!-- 餐廳ID -->
+            <input id="resId" name="resId"
+                   th:field="*{resId}"
+                   type="hidden" />
+            <!-- 上傳圖片
+            上傳圖片：<input type="file" id="eatPic" name="eatPic" th:field="*{eatPic}" accept="image/jpeg, image/png, image/jpg" />-->
+            <p />
+            <!-- 店名 -->
+            餐廳名稱：<input type="text" id="resName" name="resName" th:field="*{resName}" />
+            <p />
+            <!-- 地址(googlemap) -->
+            餐廳地址：<input type="text" id="resAddress" name="resAddress" th:field="*{resAddress}" />
+            <p />
+            <!-- 品嘗日期 -->
+            品嘗日期：<input type="date" id="eatDate" name="eatDate" th:field="*{eatDate}" />
+            <p />
+            <!-- 價位 -->
+            價位：<select id="Price" name="Price" th:field="*{priceId}">
+            <option th:each="price : ${prices}"
+                    th:value="${price.id}"
+                    th:text="${price.name}">
+
+            </option>
+        </select> <p />
+            <!-- 標籤 -->
+            標籤：<div th:each="tagData : ${tags}">
+                    <input type="checkbox" id="Tag" name="tagIds"
+                           th:field="*{tagIds}"
+                           th:value="${tagData.id}"
+                           th:text="${tagData.name}">
+                </div>
+            <!-- 食記 -->
+            食記：<textarea id="repo" name="repo" th:field="*{repo}" rows="20" cols="100" maxlength="1000"></textarea><p />
+
+            <!-- 發表文章 -->
+            <input type="submit" value="發表文章" />
+
+            <!-- 一鍵清除所有內容(javascript) -->
+            <button type="button" onclick="clearForm()">清空</button>
+        </fieldset>
+    </form>
+</main>
+
+<!-- 清空表单的JavaScript函数 -->
+<script>
+    function clearForm() {
+        document.getElementById("eatRepoTitle").value = "";
+        document.getElementById("eatPic").value = "";
+        document.getElementById("resName").value = "";
+        document.getElementById("resAddress").value = "";
+        document.getElementById("eatDate").value = "";
+        document.getElementById("Price").value = "";
+
+        // 清空复选框
+        var checkboxes = document.getElementsByName("Tag");
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = false;
+        });
+
+        document.getElementById("eatRepo").value = "";
+    }
+</script>
+</body>
+</html>
