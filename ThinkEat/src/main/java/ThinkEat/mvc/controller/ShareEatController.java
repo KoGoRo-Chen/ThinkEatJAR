@@ -7,13 +7,12 @@ import ThinkEat.mvc.entity.ResData;
 import ThinkEat.mvc.entity.TagData;
 import ThinkEat.mvc.dao.EatDataDao;
 import ThinkEat.mvc.dao.EatRepoDao;
+import ThinkEat.mvc.entity.dto.ResDataDto;
+import ThinkEat.mvc.service.ResDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -21,34 +20,55 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/ShareEat")
 public class ShareEatController {
 
     private final EatDataDao eatDataDao;
     private final EatRepoDao eatRepoDao;
-
-    private final ResDataDao resDataDao;
+    private final ResDataService resDataService;
 
     // 使用建構子注入EatDataDao、ResDataDao、ShareEatDao
     @Autowired
-    public ShareEatController(EatDataDao eatDataDao, EatRepoDao eatRepoDao, ResDataDao resDataDao) {
+    public ShareEatController(EatDataDao eatDataDao, EatRepoDao eatRepoDao, ResDataService resDataService) {
         this.eatDataDao = eatDataDao;
         this.eatRepoDao = eatRepoDao;
-        this.resDataDao = resDataDao;
+        this.resDataService = resDataService;
     }
 
-    //顯示ShareRes頁面
+    //顯示餐廳建立表單
     @GetMapping("/ShareRes")
     public String GetShareResPage(Model model){
+        List<ResData> resSum = resDataService.getAllResData();
+        model.addAttribute("resSum", resSum);
         model.addAttribute("resData", new ResData());
         return "ShareRes";
     };
 
-    //顯示ShareEat頁面
-    @GetMapping("/ShareEat")
-    public String GetShareEatPage(Model model){
+    // 創建餐廳
+    @PostMapping("/AddResData")
+    public String addResData(@ModelAttribute("resDataDto") ResDataDto resDataDto,
+                             RedirectAttributes redirectAttributes, Model model) {
+        // 將食記保存到資料庫
+        int rowcount = resDataService.addResData(resDataDto);
+        System.out.println(resData);
+        System.out.println("Add ShareEat rowcount = " + rowcount);
+        model.addAttribute("resData", resData);
+
+        // 將新增的食記 ID 添加到重定向 URL 的查詢字符串中
+        redirectAttributes.addAttribute("resId", resData.getResId());
+
+        // 重導到食記填寫表單(ShareEat)
+        return "redirect:/ThinkEat/ShareEat/{resId}";
+    }
+
+    //顯示食記填寫表單(ShareEat)
+    @GetMapping("/ShareEat/{resId}")
+    public String GetShareEatPage(@PathVariable("resId") Integer resId, Model model){
         List<PriceData> prices = eatDataDao.findAllPriceDatas();
         List<TagData> tags = eatDataDao.findAllTagDatas();
+        ResData resData = resDataService.getResData(resId).get();
+
+        model.addAttribute("resData", resData);
         model.addAttribute("prices", prices);
         model.addAttribute("tags", tags);
         model.addAttribute("eatRepo", new EatRepo());

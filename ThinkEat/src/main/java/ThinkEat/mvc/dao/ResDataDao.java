@@ -18,9 +18,12 @@ public interface ResDataDao {
     int deleteResDataByResId(Integer resId);
 
     //以ID尋找單間餐廳
-    Optional<ResData> getResByResID(Integer resId);
+    Optional<ResData> getResDataByResID(Integer resId);
 
     //尋找所有餐廳
     List<ResData> getAllResData();
+
+    //尋找單間餐廳的所有食記
+    List<EatRepo> getAllEatRepoByResId(Integer resId);
 
 }

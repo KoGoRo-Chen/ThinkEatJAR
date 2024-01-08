@@ -1,4 +1,4 @@
-package ThinkEat.mvc.entity;
+package ThinkEat.mvc.entity.dto;
 
 import lombok.*;
 
@@ -7,7 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class PriceData {
+public class TagDataDto {
     protected Integer id;
     protected String name;
+
 }

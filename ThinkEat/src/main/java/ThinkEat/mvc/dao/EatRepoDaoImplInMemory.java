@@ -31,7 +31,7 @@ public class EatRepoDaoImplInMemory implements EatRepoDao {
 
 	//新增文章
 	@Override
-	public int addEat(EatRepo eatRepo) {
+	public int addEatRepo(EatRepo eatRepo) {
 		int eatRepoId = atomicShareEatId.incrementAndGet();
 		eatRepo.setEatRepoId(eatRepoId);
 		eatsSum.add(eatRepo);
@@ -40,8 +40,8 @@ public class EatRepoDaoImplInMemory implements EatRepoDao {
 
 	//以ID修改文章
 	@Override
-	public int updateEatByEatRepoId(Integer shareEatId, EatRepo shareEatBean) {
-		Optional<EatRepo> SEBopt = getEatByEatRepoId(shareEatId);
+	public int updateEatRepoByEatRepoId(Integer shareEatId, EatRepo shareEatBean) {
+		Optional<EatRepo> SEBopt = getEatRepoByEatRepoId(shareEatId);
 		if(SEBopt.isPresent()) {
 			EatRepo curEat = SEBopt.get();
 			BeanUtils.copyProperties(shareEatBean, curEat);
@@ -52,8 +52,8 @@ public class EatRepoDaoImplInMemory implements EatRepoDao {
 
 	//以ID刪除文章
 	@Override
-	public int deleteEatByEatRepoId(Integer shareEatId) {
-		Optional<EatRepo> SEBopt = getEatByEatRepoId(shareEatId);
+	public int deleteEatRepo(Integer shareEatId) {
+		Optional<EatRepo> SEBopt = getEatRepoByEatRepoId(shareEatId);
 		if(SEBopt.isPresent()) {
 			eatsSum.remove(SEBopt.get());
 			return 1;
@@ -63,7 +63,7 @@ public class EatRepoDaoImplInMemory implements EatRepoDao {
 
 	//以ID尋找單篇食記
 	@Override
-	public Optional<EatRepo> getEatByEatRepoId(Integer shareEatId) {
+	public Optional<EatRepo> getEatRepoByEatRepoId(Integer shareEatId) {
 		Optional<EatRepo> SEBopt = eatsSum.stream().filter(shareEatBean -> shareEatBean.getEatRepoId().equals(shareEatId)).findFirst();
 		return SEBopt;
 	}

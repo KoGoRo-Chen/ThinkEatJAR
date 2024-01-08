@@ -10,11 +10,12 @@ import java.util.Optional;
 
 public interface EatDataDao {
 	
-	//收集價位資料
+	//價位資料
+
 	List<PriceData> findAllPriceDatas();
 	Optional<PriceData> getPriceDataById(Integer id);
 	
-	//收集標籤資料
+	//標籤資料
 	List<TagData> findAllTagDatas();
 	Optional<TagData> getTagDataById(Integer id);
 }

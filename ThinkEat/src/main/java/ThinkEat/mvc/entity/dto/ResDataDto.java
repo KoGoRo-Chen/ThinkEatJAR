@@ -1,5 +1,6 @@
-package ThinkEat.mvc.entity;
+package ThinkEat.mvc.entity.dto;
 
+import ThinkEat.mvc.entity.EatRepo;
 import lombok.*;
 
 import java.util.LinkedHashSet;
@@ -10,20 +11,20 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ResData {
-    //餐廳Id
+public class ResDataDto {
+
+    //欄位資料
     private Integer resId;
-    //餐廳名稱
     private String resName;
-    //餐廳地址
     private String resAddress;
 
     //關聯資料(食記)
     private EatRepo eatRepo;
 
-    public ResData(Integer resId, String resName, String resAddress) {
+    public ResDataDto(Integer resId, String resName, String resAddress) {
         this.resId = resId;
         this.resName = resName;
         this.resAddress = resAddress;
     }
+
 }
