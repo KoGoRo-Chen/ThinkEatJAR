@@ -32,10 +32,10 @@ public class EatRepoDto {
 
     //價格
     private Integer priceId;
-    private PriceData price;
+    private PriceDataDto priceDataDto;
     //標籤
     private Integer[] tagIds;
-    private List<TagData> tags;
+    private List<TagDataDto> tagDataDtos;
     //食記
     private String repo;
 }
