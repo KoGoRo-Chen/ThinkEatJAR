@@ -1,8 +1,8 @@
 package ThinkEat.mvc.dao;
 
 
-import ThinkEat.mvc.bean.PriceData;
-import ThinkEat.mvc.bean.TagData;
+import ThinkEat.mvc.entity.PriceData;
+import ThinkEat.mvc.entity.TagData;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;

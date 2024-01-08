@@ -1,4 +1,4 @@
-package ThinkEat.mvc.bean;
+package ThinkEat.mvc.entity;
 
 public class PriceData {
     protected Integer id;

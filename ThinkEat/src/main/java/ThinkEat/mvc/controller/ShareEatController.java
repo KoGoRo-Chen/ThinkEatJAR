@@ -1,13 +1,11 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.bean.EatRepo;
-import ThinkEat.mvc.bean.PriceData;
-import ThinkEat.mvc.bean.ResData;
-import ThinkEat.mvc.bean.TagData;
+import ThinkEat.mvc.entity.EatRepo;
+import ThinkEat.mvc.entity.PriceData;
+import ThinkEat.mvc.entity.TagData;
 import ThinkEat.mvc.dao.EatDataDao;
 import ThinkEat.mvc.dao.ShareEatDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -85,7 +83,10 @@ public class ShareEatController {
         // 將食記保存到資料庫
         int rowcount = shareEatDao.addEat(eatRepo);
         System.out.println(eatRepo);
+        System.out.println(shareEatDao.findAllres());
+        System.out.println(shareEatDao.findAlleatrepo());
         System.out.println("Add ShareEat rowcount = " + rowcount);
+        model.addAttribute("eatRepo", eatRepo);
 
         // 將新增的食記 ID 添加到重定向 URL 的查詢字符串中
         redirectAttributes.addAttribute("eatRepoId", eatRepo.getEatRepoId());

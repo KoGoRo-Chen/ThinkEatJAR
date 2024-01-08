@@ -31,18 +31,20 @@
         </aside>
         <section class="col-10 d-flex justify-content-center align-items-center Intro" style="background-color: rgb(240, 240, 240);">
             <div class="bg-light d-flex flex-column justify-content-between" style="width: 90%; height: 95%">
+
+                <div th:text="${resSum}"></div>
+
                 <!-- 接收所有餐廳資訊，生成縮圖 -->
                 <div>
-                    <c:forEach items="${ resSum }" var="resSum">
+                    <th:block th:each="eatRepo: ${resSum}">
                         <figure>
                             <img style="height: 180px; width: 180px; background-color: red;">
-                            <figcaption><a href="${pageContext.request.contextPath}/mvc/ViewEat/ResInfo/${resSum.resId}">${ resSum.resName }</a></figcaption>
+                            <figcaption>
+                                <a th:href="@{${pageContext.request.contextPath}/ThinkEat/ViewEat/EatRepo/${eatRepo.resId}" th:text="${eatRepo.resName}"></a>
+                            </figcaption>
                         </figure>
-                    </c:forEach>
-
-
+                    </th:block>
                 </div><!-- 餐廳縮圖區結束 -->
-
                 <!-- 分頁頁籤 -->
                 <div class="row bg-light mt-5 align-self-center" >
                     <nav aria-label="Page navigation example">

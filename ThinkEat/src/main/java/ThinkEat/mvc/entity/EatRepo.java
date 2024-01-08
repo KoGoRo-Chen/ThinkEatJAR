@@ -1,11 +1,9 @@
-package ThinkEat.mvc.bean;
+package ThinkEat.mvc.entity;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

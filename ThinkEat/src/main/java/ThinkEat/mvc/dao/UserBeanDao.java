@@ -1,6 +1,6 @@
 package ThinkEat.mvc.dao;
 
-import ThinkEat.mvc.bean.User;
+import ThinkEat.mvc.entity.User;
 
 import java.util.List;
 import java.util.Optional;

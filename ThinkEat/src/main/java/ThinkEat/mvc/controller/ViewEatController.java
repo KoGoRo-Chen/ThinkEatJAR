@@ -1,8 +1,9 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.bean.EatRepo;
+import ThinkEat.mvc.entity.EatRepo;
 import ThinkEat.mvc.dao.EatDataDao;
 import ThinkEat.mvc.dao.ShareEatDao;
+import ThinkEat.mvc.entity.ResData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,8 @@ public class ViewEatController {
     //顯示ShowEat頁面(顯示所有餐廳)
     @GetMapping("/ShowEat")
     public String GetShowEatPage(Model model){
-        List<EatRepo> resSum = shareEatDao.findAllres();
+        List<ResData> resSum = shareEatDao.findAllres();
+        System.out.println(resSum);
         model.addAttribute("resSum", resSum);
         return "ViewEat/ShowEat";
     };
@@ -57,8 +59,8 @@ public class ViewEatController {
 
         // 2. 检查 Optional 是否包含值，如果有，将 EatRepo 对象添加到模型中
         eatRepoOptional.ifPresent(eatRepo -> {
-            model.addAttribute("eatRepoID", eatRepo.getEatRepoId());
-            model.addAttribute("resID", eatRepo.getResData().getResId());
+            model.addAttribute("eatRepoId", eatRepo.getEatRepoId());
+            model.addAttribute("resId", eatRepo.getResData().getResId());
             model.addAttribute("eatRepo", eatRepo);
             System.out.println("新增成功" + eatRepo);
         });

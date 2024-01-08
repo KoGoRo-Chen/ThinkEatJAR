@@ -1,4 +1,4 @@
-package ThinkEat.mvc.bean;
+package ThinkEat.mvc.entity;
 
 import lombok.*;
 

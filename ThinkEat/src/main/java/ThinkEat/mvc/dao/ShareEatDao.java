@@ -1,7 +1,8 @@
 package ThinkEat.mvc.dao;
 
 
-import ThinkEat.mvc.bean.EatRepo;
+import ThinkEat.mvc.entity.EatRepo;
+import ThinkEat.mvc.entity.ResData;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,13 +23,13 @@ public interface ShareEatDao {
 	int deleteEatByShareEatId(Integer shareEatId);
 	
 	//尋找所有食紀
-	List<EatRepo> findAlleat();
+	List<EatRepo> findAlleatrepo();
 	
 	//尋找單間餐廳的所有食紀
 	List<EatRepo> findAlleatByresID(Integer resId);
 	
 	//尋找所有餐廳
-	List<EatRepo> findAllres();
+	List<ResData> findAllres();
 	
 	//尋找單間餐廳
 	EatRepo findresByresID(Integer resId);

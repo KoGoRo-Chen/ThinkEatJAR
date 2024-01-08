@@ -2,8 +2,8 @@ package ThinkEat.mvc.dao;
 
 
 
-import ThinkEat.mvc.bean.PriceData;
-import ThinkEat.mvc.bean.TagData;
+import ThinkEat.mvc.entity.PriceData;
+import ThinkEat.mvc.entity.TagData;
 
 import java.util.List;
 import java.util.Optional;
