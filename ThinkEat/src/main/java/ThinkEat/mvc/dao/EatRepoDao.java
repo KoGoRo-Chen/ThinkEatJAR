@@ -2,12 +2,11 @@ package ThinkEat.mvc.dao;
 
 
 import ThinkEat.mvc.entity.EatRepo;
-import ThinkEat.mvc.entity.ResData;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ShareEatDao {
+public interface EatRepoDao {
 	//新增文章
 	int addEat(EatRepo eatRepo);
 

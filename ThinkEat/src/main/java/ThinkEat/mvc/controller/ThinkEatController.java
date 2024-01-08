@@ -1,7 +1,7 @@
 package ThinkEat.mvc.controller;
 
 import ThinkEat.mvc.dao.EatDataDao;
-import ThinkEat.mvc.dao.ShareEatDao;
+import ThinkEat.mvc.dao.EatRepoDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,7 @@ public class ThinkEatController {
 		
 	@Autowired
 	@Qualifier("shareEatDaoImplInMemory")
-	private ShareEatDao shareEatDao;
+	private EatRepoDao eatRepoDao;
 	
 	@Autowired
 	@Qualifier("eatDataDaoImplInMemory")

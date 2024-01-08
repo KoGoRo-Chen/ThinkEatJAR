@@ -2,7 +2,6 @@ package ThinkEat.mvc.dao;
 
 
 import ThinkEat.mvc.entity.PriceData;
-import ThinkEat.mvc.entity.ResData;
 import ThinkEat.mvc.entity.EatRepo;
 import ThinkEat.mvc.entity.TagData;
 import org.springframework.beans.BeanUtils;
@@ -14,10 +13,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Repository
-public class ShareEatDaoImplInMemory implements ShareEatDao{
+public class EatRepoDaoImplInMemory implements EatRepoDao {
 	//User in Memory資料庫
 	private static final List<EatRepo> eatsSum = new CopyOnWriteArrayList<>();
 	private static final AtomicInteger atomicShareEatId = new AtomicInteger(0);  //文章ID
@@ -26,7 +24,7 @@ public class ShareEatDaoImplInMemory implements ShareEatDao{
 	private ResDataDao resDataDao;
 
 	@Autowired
-	public ShareEatDaoImplInMemory(EatDataDao eatDataDao, ResDataDao resDataDao) {
+	public EatRepoDaoImplInMemory(EatDataDao eatDataDao, ResDataDao resDataDao) {
 		this.eatDataDao = eatDataDao;
 		this.resDataDao = resDataDao;
 	}

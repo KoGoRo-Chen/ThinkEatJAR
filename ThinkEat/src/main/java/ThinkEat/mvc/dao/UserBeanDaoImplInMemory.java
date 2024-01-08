@@ -23,7 +23,7 @@ public class UserBeanDaoImplInMemory implements UserBeanDao{
 	
 	@Autowired
 	@Qualifier("shareEatDaoImplInMemory")
-	private ShareEatDao shareEatDao;
+	private EatRepoDao eatRepoDao;
 	
     // 構造函數
     public UserBeanDaoImplInMemory() {

@@ -1,6 +1,5 @@
 package ThinkEat.mvc.dao;
 
-import ThinkEat.mvc.entity.EatRepo;
 import ThinkEat.mvc.entity.ResData;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,12 @@ public class ResDataDaoImplInMemory implements ResDataDao{
 
 
     private EatDataDao eatDataDao;
-    private ShareEatDao shareEatDao;
+    private EatRepoDao eatRepoDao;
 
     @Autowired
-    public ResDataDaoImplInMemory(EatDataDao eatDataDao, ShareEatDao shareEatDao) {
+    public ResDataDaoImplInMemory(EatDataDao eatDataDao, EatRepoDao eatRepoDao) {
         this.eatDataDao = eatDataDao;
-        this.shareEatDao = shareEatDao;
+        this.eatRepoDao = eatRepoDao;
     }
 
     @Override

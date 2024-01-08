@@ -2,7 +2,7 @@ package ThinkEat.mvc.controller;
 
 import ThinkEat.mvc.entity.EatRepo;
 import ThinkEat.mvc.dao.EatDataDao;
-import ThinkEat.mvc.dao.ShareEatDao;
+import ThinkEat.mvc.dao.EatRepoDao;
 import ThinkEat.mvc.entity.ResData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,7 +21,7 @@ public class ViewEatController {
 
     @Autowired
     @Qualifier("shareEatDaoImplInMemory")
-    private ShareEatDao shareEatDao;
+    private EatRepoDao eatRepoDao;
 
     @Autowired
     @Qualifier("eatDataDaoImplInMemory")
@@ -30,7 +30,7 @@ public class ViewEatController {
     //顯示ShowEat頁面(顯示所有餐廳)
     @GetMapping("/ShowEat")
     public String GetShowEatPage(Model model){
-        List<ResData> resSum = shareEatDao.findAllres();
+        List<ResData> resSum = eatRepoDao.findAllres();
         System.out.println(resSum);
         model.addAttribute("resSum", resSum);
         return "ViewEat/ShowEat";
@@ -40,8 +40,8 @@ public class ViewEatController {
     @GetMapping("/ResInfo/{ResId}")
     public String getResPage(@PathVariable("ResId") Integer ResId,  Model model){
         // 1. 根據 resId 從數據庫中檢索相應的 res
-        EatRepo resByResId = shareEatDao.findresByresID(ResId);
-        List<EatRepo> eatsByResId = shareEatDao.findAlleatByresID(ResId);
+        EatRepo resByResId = eatRepoDao.findresByresID(ResId);
+        List<EatRepo> eatsByResId = eatRepoDao.findAlleatByresID(ResId);
 
         // 2. 將檢索到的 res 及ID添加到模型中
         model.addAttribute("resByResId", resByResId);
@@ -55,7 +55,7 @@ public class ViewEatController {
     @GetMapping("/EatRepo/{eatRepoId}")
     public String GetViewEatPage(@PathVariable("eatRepoId") Integer eatRepoId, Model model){
         // 1. 根據 shareEatId 從數據庫中檢索相應的 ShareEatBean
-        Optional<EatRepo> eatRepoOptional = shareEatDao.getEatByShareEatId(eatRepoId);
+        Optional<EatRepo> eatRepoOptional = eatRepoDao.getEatByShareEatId(eatRepoId);
 
         // 2. 检查 Optional 是否包含值，如果有，将 EatRepo 对象添加到模型中
         eatRepoOptional.ifPresent(eatRepo -> {
