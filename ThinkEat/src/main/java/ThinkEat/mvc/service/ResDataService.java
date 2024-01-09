@@ -10,25 +10,31 @@ import ThinkEat.mvc.entity.dto.EatRepoDto;
 import ThinkEat.mvc.entity.dto.ResDataDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
 public class ResDataService {
     private static final AtomicInteger atomicResId = new AtomicInteger(0);  //餐廳ID
+    private static final List<ResDataDto> resDataDtoList = new CopyOnWriteArrayList<>();
+
+    private final EatRepoService eatRepoService;
     private final ResDataDao resDataDao;
     private final TagDataDao tagDataDao;
     private final PriceDataDao priceDataDao;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ResDataService(ResDataDao resDataDao, TagDataDao tagDataDao, PriceDataDao priceDataDao, ModelMapper modelMapper) {
+    public ResDataService(@Lazy EatRepoService eatRepoService, ResDataDao resDataDao, TagDataDao tagDataDao, PriceDataDao priceDataDao, ModelMapper modelMapper) {
+        this.eatRepoService = eatRepoService;
         this.resDataDao = resDataDao;
         this.tagDataDao = tagDataDao;
         this.priceDataDao = priceDataDao;
@@ -39,7 +45,8 @@ public class ResDataService {
     @Transactional
     public int addResData(ResDataDto resDataDto) {
         Integer resDtoId = atomicResId.incrementAndGet();
-        resDataDto.setResDtoId(resDtoId);
+        resDataDto.setResId(resDtoId);
+        resDataDtoList.add(resDataDto);
         ResData resData = modelMapper.map(resDataDto, ResData.class);
         return resDataDao.addResData(resData);
     }
@@ -67,10 +74,12 @@ public class ResDataService {
 
     //查詢單間
     public ResDataDto getResDataById(Integer resId) {
-        Optional<ResData> resOpt = resDataDao.getResDataByResID(resId);
-        if (resOpt.isPresent()) {
-            ResData resDataToShow = resOpt.get();
-            ResDataDto resDataDto = modelMapper.map(resDataToShow, ResDataDto.class);
+        Optional<ResDataDto> resDataOpt = resDataDtoList.stream()
+                .filter(resDataDto -> resDataDto.getResId().equals(resId))
+                .findFirst();
+
+        if(resDataOpt.isPresent()){
+            ResDataDto resDataDto = resDataOpt.get();
             return resDataDto;
         }
         return null;
@@ -78,20 +87,14 @@ public class ResDataService {
 
     //查詢所有餐廳
     public List<ResDataDto> getAllResData() {
-        List<ResData> resDataList = resDataDao.getAllResData();
-        return resDataList.stream()
-                          .map(resData -> modelMapper.map(resData, ResDataDto.class))
-                          .toList();
+        return resDataDtoList;
     }
 
     //尋找單間餐廳的所有食記
     public List<EatRepoDto> getAllEatRepoByResId(Integer resId) {
-        List<EatRepo> eatRepoList = resDataDao.getAllEatRepoByResId(resId);
-        return eatRepoList.stream()
-                .map(eatRepo -> modelMapper.map(eatRepo, EatRepoDto.class))
-                .toList();
-
-
+        List<EatRepoDto> eatsDtoByResId = eatRepoService.getAllEatRepoByResId(resId);
+        return eatsDtoByResId;
     }
+
 
 }

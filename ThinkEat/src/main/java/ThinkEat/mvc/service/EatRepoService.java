@@ -10,17 +10,21 @@ import ThinkEat.mvc.entity.dto.EatRepoDto;
 import ThinkEat.mvc.entity.dto.ResDataDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
 public class EatRepoService {
     private static final AtomicInteger atomicEatRepoId = new AtomicInteger(0);  //文章ID
+    private static final List<EatRepoDto> eatRepoDtoList = new CopyOnWriteArrayList<>();
+
 
     private final EatRepoDao eatRepoDao;
     private final TagDataDao tagDataDao;
@@ -29,7 +33,7 @@ public class EatRepoService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EatRepoService(EatRepoDao eatRepoDa, TagDataDao tagDataDao, PriceDataDao priceDataDao, ResDataService resDataService, ModelMapper modelMapper) {
+    public EatRepoService(EatRepoDao eatRepoDa, TagDataDao tagDataDao, PriceDataDao priceDataDao, @Lazy ResDataService resDataService, ModelMapper modelMapper) {
         this.tagDataDao = tagDataDao;
         this.priceDataDao = priceDataDao;
         this.eatRepoDao = eatRepoDa;
@@ -53,6 +57,7 @@ public class EatRepoService {
             // 將 ResData 設置到 EatRepo 中
             eatRepo.setResData(resData);
         }
+        eatRepoDtoList.add(eatRepoDto);
 
         return eatRepoDao.addEatRepo(eatRepo);
     }
@@ -76,15 +81,26 @@ public class EatRepoService {
 
     //以ID尋找單篇食記
     public EatRepoDto getEatRepoByEatRepoId(Integer eatRepoId) {
-        Optional<EatRepo> eatRepoOpt = eatRepoDao.getEatRepoByEatRepoId(eatRepoId);
-        return eatRepoOpt.map(eatRepo -> modelMapper.map(eatRepo, EatRepoDto.class)).orElse(null);
+        Optional<EatRepoDto> eatRepoOpt = eatRepoDtoList.stream()
+                .filter(eatRepoDto -> eatRepoDto.getEatRepoDtoId().equals(eatRepoId))
+                .findFirst();
+
+        if(eatRepoOpt.isPresent()){
+            EatRepoDto eatRepoDto = eatRepoOpt.get();
+            return eatRepoDto;
+        }
+        return null;
     }
 
     //尋找所有食紀
     public List<EatRepoDto> findAllEatRepo() {
-        List<EatRepo> eatRepoList = eatRepoDao.findAllEatRepo();
-        return eatRepoList.stream()
-                .map(eatRepo -> modelMapper.map(eatRepo, EatRepoDto.class))
+        return eatRepoDtoList;
+    }
+
+    //尋找所有餐廳ID相同的食記
+    public List<EatRepoDto> getAllEatRepoByResId(Integer resId) {
+        return eatRepoDtoList.stream()
+                .filter(eatRepoDto -> eatRepoDto.getResDataDto() != null && eatRepoDto.getResDataDto().getResId().equals(resId))
                 .collect(Collectors.toList());
     }
 }

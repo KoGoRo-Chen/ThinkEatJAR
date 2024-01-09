@@ -21,12 +21,12 @@ public class EatRepoDto {
     //餐廳資料
     private ResDataDto resDataDto;
     //文章ID
-    private Integer eatRepoId;
+    private Integer eatRepoDtoId;
     //文章標題
-    private String eatRepoTitle;
+    private String eatRepoDtoTitle;
     //用餐日期
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date eatDate;
+    private Date eatDateDto;
 
 
     //價格

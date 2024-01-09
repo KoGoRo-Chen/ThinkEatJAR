@@ -53,20 +53,20 @@ public class ShareEatController {
         // 將餐廳保存到資料庫
         int rowcount = resDataService.addResData(resDataDto);
         System.out.println(resDataDto);
-        System.out.println("ResDataDto Added, resDtoId= " + resDataDto.getResDtoId());
+        System.out.println("ResDataDto Added, resDtoId= " + resDataDto.getResId());
         model.addAttribute("resDataDto", resDataDto);
 
         // 將新增的餐廳 ID 添加到重定向 URL 的查詢字符串中
-        redirectAttributes.addAttribute("resDtoId", resDataDto.getResDtoId());
+        redirectAttributes.addAttribute("resId", resDataDto.getResId());
 
         // 重導到食記填寫表單(ShareEat)
-        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{resDtoId}";
+        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{resId}";
     }
 
     //顯示食記填寫表單(ShareEat)
-    @GetMapping("/ShareEatRepo/{resDtoId}")
-    public String GetShareEatPage(@PathVariable("resDtoId") Integer resDtoId, Model model){
-        ResDataDto resDataDto = resDataService.getResDataById(resDtoId);
+    @GetMapping("/ShareEatRepo/{resId}")
+    public String GetShareEatPage(@PathVariable("resId") Integer resId, Model model){
+        ResDataDto resDataDto = resDataService.getResDataById(resId);
         model.addAttribute("resDataDto", resDataDto);
 
         List<PriceDataDto> prices = priceDataService.findAllPrice();
@@ -83,11 +83,11 @@ public class ShareEatController {
     // 創建食記
     @PostMapping("/AddEatRepo")
     public String addEatRepo(@ModelAttribute("eatRepoDto") EatRepoDto eatRepoDto,
-                             @RequestParam("resDtoId") Integer resDtoId,
+                             @RequestParam("resId") Integer resId,
                              RedirectAttributes redirectAttributes, Model model) {
 
         // 根據 resDataDtoId 獲取相應的 ResDataDto 對象，然後將其設置到 eatRepoDto 中
-        ResDataDto resDataDto = resDataService.getResDataById(resDtoId);
+        ResDataDto resDataDto = resDataService.getResDataById(resId);
         eatRepoDto.setResDataDto(resDataDto);
         System.out.println("接收到resDataDto:" +resDataDto);
 

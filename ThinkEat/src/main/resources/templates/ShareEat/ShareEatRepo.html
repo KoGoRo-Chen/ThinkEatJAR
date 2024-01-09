@@ -22,10 +22,10 @@
     <form th:object="${eatRepoDto}" method="post" th:action="@{/ThinkEat/ShareEat/AddEatRepo}" enctype="multipart/form-data">
         <fieldset>
             <!-- 餐廳名 -->
-            標題：<input type="text" id="eatRepoTitle" name="eatRepoTitle" th:field="*{eatRepoTitle}" />
+            標題：<input type="text" id="eatRepoDtoTitle" name="eatRepoDtoTitle" th:field="*{eatRepoDtoTitle}" />
             <p />
             <!-- 食記ID -->
-            <input id="EatRepoId" name="EatRepoId" th:field="*{eatRepoId}" type="hidden" />
+            <input id="EatRepoDtoId" name="EatRepoDtoId" th:field="*{eatRepoDtoId}" type="hidden" />
             <!-- 餐廳ID -->
             <input id="resId" name="resId"
                    th:field="${resDataDto.resId}"
@@ -42,7 +42,7 @@
             <span th:text="${resDataDto.resAddress}"/>
             <p />
             <!-- 品嘗日期 -->
-            品嘗日期：<input type="date" id="eatDate" name="eatDate" th:field="*{eatDate}" />
+            品嘗日期：<input type="date" id="eatDateDto" name="eatDateDto" th:field="*{eatDateDto}" />
             <p />
             <!-- 價位 -->
             價位：<select id="priceId" name="priceId" th:field="*{priceDtoId}">

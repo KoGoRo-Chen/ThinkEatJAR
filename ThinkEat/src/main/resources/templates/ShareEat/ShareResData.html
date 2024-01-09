@@ -18,15 +18,15 @@
           enctype="multipart/form-data">
         <fieldset>
             <!-- 餐廳名 -->
-            餐廳名稱：<input type="text" id="resDtoName" name="resDtoName" th:field="*{resDtoName}"/>
+            餐廳名稱：<input type="text" id="resDtoName" name="resDtoName" th:field="*{resName}"/>
             <p />
             <!-- 餐廳ID -->
             <input id="resDtoId" name="resDtoId"
-                   th:field="*{resDtoId}"
+                   th:field="*{resId}"
                    type="hidden" />
             <p />
             <!-- 地址(googlemap) -->
-            餐廳地址：<input type="text" id="resDtoAddress" name="resDtoAddress" th:field="*{resDtoAddress}"/>
+            餐廳地址：<input type="text" id="resDtoAddress" name="resDtoAddress" th:field="*{resAddress}"/>
             <p />
             <!-- 前往食記發表 -->
             <input type="submit" value="前往食記發表"/>

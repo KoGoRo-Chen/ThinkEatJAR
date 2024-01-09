@@ -14,9 +14,9 @@ import java.util.Set;
 public class ResDataDto {
 
     //欄位資料
-    private Integer resDtoId;
-    private String resDtoName;
-    private String resDtoAddress;
+    private Integer resId;
+    private String resName;
+    private String resAddress;
 
     //關聯資料(食記)
     private EatRepoDto eatRepoDto;

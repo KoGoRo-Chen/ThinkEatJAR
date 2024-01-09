@@ -53,26 +53,28 @@ public class ViewEatController {
 
         // 2. 將檢索到的 res 及ID添加到模型中
         model.addAttribute("resByResId", resDtoByResId);
-        model.addAttribute("eatsByResId", eatsDtoByResId);
+        model.addAttribute("eatsDtoByResId", eatsDtoByResId);
 
         // 返回 ViewEat 頁面
         return "ViewEat/ResInfo";
     };
 
     //顯示ViewEat/EatRepo/{eatRepoId}頁面
-    @GetMapping("/EatRepo/{eatRepoId}")
-    public String GetViewEatPage(@PathVariable("eatRepoId") Integer eatRepoId, Model model){
+    @GetMapping("/EatRepo/{eatRepoDtoId}")
+    public String GetViewEatPage(@PathVariable("eatRepoDtoId") Integer eatRepoDtoId, Model model){
         // 1. 根據 shareEatId 從數據庫中檢索相應的 ShareEatBean
-        EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
-        System.out.println(eatRepoDto);
+        EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoDtoId);
+        System.out.println("ViewEat頁面顯示eatRepoDto: " + eatRepoDto);
         ResDataDto resDataDto = eatRepoDto.getResDataDto();
-        System.out.println(resDataDto);
+        System.out.println("ViewEat頁面顯示resDataDto: " + resDataDto);
 
 
-        // 2. 检查 Optional 是否包含值，如果有，将 EatRepo 对象添加到模型中
-        model.addAttribute("eatRepoId", eatRepoDto.getEatRepoId());
+
+        model.addAttribute("eatRepoId", eatRepoDto.getEatRepoDtoId());
         model.addAttribute("resId", resDataDto.getResId());
-        model.addAttribute("eatRepo", eatRepoDto);
+        model.addAttribute("resName", resDataDto.getResName());
+        model.addAttribute("resAddress", resDataDto.getResAddress());
+        model.addAttribute("eatRepoDto", eatRepoDto);
         System.out.println("新增成功" + eatRepoDto);
 
 
