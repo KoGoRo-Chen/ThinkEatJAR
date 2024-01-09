@@ -19,7 +19,7 @@ public class ResDataDto {
     private String resAddress;
 
     //關聯資料(食記)
-    private EatRepo eatRepo;
+    private EatRepoDto eatRepoDto;
 
     public ResDataDto(Integer resId, String resName, String resAddress) {
         this.resId = resId;

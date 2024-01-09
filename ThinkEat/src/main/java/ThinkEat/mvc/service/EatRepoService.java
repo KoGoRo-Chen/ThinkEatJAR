@@ -5,7 +5,9 @@ import ThinkEat.mvc.dao.PriceDataDao;
 import ThinkEat.mvc.dao.ResDataDao;
 import ThinkEat.mvc.dao.TagDataDao;
 import ThinkEat.mvc.entity.EatRepo;
+import ThinkEat.mvc.entity.ResData;
 import ThinkEat.mvc.entity.dto.EatRepoDto;
+import ThinkEat.mvc.entity.dto.ResDataDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +23,15 @@ public class EatRepoService {
     private final EatRepoDao eatRepoDao;
     private final TagDataDao tagDataDao;
     private final PriceDataDao priceDataDao;
+    private final ResDataService resDataService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EatRepoService(EatRepoDao eatRepoDao, EatRepoDao eatRepoDao1, TagDataDao tagDataDao, PriceDataDao priceDataDao, ModelMapper modelMapper) {
+    public EatRepoService(EatRepoDao eatRepoDao, EatRepoDao eatRepoDao1, TagDataDao tagDataDao, PriceDataDao priceDataDao, ResDataService resDataService, ModelMapper modelMapper) {
         this.eatRepoDao = eatRepoDao1;
         this.tagDataDao = tagDataDao;
         this.priceDataDao = priceDataDao;
+        this.resDataService = resDataService;
         this.modelMapper = modelMapper;
     }
 
@@ -35,6 +39,11 @@ public class EatRepoService {
     @Transactional
     public int addEatRepo(EatRepoDto eatRepoDto) {
         EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
+
+        ResDataDto resDataDto = eatRepoDto.getResDataDto();
+        ResData resData = modelMapper.map(resDataDto, ResData.class);
+        eatRepo.setResData(resData);
+
         return eatRepoDao.addEatRepo(eatRepo);
     }
 
