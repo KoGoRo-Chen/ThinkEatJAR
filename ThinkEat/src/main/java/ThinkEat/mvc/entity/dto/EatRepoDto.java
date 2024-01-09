@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 public class EatRepoDto {
     //餐廳資料
     private ResDataDto resDataDto;
-    //使用者
-    private User user;
     //文章ID
     private Integer eatRepoId;
     //文章標題
@@ -32,10 +30,10 @@ public class EatRepoDto {
 
 
     //價格
-    private Integer priceId;
+    private Integer priceDtoId;
     private PriceDataDto priceDataDto;
     //標籤
-    private Integer[] tagIds;
+    private Integer[] tagDtoIds;
     private List<TagDataDto> tagDataDtos;
     //食記
     private String repo;

@@ -87,9 +87,10 @@ public class ShareEatController {
         // 根據 resDataDtoId 獲取相應的 ResDataDto 對象，然後將其設置到 eatRepoDto 中
         ResDataDto resDataDto = resDataService.getResDataById(resId);
         eatRepoDto.setResDataDto(resDataDto);
+        System.out.println("接收到resDataDto:" +resDataDto);
 
         // 處理價格
-        Optional<PriceDataDto> priceDataDtoOpt = priceDataService.getPriceById(eatRepoDto.getPriceId());
+        Optional<PriceDataDto> priceDataDtoOpt = priceDataService.getPriceById(eatRepoDto.getPriceDtoId());
         if (priceDataDtoOpt.isPresent()) {
             // 創建價格對象並將其設置到 eatRepoDto 中
             PriceDataDto price = priceDataDtoOpt.get();
@@ -98,7 +99,7 @@ public class ShareEatController {
 
         //處理標籤
         List<TagDataDto> selectedTagDtos = new ArrayList<>();
-        for (Integer tagId : eatRepoDto.getTagIds()) {
+        for (Integer tagId : eatRepoDto.getTagDtoIds()) {
             Optional<TagDataDto> tagDataDtoOpt = tagDataService.getTagById(tagId);
             tagDataDtoOpt.ifPresent(selectedTagDtos::add);
         }
@@ -109,6 +110,7 @@ public class ShareEatController {
         System.out.println(eatRepoDto);
         System.out.println("Add ShareEat rowcount = " + rowcount);
         model.addAttribute("eatRepoDto", eatRepoDto);
+
 
         // 將新增的食記 ID 添加到重定向 URL 的查詢字符串中
         redirectAttributes.addAttribute("eatRepoDtoId", eatRepoDto.getEatRepoId());

@@ -64,10 +64,14 @@ public class ViewEatController {
     public String GetViewEatPage(@PathVariable("eatRepoId") Integer eatRepoId, Model model){
         // 1. 根據 shareEatId 從數據庫中檢索相應的 ShareEatBean
         EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
+        System.out.println(eatRepoDto);
+        ResDataDto resDataDto = eatRepoDto.getResDataDto();
+        System.out.println(resDataDto);
+
 
         // 2. 检查 Optional 是否包含值，如果有，将 EatRepo 对象添加到模型中
         model.addAttribute("eatRepoId", eatRepoDto.getEatRepoId());
-        model.addAttribute("resId", eatRepoDto.getResDataDto().getResId());
+        model.addAttribute("resId", resDataDto.getResId());
         model.addAttribute("eatRepo", eatRepoDto);
         System.out.println("新增成功" + eatRepoDto);
 
