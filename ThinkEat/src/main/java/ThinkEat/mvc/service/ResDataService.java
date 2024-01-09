@@ -39,7 +39,7 @@ public class ResDataService {
     @Transactional
     public int addResData(ResDataDto resDataDto) {
         Integer resDtoId = atomicResId.incrementAndGet();
-        resDataDto.setResId(resDtoId);
+        resDataDto.setResDtoId(resDtoId);
         ResData resData = modelMapper.map(resDataDto, ResData.class);
         return resDataDao.addResData(resData);
     }

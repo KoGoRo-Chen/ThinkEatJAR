@@ -41,7 +41,7 @@ public class EatRepoService {
     @Transactional
     public int addEatRepo(EatRepoDto eatRepoDto) {
         Integer eatRepoDtoId = atomicEatRepoId.incrementAndGet();
-        eatRepoDto.setEatRepoId(eatRepoDtoId);
+        eatRepoDto.setEatRepoDtoId(eatRepoDtoId);
         EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
 
         ResDataDto resDataDto = eatRepoDto.getResDataDto();
