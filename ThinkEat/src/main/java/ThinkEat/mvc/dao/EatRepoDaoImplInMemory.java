@@ -22,13 +22,11 @@ public class EatRepoDaoImplInMemory implements EatRepoDao {
 
 	private PriceDataDao priceDataDao;
 	private TagDataDao tagDataDao;
-	private ResDataDao resDataDao;
 
 	@Autowired
-	public EatRepoDaoImplInMemory(PriceDataDao priceDataDao, TagDataDao tagDataDao, ResDataDao resDataDao) {
+	public EatRepoDaoImplInMemory(PriceDataDao priceDataDao, TagDataDao tagDataDao) {
 		this.priceDataDao = priceDataDao;
 		this.tagDataDao = tagDataDao;
-		this.resDataDao = resDataDao;
 	}
 
 	//新增文章

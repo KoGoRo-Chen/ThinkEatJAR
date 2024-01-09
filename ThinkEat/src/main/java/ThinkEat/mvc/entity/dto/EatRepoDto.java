@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -38,5 +39,22 @@ public class EatRepoDto {
     private List<TagDataDto> tagDataDtos;
     //食記
     private String repo;
+
+    public String getPriceName() {
+        PriceDataDto priceDto = getPriceDataDto();
+
+        if (priceDto == null) {
+            return null;
+        }
+
+        return priceDto.getName();
+    }
+
+    public String getAllTagNames() {
+        if (tagDataDtos != null && !tagDataDtos.isEmpty()) {
+            return tagDataDtos.stream().map(TagDataDto::getName).collect(Collectors.joining(", "));
+        }
+        return "";
+    }
 
 }

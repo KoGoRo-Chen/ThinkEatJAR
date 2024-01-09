@@ -14,31 +14,21 @@
 </header>
 
 <main>
-    <form th:object="${resData}" method="post" th:action="@{/ThinkEat/AddResData}" enctype="multipart/form-data">
+    <form th:object="${resDataDto}" method="post" th:action="@{/ShareEat/AddResData}" enctype="multipart/form-data">
         <fieldset>
             <!-- 餐廳名 -->
-            標題：<input type="text" id="eatRepoTitle" name="eatRepoTitle" th:field="*{eatRepoTitle}" />
+            標題：<input type="text" id="resName" name="resName" th:field="*{resName}"/>
             <p />
             <!-- 餐廳ID -->
             <input id="resId" name="resId"
                    th:field="*{resId}"
                    type="hidden" />
             <p />
-            <!-- 店名 -->
-            餐廳名稱：<input type="text" id="resName" name="resName" th:field="*{resData.resName}" />
-            <p />
             <!-- 地址(googlemap) -->
             餐廳地址：<input type="text" id="resAddress" name="resAddress" th:field="*{resData.resAddress}" />
             <p />
-            <!-- 價位 -->
-            價位：<select id="priceId" name="priceId" th:field="*{priceId}">
-            <option th:each="price : ${prices}"
-                    th:value="${price.id}"
-                    th:text="${price.name}">
-            </option>
-        </select> <p />
-            <!-- 發表文章 -->
-            <input type="submit" value="發表文章" />
+            <!-- 前往食記發表 -->
+            <input type="submit" value="前往食記發表"/>
 
             <!-- 一鍵清除所有內容(javascript) -->
             <button type="button" onclick="clearForm()">清空</button>
@@ -49,20 +39,8 @@
 <!-- 清空表单的JavaScript函数 -->
 <script>
     function clearForm() {
-        document.getElementById("eatRepoTitle").value = "";
-        document.getElementById("eatPic").value = "";
         document.getElementById("resName").value = "";
         document.getElementById("resAddress").value = "";
-        document.getElementById("eatDate").value = "";
-        document.getElementById("Price").value = "";
-
-        // 清空复选框
-        var checkboxes = document.getElementsByName("Tag");
-        checkboxes.forEach(function (checkbox) {
-            checkbox.checked = false;
-        });
-
-        document.getElementById("eatRepo").value = "";
     }
 </script>
 </body>

@@ -14,7 +14,7 @@
 </header>
 
 <main>
-    <form th:object="${eatRepo}" method="post" th:action="@{/ThinkEat/AddEatRepo}" enctype="multipart/form-data">
+    <form th:object="${eatRepoDto}" method="post" th:action="@{/ShareEat/AddEatRepo}" enctype="multipart/form-data">
         <fieldset>
             <!-- 餐廳名 -->
             標題：<input type="text" id="eatRepoTitle" name="eatRepoTitle" th:field="*{eatRepoTitle}" />
@@ -23,16 +23,19 @@
             <input id="EatRepoId" name="EatRepoId" th:field="*{eatRepoId}" type="hidden" />
             <!-- 餐廳ID -->
             <input id="resId" name="resId"
-                   th:field="*{resId}"
+                   th:field="*{eatRepoDto.getResDataDto().getResId()}"
                    type="hidden" />
             <!-- 上傳圖片
             上傳圖片：<input type="file" id="eatPic" name="eatPic" th:field="*{eatPic}" accept="image/jpeg, image/png, image/jpg" />-->
             <p />
             <!-- 店名 -->
-            餐廳名稱：<input type="text" id="resName" name="resName" th:field="*{resData.resName}" />
+            餐廳名稱：
+            <div th:text="${eatRepo.getResDataDto().getResName()}"/>
             <p />
             <!-- 地址(googlemap) -->
-            餐廳地址：<input type="text" id="resAddress" name="resAddress" th:field="*{resData.resAddress}" />
+            餐廳地址：
+            <div th:text="${eatRepo.getResDataDto().getResAddress()}"/>
+            />
             <p />
             <!-- 品嘗日期 -->
             品嘗日期：<input type="date" id="eatDate" name="eatDate" th:field="*{eatDate}" />
@@ -68,8 +71,6 @@
     function clearForm() {
         document.getElementById("eatRepoTitle").value = "";
         document.getElementById("eatPic").value = "";
-        document.getElementById("resName").value = "";
-        document.getElementById("resAddress").value = "";
         document.getElementById("eatDate").value = "";
         document.getElementById("Price").value = "";
 

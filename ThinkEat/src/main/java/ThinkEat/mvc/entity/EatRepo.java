@@ -39,36 +39,6 @@ public class EatRepo {
     private byte[] eatPicBytes;
     private String eatPicBase64;
 
-    public Integer getResId() {
-        ResData resData = getResData();
-
-        if (resData == null) {
-            return null;
-        }
-
-        return resData.getResId();
-    }
-
-    public String getResName() {
-        ResData resData = getResData();
-
-        if (resData == null) {
-            return null;
-        }
-
-        return resData.getResName();
-    }
-
-    public String getResAddress() {
-        ResData resData = getResData();
-
-        if (resData == null) {
-            return null;
-        }
-
-        return resData.getResAddress();
-    }
-
     public String getPriceName() {
         PriceData price = getPrice();
 

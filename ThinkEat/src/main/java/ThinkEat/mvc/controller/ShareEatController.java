@@ -38,12 +38,12 @@ public class ShareEatController {
     }
 
     //顯示餐廳建立表單
-    @GetMapping("/ShareRes")
+    @GetMapping("/ShareResData")
     public String GetShareResPage(Model model){
         List<ResDataDto> resSum = resDataService.getAllResData();
         model.addAttribute("resSum", resSum);
         model.addAttribute("resDataDto", new ResDataDto());
-        return "ShareRes";
+        return "ShareResData";
     };
 
     // 創建餐廳
@@ -64,7 +64,7 @@ public class ShareEatController {
     }
 
     //顯示食記填寫表單(ShareEat)
-    @GetMapping("/ShareEat/{resId}")
+    @GetMapping("/ShareEatEatRepo/{resId}")
     public String GetShareEatPage(@PathVariable("resId") Integer resId, Model model){
         List<PriceDataDto> prices = priceDataService.findAllPrice();
         List<TagDataDto> tags = tagDataService.findAllTag();
@@ -74,7 +74,7 @@ public class ShareEatController {
         model.addAttribute("prices", prices);
         model.addAttribute("tags", tags);
         model.addAttribute("eatRepo", new EatRepo());
-        return "ShareEat";
+        return "ShareEatRepo";
     };
 
     // 創建食記
@@ -87,7 +87,7 @@ public class ShareEatController {
         ResDataDto resDataDto = resDataService.getResDataById(resId);
         eatRepoDto.setResDataDto(resDataDto);
 
-        // 處理價格和標籤
+        // 處理價格
         Optional<PriceDataDto> priceDataDtoOpt = priceDataService.getPriceById(eatRepoDto.getPriceId());
         if (priceDataDtoOpt.isPresent()) {
             // 創建價格對象並將其設置到 eatRepoDto 中
@@ -95,6 +95,7 @@ public class ShareEatController {
             eatRepoDto.setPriceDataDto(price);
         }
 
+        //處理標籤
         List<TagDataDto> selectedTagDtos = new ArrayList<>();
         for (Integer tagId : eatRepoDto.getTagIds()) {
             Optional<TagDataDto> tagDataDtoOpt = tagDataService.getTagById(tagId);

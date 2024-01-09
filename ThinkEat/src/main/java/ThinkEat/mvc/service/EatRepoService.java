@@ -27,10 +27,10 @@ public class EatRepoService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EatRepoService(EatRepoDao eatRepoDao, EatRepoDao eatRepoDao1, TagDataDao tagDataDao, PriceDataDao priceDataDao, ResDataService resDataService, ModelMapper modelMapper) {
-        this.eatRepoDao = eatRepoDao1;
+    public EatRepoService(EatRepoDao eatRepoDa, TagDataDao tagDataDao, PriceDataDao priceDataDao, ResDataService resDataService, ModelMapper modelMapper) {
         this.tagDataDao = tagDataDao;
         this.priceDataDao = priceDataDao;
+        this.eatRepoDao = eatRepoDa;
         this.resDataService = resDataService;
         this.modelMapper = modelMapper;
     }

@@ -4,6 +4,7 @@ import ThinkEat.mvc.entity.EatRepo;
 import ThinkEat.mvc.entity.ResData;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class ResDataDaoImplInMemory implements ResDataDao{
     private EatRepoDao eatRepoDao;
 
     @Autowired
-    public ResDataDaoImplInMemory(PriceDataDao priceDataDao, TagDataDao tagDataDao, EatRepoDao eatRepoDao) {
+    public ResDataDaoImplInMemory(@Lazy PriceDataDao priceDataDao, @Lazy TagDataDao tagDataDao, @Lazy EatRepoDao eatRepoDao) {
         this.priceDataDao = priceDataDao;
         this.tagDataDao = tagDataDao;
         this.eatRepoDao = eatRepoDao;
