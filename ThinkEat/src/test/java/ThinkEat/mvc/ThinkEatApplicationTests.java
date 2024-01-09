@@ -3,8 +3,8 @@ package ThinkEat.mvc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ThinkEat.mvc.dao.EmployeeDao;
 import ThinkEat.mvc.dao.demo.ArticleDao;
+import ThinkEat.mvc.dao.demo.EmployeeDao;
 import ThinkEat.mvc.entity.demo.Article;
 import ThinkEat.mvc.entity.demo.Employee;
 
