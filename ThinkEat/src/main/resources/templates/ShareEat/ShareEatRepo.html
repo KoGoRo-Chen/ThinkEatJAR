@@ -19,33 +19,33 @@
         <div th:text="${prices}"></div>
         <div th:text="${tags}"></div>
     </div>
-    <form th:object="${eatRepoDto}" method="post" th:action="@{/ShareEat/AddEatRepo}" enctype="multipart/form-data">
+    <form th:object="${eatRepoDto}" method="post" th:action="@{/ThinkEat/ShareEat/AddEatRepo}" enctype="multipart/form-data">
         <fieldset>
             <!-- 餐廳名 -->
-            標題：<input type="text" id="eatRepoTitle" name="eatRepoTitle" th:field="*{eatRepoTitle}" />
+            標題：<input type="text" id="eatRepoDtoTitle" name="eatRepoDtoTitle" th:field="*{eatRepoDtoTitle}" />
             <p />
             <!-- 食記ID -->
-            <input id="EatRepoId" name="EatRepoId" th:field="*{eatRepoId}" type="hidden" />
+            <input id="EatRepoDtoId" name="EatRepoDtoId" th:field="*{eatRepoDtoId}" type="hidden" />
             <!-- 餐廳ID -->
             <input id="resId" name="resId"
-                   th:field="${resDataDto.resId}"
+                   th:field="${resDataDto.resDtoId}"
                    type="hidden" />
             <!-- 上傳圖片
             上傳圖片：<input type="file" id="eatPic" name="eatPic" th:field="*{eatPic}" accept="image/jpeg, image/png, image/jpg" />-->
             <p />
             <!-- 店名 -->
             餐廳名稱：
-            <span th:text="${resDataDto.resName}"/>
+            <span th:text="${resDataDto.resDtoName}"/>
             <p />
             <!-- 地址(googlemap) -->
             餐廳地址：
-            <span th:text="${resDataDto.resAddress}"/>
+            <span th:text="${resDataDto.resDtoAddress}"/>
             <p />
             <!-- 品嘗日期 -->
-            品嘗日期：<input type="date" id="eatDate" name="eatDate" th:field="*{eatDate}" />
+            品嘗日期：<input type="date" id="eatDateDto" name="eatDateDto" th:field="*{eatDateDto}" />
             <p />
             <!-- 價位 -->
-            價位：<select id="priceId" name="priceId" th:field="*{priceId}">
+            價位：<select id="priceDtoId" name="priceDtoId" th:field="*{priceDtoId}">
             <option th:each="price : ${prices}"
                     th:value="${price.id}"
                     th:text="${price.name}">
@@ -53,15 +53,15 @@
         </select> <p />
             <!-- 標籤 -->
             標籤：<span th:each="tagData : ${tags}">
-                    <input type="checkbox" id="Tag" name="tagIds"
-                           th:field="*{tagIds}"
+                    <input type="checkbox" id="TagDto" name="tagDtoIds"
+                           th:field="*{tagDtoIds}"
                            th:value="${tagData.id}"
                            th:text="${tagData.name}">
                 </span>
             <p/>
             <!-- 食記 -->
             <div>食記：</div>
-            <textarea id="repo" name="repo" th:field="*{repo}" rows="20" cols="100" maxlength="1000"></textarea>
+            <textarea id="repo" name="repo" th:field="*{repoDto}" rows="20" cols="100" maxlength="1000"></textarea>
             <p/>
 
             <!-- 發表文章 -->

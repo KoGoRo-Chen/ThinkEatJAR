@@ -66,8 +66,8 @@ public class ViewEatController {
         EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
 
         // 2. 检查 Optional 是否包含值，如果有，将 EatRepo 对象添加到模型中
-        model.addAttribute("eatRepoId", eatRepoDto.getEatRepoId());
-        model.addAttribute("resId", eatRepoDto.getResDataDto().getResId());
+        model.addAttribute("eatRepoId", eatRepoDto.getEatRepoDtoId());
+        model.addAttribute("resId", eatRepoDto.getResDataDto().getResDtoId());
         model.addAttribute("eatRepo", eatRepoDto);
         System.out.println("新增成功" + eatRepoDto);
 

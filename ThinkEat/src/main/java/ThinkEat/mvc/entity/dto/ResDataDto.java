@@ -14,17 +14,11 @@ import java.util.Set;
 public class ResDataDto {
 
     //欄位資料
-    private Integer resId;
-    private String resName;
-    private String resAddress;
+    private Integer resDtoId;
+    private String resDtoName;
+    private String resDtoAddress;
 
     //關聯資料(食記)
     private EatRepoDto eatRepoDto;
-
-    public ResDataDto(Integer resId, String resName, String resAddress) {
-        this.resId = resId;
-        this.resName = resName;
-        this.resAddress = resAddress;
-    }
 
 }

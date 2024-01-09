@@ -18,15 +18,15 @@
           enctype="multipart/form-data">
         <fieldset>
             <!-- 餐廳名 -->
-            餐廳名稱：<input type="text" id="resName" name="resName" th:field="*{resName}"/>
+            餐廳名稱：<input type="text" id="resDtoName" name="resDtoName" th:field="*{resDtoName}"/>
             <p />
             <!-- 餐廳ID -->
-            <input id="resId" name="resId"
-                   th:field="*{resId}"
+            <input id="resDtoId" name="resDtoId"
+                   th:field="*{resDtoId}"
                    type="hidden" />
             <p />
             <!-- 地址(googlemap) -->
-            餐廳地址：<input type="text" id="resAddress" name="resAddress" th:field="*{resAddress}"/>
+            餐廳地址：<input type="text" id="resDtoAddress" name="resDtoAddress" th:field="*{resDtoAddress}"/>
             <p />
             <!-- 前往食記發表 -->
             <input type="submit" value="前往食記發表"/>
@@ -40,8 +40,8 @@
 <!-- 清空表单的JavaScript函数 -->
 <script>
     function clearForm() {
-        document.getElementById("resName").value = "";
-        document.getElementById("resAddress").value = "";
+        document.getElementById("resDtoName").value = "";
+        document.getElementById("resDtoAddress").value = "";
     }
 </script>
 </body>
