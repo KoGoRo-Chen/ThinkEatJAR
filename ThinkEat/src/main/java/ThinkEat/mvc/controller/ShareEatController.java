@@ -43,7 +43,7 @@ public class ShareEatController {
         List<ResDataDto> resSum = resDataService.getAllResData();
         model.addAttribute("resSum", resSum);
         model.addAttribute("resDataDto", new ResDataDto());
-        return "ShareResData";
+        return "ShareEat/ShareResData";
     };
 
     // 創建餐廳
@@ -53,28 +53,29 @@ public class ShareEatController {
         // 將餐廳保存到資料庫
         int rowcount = resDataService.addResData(resDataDto);
         System.out.println(resDataDto);
-        System.out.println("Add ShareEat rowcount = " + rowcount);
+        System.out.println("ResDataDto Added, resId= " + resDataDto.getResId());
         model.addAttribute("resDataDto", resDataDto);
 
         // 將新增的餐廳 ID 添加到重定向 URL 的查詢字符串中
         redirectAttributes.addAttribute("resId", resDataDto.getResId());
 
-        // 重導到餐廳填寫表單(ShareEat)
-        return "redirect:/ThinkEat/ShareEat/{resId}";
+        // 重導到食記填寫表單(ShareEat)
+        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{resId}";
     }
 
     //顯示食記填寫表單(ShareEat)
-    @GetMapping("/ShareEatEatRepo/{resId}")
+    @GetMapping("/ShareEatRepo/{resId}")
     public String GetShareEatPage(@PathVariable("resId") Integer resId, Model model){
         List<PriceDataDto> prices = priceDataService.findAllPrice();
         List<TagDataDto> tags = tagDataService.findAllTag();
         ResDataDto resDataDto = resDataService.getResDataById(resId);
 
+        EatRepoDto eatRepoDto = new EatRepoDto(); // 创建 eatRepoDto 对象
+        model.addAttribute("eatRepoDto", eatRepoDto); // 将 eatRepoDto 放入模型中
         model.addAttribute("resDataDto", resDataDto);
         model.addAttribute("prices", prices);
         model.addAttribute("tags", tags);
-        model.addAttribute("eatRepo", new EatRepo());
-        return "ShareEatRepo";
+        return "ShareEat/ShareEatRepo";
     };
 
     // 創建食記

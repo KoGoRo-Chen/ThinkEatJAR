@@ -14,6 +14,11 @@
 </header>
 
 <main>
+    <div>
+        <div th:text="${resDataDto}"></div>
+        <div th:text="${prices}"></div>
+        <div th:text="${tags}"></div>
+    </div>
     <form th:object="${eatRepoDto}" method="post" th:action="@{/ShareEat/AddEatRepo}" enctype="multipart/form-data">
         <fieldset>
             <!-- 餐廳名 -->
@@ -23,19 +28,18 @@
             <input id="EatRepoId" name="EatRepoId" th:field="*{eatRepoId}" type="hidden" />
             <!-- 餐廳ID -->
             <input id="resId" name="resId"
-                   th:field="*{eatRepoDto.getResDataDto().getResId()}"
+                   th:field="${resDataDto.resId}"
                    type="hidden" />
             <!-- 上傳圖片
             上傳圖片：<input type="file" id="eatPic" name="eatPic" th:field="*{eatPic}" accept="image/jpeg, image/png, image/jpg" />-->
             <p />
             <!-- 店名 -->
             餐廳名稱：
-            <div th:text="${eatRepo.getResDataDto().getResName()}"/>
+            <span th:text="${resDataDto.resName}"/>
             <p />
             <!-- 地址(googlemap) -->
             餐廳地址：
-            <div th:text="${eatRepo.getResDataDto().getResAddress()}"/>
-            />
+            <span th:text="${resDataDto.resAddress}"/>
             <p />
             <!-- 品嘗日期 -->
             品嘗日期：<input type="date" id="eatDate" name="eatDate" th:field="*{eatDate}" />
@@ -48,14 +52,17 @@
             </option>
         </select> <p />
             <!-- 標籤 -->
-            標籤：<div th:each="tagData : ${tags}">
+            標籤：<span th:each="tagData : ${tags}">
                     <input type="checkbox" id="Tag" name="tagIds"
                            th:field="*{tagIds}"
                            th:value="${tagData.id}"
                            th:text="${tagData.name}">
-                </div>
+                </span>
+            <p/>
             <!-- 食記 -->
-            食記：<textarea id="repo" name="repo" th:field="*{repo}" rows="20" cols="100" maxlength="1000"></textarea><p />
+            <div>食記：</div>
+            <textarea id="repo" name="repo" th:field="*{repo}" rows="20" cols="100" maxlength="1000"></textarea>
+            <p/>
 
             <!-- 發表文章 -->
             <input type="submit" value="發表文章" />
@@ -72,7 +79,7 @@
         document.getElementById("eatRepoTitle").value = "";
         document.getElementById("eatPic").value = "";
         document.getElementById("eatDate").value = "";
-        document.getElementById("Price").value = "";
+        document.getElementById("PriceId").value = "1";
 
         // 清空复选框
         var checkboxes = document.getElementsByName("Tag");

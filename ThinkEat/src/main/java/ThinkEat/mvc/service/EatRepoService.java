@@ -15,10 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
 public class EatRepoService {
+    private static final AtomicInteger atomicEatRepoId = new AtomicInteger(0);  //文章ID
 
     private final EatRepoDao eatRepoDao;
     private final TagDataDao tagDataDao;
@@ -38,6 +40,8 @@ public class EatRepoService {
     //新增文章
     @Transactional
     public int addEatRepo(EatRepoDto eatRepoDto) {
+        Integer eatRepoDtoId = atomicEatRepoId.incrementAndGet();
+        eatRepoDto.setEatRepoId(eatRepoDtoId);
         EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
 
         ResDataDto resDataDto = eatRepoDto.getResDataDto();

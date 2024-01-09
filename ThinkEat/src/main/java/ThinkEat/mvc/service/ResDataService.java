@@ -16,11 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
 public class ResDataService {
-
+    private static final AtomicInteger atomicResId = new AtomicInteger(0);  //餐廳ID
     private final ResDataDao resDataDao;
     private final TagDataDao tagDataDao;
     private final PriceDataDao priceDataDao;
@@ -37,6 +38,8 @@ public class ResDataService {
     //新增
     @Transactional
     public int addResData(ResDataDto resDataDto) {
+        Integer resDtoId = atomicResId.incrementAndGet();
+        resDataDto.setResId(resDtoId);
         ResData resData = modelMapper.map(resDataDto, ResData.class);
         return resDataDao.addResData(resData);
     }

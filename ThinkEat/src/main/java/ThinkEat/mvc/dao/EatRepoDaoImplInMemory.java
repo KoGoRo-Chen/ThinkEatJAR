@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EatRepoDaoImplInMemory implements EatRepoDao {
 	//User in Memory資料庫
 	private static final List<EatRepo> eatsSum = new CopyOnWriteArrayList<>();
-	private static final AtomicInteger atomicShareEatId = new AtomicInteger(0);  //文章ID
+
 
 	private PriceDataDao priceDataDao;
 	private TagDataDao tagDataDao;
@@ -32,10 +32,8 @@ public class EatRepoDaoImplInMemory implements EatRepoDao {
 	//新增文章
 	@Override
 	public int addEatRepo(EatRepo eatRepo) {
-		int eatRepoId = atomicShareEatId.incrementAndGet();
-		eatRepo.setEatRepoId(eatRepoId);
 		eatsSum.add(eatRepo);
-		return 1;
+		return eatRepo.getEatRepoId();
 	}
 
 	//以ID修改文章

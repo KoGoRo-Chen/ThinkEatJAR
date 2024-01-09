@@ -47,13 +47,13 @@ public class PriceDataService {
         return priceDataDao.deletePrice(priceId);
     }
 
-    // 以ID尋找單篇食記
+    // 以ID尋找單個價位
     public Optional<PriceDataDto> getPriceById(Integer priceId) {
         Optional<PriceData> priceData = priceDataDao.getPriceById(priceId);
         return priceData.map(data -> modelMapper.map(data, PriceDataDto.class));
     }
 
-    // 尋找所有食紀
+    // 尋找所有價位
     public List<PriceDataDto> findAllPrice() {
         List<PriceData> priceDataList = priceDataDao.findAllPrice();
         return priceDataList.stream()

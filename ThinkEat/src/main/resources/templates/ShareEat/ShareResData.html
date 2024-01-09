@@ -14,10 +14,11 @@
 </header>
 
 <main>
-    <form th:object="${resDataDto}" method="post" th:action="@{/ShareEat/AddResData}" enctype="multipart/form-data">
+    <form th:object="${resDataDto}" method="post" th:action="@{/ThinkEat/ShareEat/AddResData}"
+          enctype="multipart/form-data">
         <fieldset>
             <!-- 餐廳名 -->
-            標題：<input type="text" id="resName" name="resName" th:field="*{resName}"/>
+            餐廳名稱：<input type="text" id="resName" name="resName" th:field="*{resName}"/>
             <p />
             <!-- 餐廳ID -->
             <input id="resId" name="resId"
@@ -25,7 +26,7 @@
                    type="hidden" />
             <p />
             <!-- 地址(googlemap) -->
-            餐廳地址：<input type="text" id="resAddress" name="resAddress" th:field="*{resData.resAddress}" />
+            餐廳地址：<input type="text" id="resAddress" name="resAddress" th:field="*{resAddress}"/>
             <p />
             <!-- 前往食記發表 -->
             <input type="submit" value="前往食記發表"/>

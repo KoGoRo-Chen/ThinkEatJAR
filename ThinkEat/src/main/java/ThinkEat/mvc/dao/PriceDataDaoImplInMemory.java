@@ -68,6 +68,7 @@ public class PriceDataDaoImplInMemory implements PriceDataDao {
 
     @Override
     public List<PriceData> findAllPrice() {
+
         return new ArrayList<>(pricesSum);
     }
 }

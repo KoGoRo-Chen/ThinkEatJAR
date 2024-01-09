@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 @Repository
 public class ResDataDaoImplInMemory implements ResDataDao{
     private static final List<ResData> resSum = new CopyOnWriteArrayList<>();
-    private static final AtomicInteger atomicResId = new AtomicInteger(0);  //餐廳ID
-
 
     private PriceDataDao priceDataDao;
     private TagDataDao tagDataDao;
@@ -33,10 +31,8 @@ public class ResDataDaoImplInMemory implements ResDataDao{
 
     @Override
     public int addResData(ResData resData) {
-        int resId = atomicResId.incrementAndGet();
-        resData.setResId(resId);
         resSum.add(resData);
-        return 0;
+        return resData.getResId();
     }
 
     @Override
