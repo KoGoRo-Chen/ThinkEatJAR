@@ -19,12 +19,14 @@ public class ResDataDaoImplInMemory implements ResDataDao{
     private static final AtomicInteger atomicResId = new AtomicInteger(0);  //餐廳ID
 
 
-    private EatDataDao eatDataDao;
+    private PriceDataDao priceDataDao;
+    private TagDataDao tagDataDao;
     private EatRepoDao eatRepoDao;
 
     @Autowired
-    public ResDataDaoImplInMemory(EatDataDao eatDataDao, EatRepoDao eatRepoDao) {
-        this.eatDataDao = eatDataDao;
+    public ResDataDaoImplInMemory(PriceDataDao priceDataDao, TagDataDao tagDataDao, EatRepoDao eatRepoDao) {
+        this.priceDataDao = priceDataDao;
+        this.tagDataDao = tagDataDao;
         this.eatRepoDao = eatRepoDao;
     }
 

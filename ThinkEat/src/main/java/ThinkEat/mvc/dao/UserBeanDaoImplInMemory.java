@@ -16,16 +16,15 @@ public class UserBeanDaoImplInMemory implements UserBeanDao{
 	// in Memory資料庫
 	private static List<User> usersSum = new CopyOnWriteArrayList<User>();
 	private static AtomicInteger atomicUserId = new AtomicInteger(0);  //使用者ID
-	
-	@Autowired
-	@Qualifier("eatDataDaoImplInMemory")
-	private EatDataDao eatDataDao;
-	
-	@Autowired
-	@Qualifier("shareEatDaoImplInMemory")
+
 	private EatRepoDao eatRepoDao;
-	
-    // 構造函數
+
+	@Autowired
+	public UserBeanDaoImplInMemory(EatRepoDao eatRepoDao) {
+		this.eatRepoDao = eatRepoDao;
+	}
+
+	// 構造函數
     public UserBeanDaoImplInMemory() {
         initializeDefaultUser();
     }

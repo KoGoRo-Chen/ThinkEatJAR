@@ -1,9 +1,5 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.entity.EatRepo;
-import ThinkEat.mvc.dao.EatDataDao;
-import ThinkEat.mvc.dao.EatRepoDao;
-import ThinkEat.mvc.entity.ResData;
 import ThinkEat.mvc.entity.dto.EatRepoDto;
 import ThinkEat.mvc.entity.dto.ResDataDto;
 import ThinkEat.mvc.service.EatRepoService;
@@ -11,7 +7,6 @@ import ThinkEat.mvc.service.PriceDataService;
 import ThinkEat.mvc.service.ResDataService;
 import ThinkEat.mvc.service.TagDataService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("ViewEat/")
@@ -73,9 +67,9 @@ public class ViewEatController {
 
         // 2. 检查 Optional 是否包含值，如果有，将 EatRepo 对象添加到模型中
         model.addAttribute("eatRepoId", eatRepoDto.getEatRepoId());
-        model.addAttribute("resId", eatRepoDto.getResData().getResId());
+        model.addAttribute("resId", eatRepoDto.getResDataDto().getResId());
         model.addAttribute("eatRepo", eatRepoDto);
-            System.out.println("新增成功" + eatRepo);
+        System.out.println("新增成功" + eatRepoDto);
 
 
         // 返回 ViewEat 頁面

@@ -20,12 +20,14 @@ public class EatRepoDaoImplInMemory implements EatRepoDao {
 	private static final List<EatRepo> eatsSum = new CopyOnWriteArrayList<>();
 	private static final AtomicInteger atomicShareEatId = new AtomicInteger(0);  //文章ID
 
-	private EatDataDao eatDataDao;
+	private PriceDataDao priceDataDao;
+	private TagDataDao tagDataDao;
 	private ResDataDao resDataDao;
 
 	@Autowired
-	public EatRepoDaoImplInMemory(EatDataDao eatDataDao, ResDataDao resDataDao) {
-		this.eatDataDao = eatDataDao;
+	public EatRepoDaoImplInMemory(PriceDataDao priceDataDao, TagDataDao tagDataDao, ResDataDao resDataDao) {
+		this.priceDataDao = priceDataDao;
+		this.tagDataDao = tagDataDao;
 		this.resDataDao = resDataDao;
 	}
 
@@ -74,13 +76,13 @@ public class EatRepoDaoImplInMemory implements EatRepoDao {
 		eatsSum.forEach(eatRepo -> {
 			//將價格資料傳入文章中
 			Integer priceId = eatRepo.getPriceId();
-			Optional<PriceData> priceDataopt = eatDataDao.getPriceDataById(priceId);
+			Optional<PriceData> priceDataopt = priceDataDao.getPriceById(priceId);
 			priceDataopt.ifPresent(priceData -> eatRepo.setPrice(priceData));
 
 			//將標籤資料傳入文章中
 			List<TagData> tags = new ArrayList<>();
 			for(Integer tagId : eatRepo.getTagIds()) {
-				tags.add(eatDataDao.getTagDataById(tagId).get());
+				tags.add(tagDataDao.getTagByTagId(tagId).get());
 			}
 			eatRepo.setTags(tags);
 		});

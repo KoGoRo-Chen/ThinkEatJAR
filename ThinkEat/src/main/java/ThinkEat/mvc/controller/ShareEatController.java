@@ -1,12 +1,6 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.dao.ResDataDao;
 import ThinkEat.mvc.entity.EatRepo;
-import ThinkEat.mvc.entity.PriceData;
-import ThinkEat.mvc.entity.ResData;
-import ThinkEat.mvc.entity.TagData;
-import ThinkEat.mvc.dao.EatDataDao;
-import ThinkEat.mvc.dao.EatRepoDao;
 import ThinkEat.mvc.entity.dto.EatRepoDto;
 import ThinkEat.mvc.entity.dto.PriceDataDto;
 import ThinkEat.mvc.entity.dto.ResDataDto;
@@ -26,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/ShareEat")
+@RequestMapping("ShareEat/")
 public class ShareEatController {
 
     private final PriceDataService priceDataService;
@@ -86,7 +80,12 @@ public class ShareEatController {
     // 創建食記
     @PostMapping("/AddEatRepo")
     public String addEatRepo(@ModelAttribute("eatRepoDto") EatRepoDto eatRepoDto,
+                             @RequestParam("resId") Integer resId,
                              RedirectAttributes redirectAttributes, Model model) {
+
+        // 根據 resDataDtoId 獲取相應的 ResDataDto 對象，然後將其設置到 eatRepoDto 中
+        ResDataDto resDataDto = resDataService.getResDataById(resId);
+        eatRepoDto.setResDataDto(resDataDto);
 
         // 處理價格和標籤
         Optional<PriceDataDto> priceDataDtoOpt = priceDataService.getPriceById(eatRepoDto.getPriceId());

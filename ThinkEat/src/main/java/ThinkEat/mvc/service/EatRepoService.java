@@ -41,8 +41,14 @@ public class EatRepoService {
         EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
 
         ResDataDto resDataDto = eatRepoDto.getResDataDto();
-        ResData resData = modelMapper.map(resDataDto, ResData.class);
-        eatRepo.setResData(resData);
+        // 如果 ResDataDto 不為空，則進行相關處理
+        if (resDataDto != null) {
+            // 將 ResDataDto 映射為 ResData 對象
+            ResData resData = modelMapper.map(resDataDto, ResData.class);
+
+            // 將 ResData 設置到 EatRepo 中
+            eatRepo.setResData(resData);
+        }
 
         return eatRepoDao.addEatRepo(eatRepo);
     }

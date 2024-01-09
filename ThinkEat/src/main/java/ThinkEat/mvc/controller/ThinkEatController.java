@@ -1,7 +1,10 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.dao.EatDataDao;
 import ThinkEat.mvc.dao.EatRepoDao;
+import ThinkEat.mvc.service.EatRepoService;
+import ThinkEat.mvc.service.PriceDataService;
+import ThinkEat.mvc.service.ResDataService;
+import ThinkEat.mvc.service.TagDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -11,14 +14,21 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/")
 public class ThinkEatController {
-		
+	private EatRepoService eatRepoService;
+	private ResDataService resDataService;
+	private PriceDataService priceDataService;
+	private TagDataService tagDataService;
+
 	@Autowired
-	@Qualifier("shareEatDaoImplInMemory")
-	private EatRepoDao eatRepoDao;
-	
-	@Autowired
-	@Qualifier("eatDataDaoImplInMemory")
-	private EatDataDao eatDataDao;
+	public ThinkEatController(EatRepoService eatRepoService,
+							  ResDataService resDataService,
+							  PriceDataService priceDataService,
+							  TagDataService tagDataService) {
+		this.eatRepoService = eatRepoService;
+		this.resDataService = resDataService;
+		this.priceDataService = priceDataService;
+		this.tagDataService = tagDataService;
+	}
 
 	//顯示首頁
 	@GetMapping("/Index")
