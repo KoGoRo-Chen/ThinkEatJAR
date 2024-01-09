@@ -18,12 +18,6 @@ public class TagDataDaoImplInMemory implements TagDataDao {
 
     // 構造函數
     public TagDataDaoImplInMemory() {
-        initializeDefaultTagList();
-    }
-
-    // 初始化預設標籤資料
-    @PostConstruct
-    private void initializeDefaultTagList() {
         tagsSum.add(new TagData(atomicTagId.incrementAndGet(), "日式"));
         tagsSum.add(new TagData(atomicTagId.incrementAndGet(), "中式"));
         tagsSum.add(new TagData(atomicTagId.incrementAndGet(), "西式"));

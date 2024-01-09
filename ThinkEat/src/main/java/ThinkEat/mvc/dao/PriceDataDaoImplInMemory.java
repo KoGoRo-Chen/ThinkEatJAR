@@ -17,12 +17,6 @@ public class PriceDataDaoImplInMemory implements PriceDataDao {
 
     // 構造函數
     public PriceDataDaoImplInMemory() {
-        initializeDefaultPriceList();
-    }
-
-    // 初始化預設價格資料
-    @PostConstruct
-    private void initializeDefaultPriceList() {
         pricesSum.add(new PriceData(atomicPriceId.incrementAndGet(), "低於100"));
         pricesSum.add(new PriceData(atomicPriceId.incrementAndGet(), "100~200之間"));
         pricesSum.add(new PriceData(atomicPriceId.incrementAndGet(), "200~300之間"));
