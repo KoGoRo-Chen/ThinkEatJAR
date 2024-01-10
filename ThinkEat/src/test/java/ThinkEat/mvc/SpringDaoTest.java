@@ -2,18 +2,20 @@ package ThinkEat.mvc;
 
 import java.util.List;
 
+import org.hibernate.bytecode.internal.bytebuddy.PrivateAccessorException;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ThinkEat.mvc.Jpa.Dao.EatRepoDao;
-import ThinkEat.mvc.Jpa.Dao.PriceDao;
-import ThinkEat.mvc.Jpa.Dao.RestaurantDao;
-import ThinkEat.mvc.Jpa.Dao.UserDao;
-import ThinkEat.mvc.Jpa.Entity.EatRepo;
-import ThinkEat.mvc.Jpa.Entity.Price;
-import ThinkEat.mvc.Jpa.Entity.Restaurant;
-import ThinkEat.mvc.Jpa.Entity.User;
+import ThinkEat.mvc.dao.jpa.EatRepoDao;
+import ThinkEat.mvc.dao.jpa.PriceDao;
+import ThinkEat.mvc.dao.jpa.RestaurantDao;
+import ThinkEat.mvc.dao.jpa.UserDao;
+import ThinkEat.mvc.entity.jpa.EatRepo;
+import ThinkEat.mvc.entity.jpa.Price;
+import ThinkEat.mvc.entity.jpa.Restaurant;
+import ThinkEat.mvc.entity.jpa.User;
 import jakarta.transaction.Transactional;
 
 @SpringBootTest
