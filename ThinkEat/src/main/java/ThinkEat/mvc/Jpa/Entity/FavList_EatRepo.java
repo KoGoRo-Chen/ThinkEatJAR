@@ -6,17 +6,17 @@ import lombok.Data;
 @Entity
 @Table(name = "favlist_eatrepo")
 @Data
-public class FavList_ref_EatRepo {
+public class FavList_EatRepo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "fl_er_ref_id")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "favList_id")
-    private FavList favList;
+    @JoinColumn(name = "favlist_id_ref")
+    private Integer favList_id_ref;
 
     @ManyToOne
-    @JoinColumn(name = "eatRepo_id")
-    private EatRepo eatRepo;
+    @JoinColumn(name = "eatrepo_id_ref")
+    private Integer eatRepo_id_ref;
 }
