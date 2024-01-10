@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ThinkEat.mvc.dao.demo.ArticleDao;
-import ThinkEat.mvc.dao.demo.EmployeeDao;
-import ThinkEat.mvc.entity.demo.Article;
-import ThinkEat.mvc.entity.demo.Employee;
+import ThinkEat.mvc.Dto.demo.ArticleDao;
+import ThinkEat.mvc.Dto.demo.EmployeeDao;
+import ThinkEat.mvc.Jpa.Entity.demo.Article;
+import ThinkEat.mvc.Jpa.Entity.demo.Employee;
 
 @SpringBootTest
 class ThinkEatApplicationTests {
