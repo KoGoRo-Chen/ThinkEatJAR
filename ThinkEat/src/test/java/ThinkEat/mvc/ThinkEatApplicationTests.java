@@ -1,5 +1,6 @@
 package ThinkEat.mvc;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,7 +18,7 @@ class ThinkEatApplicationTests {
 	@Autowired
 	ArticleDao articleDao;
 	
-	//@Test
+	@Test
 	void test1() {
 		
 		Employee employee = new Employee();
@@ -31,8 +32,7 @@ class ThinkEatApplicationTests {
 
 	}
 	
-	//@Test
-	//@Order(1)
+	@Test
 	void test2() {
 		
 		Employee e1 = employeeDao.findById(1).get();
