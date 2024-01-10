@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -40,9 +41,6 @@ public class EatRepo {
 	private Date eatdate;
 	
 	@Column(nullable = false)
-	private Integer priceId;
-	
-	@Column(nullable = false)
 	private String eatrepo;
 	
 	@JoinColumn(name = "user_id")
@@ -52,4 +50,9 @@ public class EatRepo {
 	@JoinColumn(name = "restaurant_id")
 	@ManyToOne
 	Restaurant restaurant;
+	
+	@OneToOne
+	@JoinColumn(name = "price_id")
+	Price price;
+	
 }

@@ -2,15 +2,18 @@ package ThinkEat.mvc;
 
 import java.util.List;
 
+import org.hibernate.bytecode.internal.bytebuddy.PrivateAccessorException;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ThinkEat.mvc.dao.jpa.EatRepoDao;
+import ThinkEat.mvc.dao.jpa.PriceDao;
 import ThinkEat.mvc.dao.jpa.RestaurantDao;
 import ThinkEat.mvc.dao.jpa.UserDao;
 import ThinkEat.mvc.entity.jpa.EatRepo;
+import ThinkEat.mvc.entity.jpa.Price;
 import ThinkEat.mvc.entity.jpa.Restaurant;
 import ThinkEat.mvc.entity.jpa.User;
 import jakarta.transaction.Transactional;
@@ -27,6 +30,9 @@ public class SpringDaoTest {
 	@Autowired
 	RestaurantDao restaurantDao;
 	
+	@Autowired
+	PriceDao priceDao;
+	
 	//@Test
 	void createUser() {
 		
@@ -42,11 +48,15 @@ public class SpringDaoTest {
 		restaurant.setAddress("台北市建國路一段456號");
 		restaurantDao.save(restaurant);
 		
+		Price price = new Price();
+		price.setName("100");
+		priceDao.save(price);
+		
 		EatRepo eatRepo = new EatRepo();
 		eatRepo.setUser(user);
 		eatRepo.setEatTitle("title");
 		eatRepo.setEatrepo("context");
-		eatRepo.setPriceId(1);
+		eatRepo.setPrice(price);
 		eatRepo.setRestaurant(restaurant);
 		eatRepoDao.save(eatRepo);
 		
@@ -59,23 +69,14 @@ public class SpringDaoTest {
 		List<EatRepo> eatRepos = user.getEatRepos();
 		for(EatRepo eatRepo:eatRepos) {
 			Restaurant restaurant = eatRepo.getRestaurant();
+			Price price = eatRepo.getPrice();
 			System.out.printf(
-					"user=%s,epoId=%d,eatTitle=%s,restaurant=%s%n",
+					"user=%s,epoId=%d,eatTitle=%s,restaurant=%s,price=%s%n",
 					user.getUseraccount(),
 					eatRepo.getId(),
 					eatRepo.getEatTitle(),
-					restaurant.getName());
+					restaurant.getName(),
+					price.getName());
 		}
 	}
-	
-	//@Test
-	//@Transactional
-	void queryRestaurant() {
-		Restaurant restaurant = restaurantDao.findById(1).get();
-		List<EatRepo> eatRepos = restaurant.getEatRepos();
-		for(EatRepo eatRepo:eatRepos) {
-			System.out.println(eatRepo.getRestaurant());
-		}
-	}
-	
 }
