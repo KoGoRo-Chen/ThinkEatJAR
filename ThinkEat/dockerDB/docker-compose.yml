@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+  mysql:
+    container_name: db_mysql
+    image: mysql:8
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678 # 與Spring的設定相符
+      - MYSQL_DATABASE=thinkeat # 與Spring的設定相符
+      - MYSQL_USER=web # 與Spring的設定相符
+      - MYSQL_PASSWORD=12345678 # 與Spring的設定相符
+      - LANG=C.UTF-8
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/sample_data/:/docker-entrypoint-initdb.d/
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
