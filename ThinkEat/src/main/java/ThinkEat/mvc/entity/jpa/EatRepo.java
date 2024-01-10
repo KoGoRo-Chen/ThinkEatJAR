@@ -22,16 +22,13 @@ import lombok.ToString;
 @Entity
 @Table(name = "eatrepo")
 @Data
-@ToString(exclude = {"user"})
+@ToString(exclude = {"user","restaurant"})
 public class EatRepo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private Integer id;
-	
-	@Column(nullable = false)
-	private Integer resId;
 	
 	@Column(nullable = false)
 	private String eatTitle;
@@ -52,4 +49,7 @@ public class EatRepo {
 	@ManyToOne
 	User user;
 	
+	@JoinColumn(name = "restaurant_id")
+	@ManyToOne
+	Restaurant restaurant;
 }
