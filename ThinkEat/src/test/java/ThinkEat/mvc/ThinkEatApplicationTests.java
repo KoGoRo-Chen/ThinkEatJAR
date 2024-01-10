@@ -6,8 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ThinkEat.mvc.dao.demo.ArticleDao;
 import ThinkEat.mvc.dao.demo.EmployeeDao;
-import ThinkEat.mvc.entity.demo.Article;
-import ThinkEat.mvc.entity.demo.Employee;
+import ThinkEat.mvc.OldBean.demo.Article;
+import ThinkEat.mvc.OldBean.demo.Employee;
 
 @SpringBootTest
 class ThinkEatApplicationTests {

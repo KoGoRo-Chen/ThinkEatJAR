@@ -1,13 +1,12 @@
 package ThinkEat.mvc.service;
 
-import ThinkEat.mvc.dao.EatRepoDao;
-import ThinkEat.mvc.dao.PriceDataDao;
-import ThinkEat.mvc.dao.ResDataDao;
-import ThinkEat.mvc.dao.TagDataDao;
-import ThinkEat.mvc.entity.EatRepo;
-import ThinkEat.mvc.entity.ResData;
-import ThinkEat.mvc.entity.dto.EatRepoDto;
-import ThinkEat.mvc.entity.dto.ResDataDto;
+import ThinkEat.mvc.OldBean.dao.EatRepoDao;
+import ThinkEat.mvc.OldBean.dao.PriceDataDao;
+import ThinkEat.mvc.OldBean.dao.TagDataDao;
+import ThinkEat.mvc.OldBean.EatRepo;
+import ThinkEat.mvc.OldBean.ResData;
+import ThinkEat.mvc.OldBean.dto.EatRepoDto;
+import ThinkEat.mvc.OldBean.dto.ResDataDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;

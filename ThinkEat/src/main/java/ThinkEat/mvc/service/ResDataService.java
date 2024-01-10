@@ -1,25 +1,21 @@
 package ThinkEat.mvc.service;
 
-import ThinkEat.mvc.dao.EatRepoDao;
-import ThinkEat.mvc.dao.PriceDataDao;
-import ThinkEat.mvc.dao.ResDataDao;
-import ThinkEat.mvc.dao.TagDataDao;
-import ThinkEat.mvc.entity.EatRepo;
-import ThinkEat.mvc.entity.ResData;
-import ThinkEat.mvc.entity.dto.EatRepoDto;
-import ThinkEat.mvc.entity.dto.ResDataDto;
+import ThinkEat.mvc.OldBean.dao.PriceDataDao;
+import ThinkEat.mvc.OldBean.dao.ResDataDao;
+import ThinkEat.mvc.OldBean.dao.TagDataDao;
+import ThinkEat.mvc.OldBean.ResData;
+import ThinkEat.mvc.OldBean.dto.EatRepoDto;
+import ThinkEat.mvc.OldBean.dto.ResDataDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Service
 public class ResDataService {

@@ -1,12 +1,10 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.dao.EatRepoDao;
 import ThinkEat.mvc.service.EatRepoService;
 import ThinkEat.mvc.service.PriceDataService;
 import ThinkEat.mvc.service.ResDataService;
 import ThinkEat.mvc.service.TagDataService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
