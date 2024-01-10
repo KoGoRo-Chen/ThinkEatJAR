@@ -3,13 +3,7 @@ package ThinkEat.mvc.Jpa.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -22,9 +16,6 @@ public class User {
 	@Column
 	private Integer id;
 	
-	@Column(columnDefinition = "int default 1 not null ")
-	private Integer levelId;
-	
 	@Column(nullable = false)
 	private String nickName;
 	
@@ -32,8 +23,12 @@ public class User {
 	private String password;
 	
 	@Column(nullable = false)
-	private String useraccount;
-	
-	@OneToMany(mappedBy = "user")
+	private String userName;
+
+	@OneToMany(mappedBy = "user") //一個用戶可發表多篇文章
 	List<EatRepo> eatRepos = new ArrayList<>();
+
+	@ManyToOne //多個用戶可以擁有相同的權限等級，但每個用戶僅能擁有一個權限
+	@JoinColumn(name = "authority_id")
+	private Authority authority;
 }
