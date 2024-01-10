@@ -1,22 +1,14 @@
 package ThinkEat.mvc.Jpa.Entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.Data;
 import lombok.ToString;
 
@@ -42,17 +34,21 @@ public class EatRepo {
 	
 	@Column(nullable = false)
 	private String eatrepo;
-	
-	@JoinColumn(name = "user_id")
+
 	@ManyToOne
+	@JoinColumn(name = "user_id") //一個用戶可以發表多篇文章
 	User user;
-	
-	@JoinColumn(name = "restaurant_id")
+
 	@ManyToOne
+	@JoinColumn(name = "restaurant_id") //每間餐廳可以有多篇文章
 	Restaurant restaurant;
 	
 	@OneToOne
-	@JoinColumn(name = "price_id")
+	@JoinColumn(name = "price_id") //每篇食記可以設定一項價位資料
 	Price price;
+
+	//每個清單都可以收藏每篇文章，可以重複
+	@ManyToMany(mappedBy = "eatRepoList")
+	List<FavList> favLists = new ArrayList<>();
 	
 }

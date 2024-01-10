@@ -31,4 +31,7 @@ public class User {
 	@ManyToOne //多個用戶可以擁有相同的權限等級，但每個用戶僅能擁有一個權限
 	@JoinColumn(name = "authority_id")
 	private Authority authority;
+
+	@OneToMany(mappedBy = "favlist") //一個用戶可建立多筆清單
+	List<FavList> favLists = new ArrayList<>();
 }
