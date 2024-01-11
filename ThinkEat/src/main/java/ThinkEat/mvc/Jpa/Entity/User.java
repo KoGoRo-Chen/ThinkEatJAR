@@ -13,7 +13,7 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
+	@Column(name = "user_id")
 	private Integer id;
 	
 	@Column(nullable = false)
@@ -25,13 +25,20 @@ public class User {
 	@Column(nullable = false)
 	private String userName;
 
-	@OneToMany(mappedBy = "user") //一個用戶可發表多篇文章
-	List<EatRepo> eatRepos = new ArrayList<>();
+	//一個用戶可發表多篇文章
+	@OneToMany(mappedBy = "eatRepo_User")
+	List<EatRepo> eatRepoList = new ArrayList<>();
 
-	@ManyToOne //多個用戶可以擁有相同的權限等級，但每個用戶僅能擁有一個權限
+	//一個用戶可發表多篇留言
+	@OneToMany(mappedBy = "comment_User")
+	List<Comment> commentList = new ArrayList<>();
+
+	//多個用戶可以擁有相同的權限等級，但每個用戶僅能擁有一個權限
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "authority_id")
 	private Authority authority;
 
-	@OneToMany(mappedBy = "favlist") //一個用戶可建立多筆清單
+	//一個用戶可建立多筆清單
+	@OneToMany(mappedBy = "favList_User")
 	List<FavList> favLists = new ArrayList<>();
 }

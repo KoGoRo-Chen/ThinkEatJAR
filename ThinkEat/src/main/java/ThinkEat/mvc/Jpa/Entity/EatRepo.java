@@ -13,14 +13,14 @@ import lombok.ToString;
 @Entity
 @Table(name = "eatrepo")
 @Data
-@ToString(exclude = {"user", "restaurant",})
+@ToString(exclude = {"eatRepo_User", "restaurant","price", "favListList", "eatRepo_TagList", "cmtList", "picList"})
 public class EatRepo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "eatrepo_id")
 	private Integer id;
-	
+
 	@Column(nullable = false)
 	private String eatTitle;
 	
@@ -36,7 +36,7 @@ public class EatRepo {
 	//一個用戶可以發表多篇文章
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	User user;
+	User eatRepo_User;
 
 	//每間餐廳可以有多篇文章
 	@ManyToOne
@@ -49,8 +49,8 @@ public class EatRepo {
 	Price price;
 
 	//每個清單都可以收藏每篇文章，可以重複
-	@ManyToMany(mappedBy = "favlist")
-	List<FavList> favListList = new ArrayList<>();
+	@ManyToMany(mappedBy = "favList_EatRepoList")
+	Set<FavList> favListList = new LinkedHashSet<>();
 
 	//每篇文章可以擁有多個TAG標籤
 	@ManyToMany(targetEntity = Tag.class)
@@ -59,14 +59,14 @@ public class EatRepo {
 			joinColumns = {@JoinColumn(name = "eatrepo_id_ref", referencedColumnName = "eatrepo_id")},
 			inverseJoinColumns = @JoinColumn(name = "tag_id_ref", referencedColumnName = "tag_id")
 	)
-	Set<Tag> tagList = new LinkedHashSet<>();
+	Set<Tag> eatRepo_TagList = new LinkedHashSet<>();
 
 	//一篇文章可以擁有多個留言
-	@OneToMany(mappedBy = "eatrepo")
+	@OneToMany(mappedBy = "comment_EatRepo")
 	Set<Comment> cmtList = new LinkedHashSet<>();
 
 	//一篇文章可以擁有多張圖片
-	@OneToMany(mappedBy = "eatrepo")
+	@OneToMany(mappedBy = "pic_EatRepo")
 	Set<Picture> picList = new LinkedHashSet<>();
 
 

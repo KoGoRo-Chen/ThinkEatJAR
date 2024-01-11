@@ -19,7 +19,7 @@ public class Picture {
 
     @ManyToOne(targetEntity = EatRepo.class)
     @JoinColumn(name = "eatrepo_id")
-    private EatRepo eatRepo;
+    private EatRepo pic_EatRepo;
 
 
 }

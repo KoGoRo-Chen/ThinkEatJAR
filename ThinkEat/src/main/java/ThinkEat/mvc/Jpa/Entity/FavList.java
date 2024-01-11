@@ -23,7 +23,7 @@ public class FavList {
     //一個用戶可建立多筆清單
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User favList_User;
 
     //每個清單可以收藏多篇文章，可重複
     @ManyToMany(targetEntity = EatRepo.class)
@@ -32,6 +32,6 @@ public class FavList {
             joinColumns = {@JoinColumn(name = "favList_id_ref", referencedColumnName = "favlist_id")},
             inverseJoinColumns = @JoinColumn(name = "eatrepo_id_ref", referencedColumnName = "eatrepo_id")
     )
-    Set<EatRepo> eatRepoList = new LinkedHashSet<>();
+    Set<EatRepo> favList_EatRepoList = new LinkedHashSet<>();
 
 }

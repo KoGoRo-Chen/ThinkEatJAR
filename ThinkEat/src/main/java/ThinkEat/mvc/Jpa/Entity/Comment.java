@@ -15,10 +15,14 @@ public class Comment {
     private Integer id;
 
     @Column(nullable = false)
-    private String cmtContext;
+    private String commentContext;
 
-    @ManyToOne(targetEntity = EatRepo.class)
+    @ManyToOne
     @JoinColumn(name = "eatrepo_id")
-    private EatRepo eatRepo;
+    EatRepo comment_EatRepo;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User comment_User;
 
 }

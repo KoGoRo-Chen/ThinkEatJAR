@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 public class Authority {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "authority_id")
     private Integer id;
 
@@ -28,7 +29,7 @@ public class Authority {
             joinColumns = {@JoinColumn(name = "authority_for_ref", referencedColumnName = "authority_id")},
             inverseJoinColumns = @JoinColumn(name = "access_for_ref", referencedColumnName = "access_id")
     )
-    private List<Access> accessList = new ArrayList<>();
+    List<Access> accessList = new ArrayList<>();
 
 
 }

@@ -16,12 +16,12 @@ public class Access {
     private Integer id;
 
     @Column(nullable = false)
-    private String AccessName;
+    private String accessName;
 
     @Column
-    private String AccessFunction;
+    private String accessFunction;
 
-    @ManyToMany(mappedBy = "authority")
-    private Authority authority;
+    @ManyToMany(mappedBy = "accessList")
+    List<Authority> authorityList = new ArrayList<>();
 
 }
