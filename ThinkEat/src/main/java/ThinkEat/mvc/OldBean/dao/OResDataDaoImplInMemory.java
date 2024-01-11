@@ -14,18 +14,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Repository
-public class ResDataDaoImplInMemory implements ResDataDao{
+public class OResDataDaoImplInMemory implements OResDataDao {
     private static final List<ResData> resSum = new CopyOnWriteArrayList<>();
 
-    private PriceDataDao priceDataDao;
-    private TagDataDao tagDataDao;
-    private EatRepoDao eatRepoDao;
+    private OPriceDataDao OPriceDataDao;
+    private OTagDataDao OTagDataDao;
+    private OEatRepoDao OEatRepoDao;
 
     @Autowired
-    public ResDataDaoImplInMemory(@Lazy PriceDataDao priceDataDao, @Lazy TagDataDao tagDataDao, @Lazy EatRepoDao eatRepoDao) {
-        this.priceDataDao = priceDataDao;
-        this.tagDataDao = tagDataDao;
-        this.eatRepoDao = eatRepoDao;
+    public OResDataDaoImplInMemory(@Lazy OPriceDataDao OPriceDataDao, @Lazy OTagDataDao OTagDataDao, @Lazy OEatRepoDao OEatRepoDao) {
+        this.OPriceDataDao = OPriceDataDao;
+        this.OTagDataDao = OTagDataDao;
+        this.OEatRepoDao = OEatRepoDao;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ResDataDaoImplInMemory implements ResDataDao{
 
         if (resOpt.isPresent()) {
             // 使用 resId 進行過濾
-            allEatRepoByResId = eatRepoDao.findAllEatRepo().stream()
+            allEatRepoByResId = OEatRepoDao.findAllEatRepo().stream()
                     .filter(eatRepo -> resId.equals(eatRepo.getResData().getResId()))
                     .collect(Collectors.toList());
         }

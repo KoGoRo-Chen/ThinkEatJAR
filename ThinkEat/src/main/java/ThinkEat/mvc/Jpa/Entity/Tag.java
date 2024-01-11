@@ -23,6 +23,6 @@ public class Tag {
 
     //每個tag都可以被加入每篇文章，可重複
     @ManyToMany(mappedBy = "eatRepo_TagList")
-    Set<EatRepo> tag_EatRepoList = new LinkedHashSet<>();
+    private Set<EatRepo> tag_EatRepoList = new LinkedHashSet<>();
 
 }

@@ -23,5 +23,5 @@ public class Price {
 	private String name;
 
 	@OneToOne(mappedBy = "price")
-	EatRepo eatRepo;
+	private EatRepo eatRepo;
 }

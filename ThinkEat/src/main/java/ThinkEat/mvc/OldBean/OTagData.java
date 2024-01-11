@@ -1,4 +1,4 @@
-package ThinkEat.mvc.OldBean.dto;
+package ThinkEat.mvc.OldBean;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TagDataDto {
+public class OTagData {
     protected Integer id;
     protected String name;
 

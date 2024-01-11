@@ -1,12 +1,12 @@
 package ThinkEat.mvc.service;
 
-import ThinkEat.mvc.OldBean.dao.EatRepoDao;
-import ThinkEat.mvc.OldBean.dao.PriceDataDao;
-import ThinkEat.mvc.OldBean.dao.TagDataDao;
+import ThinkEat.mvc.OldBean.dao.OEatRepoDao;
+import ThinkEat.mvc.OldBean.dao.OPriceDataDao;
+import ThinkEat.mvc.OldBean.dao.OTagDataDao;
 import ThinkEat.mvc.OldBean.EatRepo;
 import ThinkEat.mvc.OldBean.ResData;
-import ThinkEat.mvc.OldBean.dto.EatRepoDto;
-import ThinkEat.mvc.OldBean.dto.ResDataDto;
+import ThinkEat.mvc.dto.EatRepoDto;
+import ThinkEat.mvc.dto.ResDataDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -25,17 +25,17 @@ public class EatRepoService {
     private static final List<EatRepoDto> eatRepoDtoList = new CopyOnWriteArrayList<>();
 
 
-    private final EatRepoDao eatRepoDao;
-    private final TagDataDao tagDataDao;
-    private final PriceDataDao priceDataDao;
+    private final OEatRepoDao OEatRepoDao;
+    private final OTagDataDao OTagDataDao;
+    private final OPriceDataDao OPriceDataDao;
     private final ResDataService resDataService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EatRepoService(EatRepoDao eatRepoDa, TagDataDao tagDataDao, PriceDataDao priceDataDao, @Lazy ResDataService resDataService, ModelMapper modelMapper) {
-        this.tagDataDao = tagDataDao;
-        this.priceDataDao = priceDataDao;
-        this.eatRepoDao = eatRepoDa;
+    public EatRepoService(OEatRepoDao eatRepoDa, OTagDataDao OTagDataDao, OPriceDataDao OPriceDataDao, @Lazy ResDataService resDataService, ModelMapper modelMapper) {
+        this.OTagDataDao = OTagDataDao;
+        this.OPriceDataDao = OPriceDataDao;
+        this.OEatRepoDao = eatRepoDa;
         this.resDataService = resDataService;
         this.modelMapper = modelMapper;
     }
@@ -58,16 +58,16 @@ public class EatRepoService {
         }
         eatRepoDtoList.add(eatRepoDto);
 
-        return eatRepoDao.addEatRepo(eatRepo);
+        return OEatRepoDao.addEatRepo(eatRepo);
     }
 
     //以ID修改文章
     public int updateEatRepoByEatRepoId(Integer eatRepoId, EatRepoDto eatRepoDto) {
-        Optional<EatRepo> eatRepoOpt = eatRepoDao.getEatRepoByEatRepoId(eatRepoId);
+        Optional<EatRepo> eatRepoOpt = OEatRepoDao.getEatRepoByEatRepoId(eatRepoId);
         if (eatRepoOpt.isPresent()) {
             EatRepo eatRepoToUpdate = eatRepoOpt.get();
             modelMapper.map(eatRepoDto, eatRepoToUpdate);
-            return eatRepoDao.updateEatRepoByEatRepoId(eatRepoId, eatRepoToUpdate);
+            return OEatRepoDao.updateEatRepoByEatRepoId(eatRepoId, eatRepoToUpdate);
         }
         return 0;
     }
@@ -75,7 +75,7 @@ public class EatRepoService {
     //以ID刪除文章
     @Transactional
     public int deleteEatRepo(Integer eatRepoId) {
-        return eatRepoDao.deleteEatRepo(eatRepoId);
+        return OEatRepoDao.deleteEatRepo(eatRepoId);
     }
 
     //以ID尋找單篇食記

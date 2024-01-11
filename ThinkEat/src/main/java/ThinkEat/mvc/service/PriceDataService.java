@@ -1,8 +1,8 @@
 package ThinkEat.mvc.service;
 
-import ThinkEat.mvc.OldBean.dao.PriceDataDao;
+import ThinkEat.mvc.OldBean.dao.OPriceDataDao;
 import ThinkEat.mvc.OldBean.PriceData;
-import ThinkEat.mvc.OldBean.dto.PriceDataDto;
+import ThinkEat.mvc.dto.PriceDataDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 @Service
 public class PriceDataService {
 
-    private final PriceDataDao priceDataDao;
+    private final OPriceDataDao OPriceDataDao;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public PriceDataService(PriceDataDao priceDataDao, ModelMapper modelMapper) {
-        this.priceDataDao = priceDataDao;
+    public PriceDataService(OPriceDataDao OPriceDataDao, ModelMapper modelMapper) {
+        this.OPriceDataDao = OPriceDataDao;
         this.modelMapper = modelMapper;
     }
 
@@ -28,15 +28,15 @@ public class PriceDataService {
     @Transactional
     public int addPrice(PriceDataDto priceDataDto) {
         PriceData priceData = modelMapper.map(priceDataDto, PriceData.class);
-        return priceDataDao.addPrice(priceData);
+        return OPriceDataDao.addPrice(priceData);
     }
 
     // 以ID修改價位
     public int updatePriceByPriceId(Integer priceId, PriceDataDto updatedPriceDataDto) {
-        Optional<PriceData> priceDataToUpdate = priceDataDao.getPriceById(priceId);
+        Optional<PriceData> priceDataToUpdate = OPriceDataDao.getPriceById(priceId);
         if (priceDataToUpdate.isPresent()) {
             PriceData updatedPriceData = modelMapper.map(updatedPriceDataDto, PriceData.class);
-            return priceDataDao.updatePriceByPriceId(priceId, updatedPriceData);
+            return OPriceDataDao.updatePriceByPriceId(priceId, updatedPriceData);
         }
         return 0;
     }
@@ -44,18 +44,18 @@ public class PriceDataService {
     // 以ID刪除價位
     @Transactional
     public int deletePrice(Integer priceId) {
-        return priceDataDao.deletePrice(priceId);
+        return OPriceDataDao.deletePrice(priceId);
     }
 
     // 以ID尋找單個價位
     public Optional<PriceDataDto> getPriceById(Integer priceId) {
-        Optional<PriceData> priceData = priceDataDao.getPriceById(priceId);
+        Optional<PriceData> priceData = OPriceDataDao.getPriceById(priceId);
         return priceData.map(data -> modelMapper.map(data, PriceDataDto.class));
     }
 
     // 尋找所有價位
     public List<PriceDataDto> findAllPrice() {
-        List<PriceData> priceDataList = priceDataDao.findAllPrice();
+        List<PriceData> priceDataList = OPriceDataDao.findAllPrice();
         return priceDataList.stream()
                 .map(data -> modelMapper.map(data, PriceDataDto.class))
                 .collect(Collectors.toList());

@@ -14,18 +14,18 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
-public class EatRepoDaoImplInMemory implements EatRepoDao {
+public class OEatRepoDaoImplInMemory implements OEatRepoDao {
 	//User in Memory資料庫
 	private static final List<EatRepo> eatsSum = new CopyOnWriteArrayList<>();
 
 
-	private PriceDataDao priceDataDao;
-	private TagDataDao tagDataDao;
+	private OPriceDataDao OPriceDataDao;
+	private OTagDataDao OTagDataDao;
 
 	@Autowired
-	public EatRepoDaoImplInMemory(PriceDataDao priceDataDao, TagDataDao tagDataDao) {
-		this.priceDataDao = priceDataDao;
-		this.tagDataDao = tagDataDao;
+	public OEatRepoDaoImplInMemory(OPriceDataDao OPriceDataDao, OTagDataDao OTagDataDao) {
+		this.OPriceDataDao = OPriceDataDao;
+		this.OTagDataDao = OTagDataDao;
 	}
 
 	//新增文章
@@ -71,13 +71,13 @@ public class EatRepoDaoImplInMemory implements EatRepoDao {
 		eatsSum.forEach(eatRepo -> {
 			//將價格資料傳入文章中
 			Integer priceId = eatRepo.getPriceId();
-			Optional<PriceData> priceDataopt = priceDataDao.getPriceById(priceId);
+			Optional<PriceData> priceDataopt = OPriceDataDao.getPriceById(priceId);
 			priceDataopt.ifPresent(priceData -> eatRepo.setPrice(priceData));
 
 			//將標籤資料傳入文章中
 			List<TagData> tags = new ArrayList<>();
 			for(Integer tagId : eatRepo.getTagIds()) {
-				tags.add(tagDataDao.getTagByTagId(tagId).get());
+				tags.add(OTagDataDao.getTagByTagId(tagId).get());
 			}
 			eatRepo.setTags(tags);
 		});

@@ -6,7 +6,7 @@ import ThinkEat.mvc.OldBean.TagData;
 import java.util.List;
 import java.util.Optional;
 
-public interface TagDataDao {
+public interface OTagDataDao {
     //新增
     int addTag(TagData tagData);
     //修改

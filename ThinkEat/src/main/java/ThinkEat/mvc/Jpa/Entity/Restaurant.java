@@ -19,7 +19,7 @@ public class Restaurant {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
+	@Column(name = "restaurant_id")
 	private Integer id;
 	
 	@Column(nullable = false)
@@ -29,5 +29,5 @@ public class Restaurant {
 	private String address;
 	
 	@OneToMany(mappedBy = "restaurant")
-	List<EatRepo> eatRepos = new ArrayList<>();
+	private List<EatRepo> eatRepoList = new ArrayList<>();
 }

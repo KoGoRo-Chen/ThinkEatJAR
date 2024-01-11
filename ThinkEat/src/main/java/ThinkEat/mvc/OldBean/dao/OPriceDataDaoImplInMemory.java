@@ -10,12 +10,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
-public class PriceDataDaoImplInMemory implements PriceDataDao {
+public class OPriceDataDaoImplInMemory implements OPriceDataDao {
     private static List<PriceData> pricesSum = new CopyOnWriteArrayList<>();
     private static AtomicInteger atomicPriceId = new AtomicInteger(0);
 
     // 構造函數
-    public PriceDataDaoImplInMemory() {
+    public OPriceDataDaoImplInMemory() {
         pricesSum.add(new PriceData(atomicPriceId.incrementAndGet(), "低於100"));
         pricesSum.add(new PriceData(atomicPriceId.incrementAndGet(), "100~200之間"));
         pricesSum.add(new PriceData(atomicPriceId.incrementAndGet(), "200~300之間"));

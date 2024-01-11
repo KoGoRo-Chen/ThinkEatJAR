@@ -11,12 +11,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
-public class TagDataDaoImplInMemory implements TagDataDao {
+public class OTagDataDaoImplInMemory implements OTagDataDao {
     private static List<TagData> tagsSum = new CopyOnWriteArrayList<>();
     private static AtomicInteger atomicTagId = new AtomicInteger(0);
 
     // 構造函數
-    public TagDataDaoImplInMemory() {
+    public OTagDataDaoImplInMemory() {
         tagsSum.add(new TagData(atomicTagId.incrementAndGet(), "日式"));
         tagsSum.add(new TagData(atomicTagId.incrementAndGet(), "中式"));
         tagsSum.add(new TagData(atomicTagId.incrementAndGet(), "西式"));

@@ -1,5 +1,6 @@
-package ThinkEat.mvc.OldBean;
+package ThinkEat.mvc.dto;
 
+import ThinkEat.mvc.Jpa.Entity.EatRepo;
 import lombok.*;
 
 @Getter
@@ -7,7 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class PriceData {
+public class PriceDataDto {
     protected Integer id;
     protected String name;
+    private EatRepoDto eatRepoDto;
 }

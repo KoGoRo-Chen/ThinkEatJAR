@@ -6,7 +6,7 @@ import ThinkEat.mvc.OldBean.EatRepo;
 import java.util.List;
 import java.util.Optional;
 
-public interface EatRepoDao {
+public interface OEatRepoDao {
 	//新增文章
 	int addEatRepo(EatRepo eatRepo);
 

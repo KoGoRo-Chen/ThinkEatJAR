@@ -1,11 +1,11 @@
 package ThinkEat.mvc.service;
 
-import ThinkEat.mvc.OldBean.dao.PriceDataDao;
-import ThinkEat.mvc.OldBean.dao.ResDataDao;
-import ThinkEat.mvc.OldBean.dao.TagDataDao;
+import ThinkEat.mvc.OldBean.dao.OPriceDataDao;
+import ThinkEat.mvc.OldBean.dao.OResDataDao;
+import ThinkEat.mvc.OldBean.dao.OTagDataDao;
 import ThinkEat.mvc.OldBean.ResData;
-import ThinkEat.mvc.OldBean.dto.EatRepoDto;
-import ThinkEat.mvc.OldBean.dto.ResDataDto;
+import ThinkEat.mvc.dto.EatRepoDto;
+import ThinkEat.mvc.dto.ResDataDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -23,17 +23,17 @@ public class ResDataService {
     private static final List<ResDataDto> resDataDtoList = new CopyOnWriteArrayList<>();
 
     private final EatRepoService eatRepoService;
-    private final ResDataDao resDataDao;
-    private final TagDataDao tagDataDao;
-    private final PriceDataDao priceDataDao;
+    private final OResDataDao OResDataDao;
+    private final OTagDataDao OTagDataDao;
+    private final OPriceDataDao OPriceDataDao;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ResDataService(@Lazy EatRepoService eatRepoService, ResDataDao resDataDao, TagDataDao tagDataDao, PriceDataDao priceDataDao, ModelMapper modelMapper) {
+    public ResDataService(@Lazy EatRepoService eatRepoService, OResDataDao OResDataDao, OTagDataDao OTagDataDao, OPriceDataDao OPriceDataDao, ModelMapper modelMapper) {
         this.eatRepoService = eatRepoService;
-        this.resDataDao = resDataDao;
-        this.tagDataDao = tagDataDao;
-        this.priceDataDao = priceDataDao;
+        this.OResDataDao = OResDataDao;
+        this.OTagDataDao = OTagDataDao;
+        this.OPriceDataDao = OPriceDataDao;
         this.modelMapper = modelMapper;
     }
 
@@ -44,18 +44,18 @@ public class ResDataService {
         resDataDto.setResId(resDtoId);
         resDataDtoList.add(resDataDto);
         ResData resData = modelMapper.map(resDataDto, ResData.class);
-        return resDataDao.addResData(resData);
+        return OResDataDao.addResData(resData);
     }
 
     //修改
     @Transactional
     public ResDataDto updateResData(Integer resId, ResDataDto resDataDto) {
-        Optional<ResData> resOpt = resDataDao.getResDataByResID(resId);
+        Optional<ResData> resOpt = OResDataDao.getResDataByResID(resId);
         if (resOpt.isPresent()) {
             ResData resDataToUpdate = resOpt.get();
             // 使用 ModelMapper 將更新的資料映射到現有的 ResData 對象
             modelMapper.map(resDataDto, resDataToUpdate);
-            resDataDao.updateResDataByResId(resId, resDataToUpdate);
+            OResDataDao.updateResDataByResId(resId, resDataToUpdate);
             // 使用 ModelMapper 將更新後的 ResData 對象映射為 ResDataDto
             return modelMapper.map(resDataToUpdate, ResDataDto.class);
         }
@@ -65,7 +65,7 @@ public class ResDataService {
     //刪除
     @Transactional
     public int deleteResData(Integer resId) {
-        return resDataDao.deleteResDataByResId(resId);
+        return OResDataDao.deleteResDataByResId(resId);
     }
 
     //查詢單間

@@ -7,8 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TagData {
+public class OPriceData {
     protected Integer id;
     protected String name;
-
 }

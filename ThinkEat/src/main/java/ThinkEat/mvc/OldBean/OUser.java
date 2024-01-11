@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class User {
+public class OUser {
     //用戶ID
     private Integer userId;
     //用戶名稱

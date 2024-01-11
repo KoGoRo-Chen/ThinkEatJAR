@@ -5,7 +5,7 @@ import ThinkEat.mvc.OldBean.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserBeanDao {
+public interface OUserBeanDao {
 //	使用者-User:
 //	查詢所有使用者(多筆)
 	List<User> findAllUsers();

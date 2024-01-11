@@ -6,7 +6,7 @@ import ThinkEat.mvc.OldBean.ResData;
 import java.util.List;
 import java.util.Optional;
 
-public interface ResDataDao {
+public interface OResDataDao {
 
     //新增
     int addResData(ResData resData);

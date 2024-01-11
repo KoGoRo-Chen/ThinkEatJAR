@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ResData {
+public class OResData {
     //餐廳Id
     private Integer resId;
     //餐廳名稱

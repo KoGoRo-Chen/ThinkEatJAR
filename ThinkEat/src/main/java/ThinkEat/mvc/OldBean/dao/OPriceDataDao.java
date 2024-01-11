@@ -6,7 +6,7 @@ import ThinkEat.mvc.OldBean.PriceData;
 import java.util.List;
 import java.util.Optional;
 
-public interface PriceDataDao {
+public interface OPriceDataDao {
     //新增
     int addPrice(PriceData priceDataData);
     //修改

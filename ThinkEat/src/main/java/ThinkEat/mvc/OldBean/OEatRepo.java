@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @ToString
 //食記
-public class EatRepo {
+public class OEatRepo {
     //命名規則：屬性首字一定要小寫
     private User user;
     //文章ID

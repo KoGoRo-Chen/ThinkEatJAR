@@ -11,20 +11,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
-public class UserBeanDaoImplInMemory implements UserBeanDao{
+public class OUserBeanDaoImplInMemory implements OUserBeanDao {
 	// in Memory資料庫
 	private static List<User> usersSum = new CopyOnWriteArrayList<User>();
 	private static AtomicInteger atomicUserId = new AtomicInteger(0);  //使用者ID
 
-	private EatRepoDao eatRepoDao;
+	private OEatRepoDao OEatRepoDao;
 
 	@Autowired
-	public UserBeanDaoImplInMemory(EatRepoDao eatRepoDao) {
-		this.eatRepoDao = eatRepoDao;
+	public OUserBeanDaoImplInMemory(OEatRepoDao OEatRepoDao) {
+		this.OEatRepoDao = OEatRepoDao;
 	}
 
 	// 構造函數
-    public UserBeanDaoImplInMemory() {
+	public OUserBeanDaoImplInMemory() {
         initializeDefaultUser();
     }
 
