@@ -53,21 +53,21 @@ public class SpringDaoTest {
 	void createAcess1() {
 		Access access1 = new Access();
 		access1.setAccessName("ShareOwnEatRepo");
-		AccessDao.save(access1);
+		accessDao.save(access1);
 	}
 
 	//@Test
 	void createAcess2() {
 		Access access2 = new Access();
 		access2.setAccessName("EditOwnEatRepo");
-		AccessDao.save(access2);
+		accessDao.save(access2);
 	}
 
 	//@Test
 	void createAcess3() {
 		Access access3 = new Access();
 		access3.setAccessName("DeleteOwnEatRepo");
-		AccessDao.save(access3);
+		accessDao.save(access3);
 	}
 
 	//@Test

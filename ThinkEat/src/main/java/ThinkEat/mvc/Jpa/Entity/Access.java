@@ -22,7 +22,6 @@ public class Access {
     private String AccessFunction;
 
     @ManyToMany(mappedBy = "authority")
-    @JoinColumn
     private Authority authority;
 
 }
