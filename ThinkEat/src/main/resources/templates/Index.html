@@ -1,82 +1,82 @@
 <!DOCTYPE html>
 <html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>想想三餐</title>
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
-            rel="stylesheet">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script
-            src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-</head>
-<body>
-        <header>
-            <div th:insert="~{Fragment/Header :: header}">
-            </div>
-        </header>
-
-        <main>
-            <div class=" container d-flex flex-column justify-content-center align-items-center">
-                <!--  Slogan -->
-                <div class="row col-12">
-                    <div class="py-3 text-center">想想三餐，一整天的解決方案</div>
-                </div>
-                <!--  圖片播放區 套用bootstrap輪播功能 -->
-                <div class="row col-12">
-                    <div id="carouselExampleCaptions" class="carousel col-12"
-                         data-bs-ride="carousel">
-                        <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#carouselExampleCaptions"
-                                    data-bs-slide-to="0" class="active" aria-current="true"
-                                    aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#carouselExampleCaptions"
-                                    data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            <button type="button" data-bs-target="#carouselExampleCaptions"
-                                    data-bs-slide-to="2" aria-label="Slide 3"></button>
-                        </div>
-                        <div class="carousel-inner pickUpArea col-8">
-                            <div class="carousel-item active">
-                                <img src=".\Images\1059182.jpg" class="d-block mx-auto  img" alt="...">
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h5>樂食蜀</h5>
-                                    <p>Some representative placeholder content for the first
-                                        slide.</p>
-                                </div>
-                            </div>
-                            <div class="carousel-item">
-                                <img src="./Images/1059183.jpg" class="d-block mx-auto img" alt="...">
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h5>吉米樂狗</h5>
-                                    <p>Some representative placeholder content for the second
-                                        slide.</p>
-                                </div>
-                            </div>
-                            <div class="carousel-item">
-                                <img src="./Images/1059184.jpg" class="d-block mx-auto img" alt="...">
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h5>七里亭</h5>
-                                    <p>Some representative placeholder content for the third
-                                        slide.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="carousel-control-prev col-2" type="button"
-                                data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next col-2" type="button"
-                                data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+        <head>
+            <meta charset="UTF-8">
+            <title>想想三餐</title>
+            <link
+                    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+                    rel="stylesheet">
+            <link rel="stylesheet"
+                  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+            <script
+                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script
+                    src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+        </head>
+        <body>
+                <header>
+                    <div th:insert="~{Fragment/Header :: header}">
                     </div>
-                </div>
-            </div>
-        </main>
-</body>
+                </header>
+
+                <main>
+                    <div class=" container d-flex flex-column justify-content-center align-items-center">
+                        <!--  Slogan -->
+                        <div class="row col-12">
+                            <div class="py-3 text-center">想想三餐，一整天的解決方案</div>
+                        </div>
+                        <!--  圖片播放區 套用bootstrap輪播功能 -->
+                        <div class="row col-12">
+                            <div id="carouselExampleCaptions" class="carousel col-12"
+                                 data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#carouselExampleCaptions"
+                                            data-bs-slide-to="0" class="active" aria-current="true"
+                                            aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#carouselExampleCaptions"
+                                            data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#carouselExampleCaptions"
+                                            data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                </div>
+                                <div class="carousel-inner pickUpArea col-8">
+                                    <div class="carousel-item active">
+                                        <img src=".\Images\1059182.jpg" class="d-block mx-auto  img" alt="...">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <h5>樂食蜀</h5>
+                                            <p>Some representative placeholder content for the first
+                                                slide.</p>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="./Images/1059183.jpg" class="d-block mx-auto img" alt="...">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <h5>吉米樂狗</h5>
+                                            <p>Some representative placeholder content for the second
+                                                slide.</p>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="./Images/1059184.jpg" class="d-block mx-auto img" alt="...">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <h5>七里亭</h5>
+                                            <p>Some representative placeholder content for the third
+                                                slide.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev col-2" type="button"
+                                        data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next col-2" type="button"
+                                        data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+        </body>
 </html>
