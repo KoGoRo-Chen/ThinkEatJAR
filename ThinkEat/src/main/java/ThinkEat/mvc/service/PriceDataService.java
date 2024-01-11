@@ -2,7 +2,7 @@ package ThinkEat.mvc.service;
 
 import ThinkEat.mvc.OldBean.dao.OPriceDataDao;
 import ThinkEat.mvc.OldBean.PriceData;
-import ThinkEat.mvc.dto.PriceDataDto;
+import ThinkEat.mvc.model.dto.PriceDataDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

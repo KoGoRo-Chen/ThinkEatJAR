@@ -1,12 +1,11 @@
 package ThinkEat.mvc;
 
-import ThinkEat.mvc.Jpa.Dao.*;
 import ThinkEat.mvc.Jpa.Entity.*;
+import ThinkEat.mvc.model.entity.*;
+import ThinkEat.mvc.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 

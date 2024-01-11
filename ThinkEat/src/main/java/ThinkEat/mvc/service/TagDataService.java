@@ -2,7 +2,7 @@ package ThinkEat.mvc.service;
 
 import ThinkEat.mvc.OldBean.dao.OTagDataDao;
 import ThinkEat.mvc.OldBean.TagData;
-import ThinkEat.mvc.dto.TagDataDto;
+import ThinkEat.mvc.model.dto.TagDataDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,0 +1,35 @@
+package ThinkEat.mvc.model.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "favList")
+@Data
+public class FavList {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "favlist_id")
+    private Integer id;
+
+    @Column(nullable = false)
+    private String favListName;
+
+    //一個用戶可建立多筆清單
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User favList_User;
+
+    //每個清單可以收藏多篇文章，可重複
+    @ManyToMany(targetEntity = EatRepo.class)
+    @JoinTable(
+            name = "favlist_eatrepo",
+            joinColumns = {@JoinColumn(name = "favList_id_ref", referencedColumnName = "favlist_id")},
+            inverseJoinColumns = @JoinColumn(name = "eatrepo_id_ref", referencedColumnName = "eatrepo_id")
+    )
+    Set<EatRepo> favList_EatRepoList = new LinkedHashSet<>();
+
+}

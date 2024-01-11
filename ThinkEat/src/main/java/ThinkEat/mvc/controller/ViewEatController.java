@@ -1,7 +1,7 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.dto.EatRepoDto;
-import ThinkEat.mvc.dto.ResDataDto;
+import ThinkEat.mvc.model.dto.EatRepoDto;
+import ThinkEat.mvc.repository.ResDataDto;
 import ThinkEat.mvc.service.EatRepoService;
 import ThinkEat.mvc.service.PriceDataService;
 import ThinkEat.mvc.service.ResDataService;
