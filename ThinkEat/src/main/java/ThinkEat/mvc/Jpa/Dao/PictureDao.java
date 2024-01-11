@@ -1,4 +1,7 @@
 package ThinkEat.mvc.Jpa.Dao;
 
-public interface PictureDao {
+import ThinkEat.mvc.Jpa.Entity.Picture;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PictureDao extends JpaRepository<Picture, Integer> {
 }

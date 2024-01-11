@@ -12,7 +12,7 @@ import java.util.List;
 public class Access {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "access_id")
     private Integer id;
 
     @Column(nullable = false)
@@ -21,8 +21,8 @@ public class Access {
     @Column
     private String AccessFunction;
 
-    @ManyToOne
-    @JoinColumn(name = "authority_id")
+    @ManyToMany(mappedBy = "authority")
+    @JoinColumn
     private Authority authority;
 
 }

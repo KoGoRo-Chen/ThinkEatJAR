@@ -11,17 +11,24 @@ import java.util.List;
 @Data
 public class Authority {
     @Id
-    @Column
+    @Column(name = "authority_id")
     private Integer id;
 
     @Column(nullable = false)
     private String authorityName;
 
-    @OneToMany(mappedBy = "authority") //一個權限可分配給多個用戶
+    //一個權限可分配給多個用戶(user)
+    @OneToMany(mappedBy = "authority")
     private List<User> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "authority") //一個權限擁有多個功能
-    private List<Access> accesses = new ArrayList<>();
+    //每個權限都擁有多個功能(access)
+    @ManyToMany(targetEntity = Access.class)
+    @JoinTable(
+            name = "authority_access",
+            joinColumns = {@JoinColumn(name = "authority_for_ref", referencedColumnName = "authority_id")},
+            inverseJoinColumns = @JoinColumn(name = "access_for_ref", referencedColumnName = "access_id")
+    )
+    private List<Access> accessList = new ArrayList<>();
 
 
 }

@@ -2,15 +2,12 @@ package ThinkEat.mvc;
 
 import java.util.List;
 
+import ThinkEat.mvc.Jpa.Dao.*;
 import ThinkEat.mvc.Jpa.Entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ThinkEat.mvc.Jpa.Dao.EatRepoDao;
-import ThinkEat.mvc.Jpa.Dao.PriceDao;
-import ThinkEat.mvc.Jpa.Dao.RestaurantDao;
-import ThinkEat.mvc.Jpa.Dao.UserDao;
 import jakarta.transaction.Transactional;
 
 @SpringBootTest
@@ -18,29 +15,69 @@ public class SpringDaoTest {
 
 	@Autowired
 	UserDao userDao;
-	
+
 	@Autowired
-	EatRepoDao eatRepoDao;
-	
+	AuthorityDao authorityDao;
+
+	@Autowired
+	AccessDao accessDao;
+
+	@Autowired
+	FavListDao favListDao;
+
 	@Autowired
 	RestaurantDao restaurantDao;
-	
+
+	@Autowired
+	EatRepoDao eatRepoDao;
+
+	@Autowired
+	FavList_EatRepoDao favList_eatRepoDao;
+
 	@Autowired
 	PriceDao priceDao;
-	
+
+	@Autowired
+	TagDao tagDao;
+
+	@Autowired
+	EatRepo_TagDao eatRepo_tagDao;
+
+	@Autowired
+	PictureDao prictureDao;
+
+	@Autowired
+	CommentDao commentDao;
+
 	//@Test
-	void createAcess() {
-		Authority authority = new Authority();
-		authority.setId(1);
-		authority.setAuthorityName("Standard Member");
+	void createAcess1() {
+		Access access1 = new Access();
+		access1.setAccessName("ShareOwnEatRepo");
+		AccessDao.save(access1);
 	}
 
+	//@Test
+	void createAcess2() {
+		Access access2 = new Access();
+		access2.setAccessName("EditOwnEatRepo");
+		AccessDao.save(access2);
+	}
+
+	//@Test
+	void createAcess3() {
+		Access access3 = new Access();
+		access3.setAccessName("DeleteOwnEatRepo");
+		AccessDao.save(access3);
+	}
+
+	//@Test
 	void createAuthority() {
 		Authority authority = new Authority();
 		authority.setId(1);
 		authority.setAuthorityName("Standard Member");
 	}
 
+	@Test
 	void createUser() {
 		User user = new User();
 		user.setNickName("nickname");
