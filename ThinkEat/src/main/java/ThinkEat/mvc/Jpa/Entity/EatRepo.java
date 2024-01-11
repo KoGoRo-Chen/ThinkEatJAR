@@ -1,9 +1,6 @@
 package ThinkEat.mvc.Jpa.Entity;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -53,7 +50,7 @@ public class EatRepo {
 
 	//每個清單都可以收藏每篇文章，可以重複
 	@ManyToMany(mappedBy = "favlist")
-	List<FavList> favList = new ArrayList<>();
+	List<FavList> favListList = new ArrayList<>();
 
 	//每篇文章可以擁有多個TAG標籤
 	@ManyToMany(targetEntity = Tag.class)
@@ -62,15 +59,15 @@ public class EatRepo {
 			joinColumns = {@JoinColumn(name = "eatrepo_id_ref", referencedColumnName = "eatrepo_id")},
 			inverseJoinColumns = @JoinColumn(name = "tag_id_ref", referencedColumnName = "tag_id")
 	)
-	LinkedHashSet<Tag> tagList = new LinkedHashSet<>();
+	Set<Tag> tagList = new LinkedHashSet<>();
 
 	//一篇文章可以擁有多個留言
 	@OneToMany(mappedBy = "eatrepo")
-	LinkedHashSet<Comment> cmtList = new LinkedHashSet<>();
+	Set<Comment> cmtList = new LinkedHashSet<>();
 
 	//一篇文章可以擁有多張圖片
 	@OneToMany(mappedBy = "eatrepo")
-	LinkedHashSet<Picture> picList = new LinkedHashSet<>();
+	Set<Picture> picList = new LinkedHashSet<>();
 
 
 	

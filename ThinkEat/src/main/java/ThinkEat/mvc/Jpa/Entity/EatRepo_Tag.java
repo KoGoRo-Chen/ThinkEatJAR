@@ -13,11 +13,11 @@ public class EatRepo_Tag {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "eatrepo_id_ref")
-    private Integer eatRepo_id_ref;
+    @JoinColumn(name = "eatrepo_for_ref")
+    private EatRepo eatRepo_for_ref;
 
     @ManyToOne
-    @JoinColumn(name = "tag_id_ref")
-    private Integer tag_id_ref;
+    @JoinColumn(name = "tag_for_ref")
+    private Tag tag_for_ref;
 
 }

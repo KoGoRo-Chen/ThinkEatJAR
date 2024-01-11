@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tag")
@@ -22,6 +23,6 @@ public class Tag {
 
     //每個tag都可以被加入每篇文章，可重複
     @ManyToMany(mappedBy = "eatRepo")
-    LinkedHashSet<EatRepo> EatRepoList = new LinkedHashSet<>();
+    Set<EatRepo> EatRepoList = new LinkedHashSet<>();
 
 }

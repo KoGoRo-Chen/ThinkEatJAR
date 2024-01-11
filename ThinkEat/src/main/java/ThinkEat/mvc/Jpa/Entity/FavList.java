@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "favList")
@@ -24,13 +25,13 @@ public class FavList {
     @JoinColumn(name = "user_id")
     private User user;
 
-    //一個用戶可建立多個清單，每個清單可收藏多篇文章
+    //每個清單可以收藏多篇文章，可重複
     @ManyToMany(targetEntity = EatRepo.class)
     @JoinTable(
             name = "favlist_eatrepo",
             joinColumns = {@JoinColumn(name = "favList_id_ref", referencedColumnName = "favlist_id")},
             inverseJoinColumns = @JoinColumn(name = "eatrepo_id_ref", referencedColumnName = "eatrepo_id")
     )
-    LinkedHashSet<EatRepo> eatRepoList = new LinkedHashSet<>();
+    Set<EatRepo> eatRepoList = new LinkedHashSet<>();
 
 }

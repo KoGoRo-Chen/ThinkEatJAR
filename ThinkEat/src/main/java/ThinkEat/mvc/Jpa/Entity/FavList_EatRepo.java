@@ -13,10 +13,10 @@ public class FavList_EatRepo {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "favlist_id_ref")
-    private Integer favList_id_ref;
+    @JoinColumn(name = "favlist_for_ref")
+    private FavList favlist_for_ref;
 
     @ManyToOne
-    @JoinColumn(name = "eatrepo_id_ref")
-    private Integer eatRepo_id_ref;
+    @JoinColumn(name = "eatrepo_for_ref")
+    private EatRepo eatRepo_for_ref;
 }
