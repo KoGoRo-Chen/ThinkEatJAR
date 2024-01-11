@@ -2,6 +2,7 @@ package ThinkEat.mvc;
 
 import java.util.List;
 
+import ThinkEat.mvc.Jpa.Entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,10 +11,6 @@ import ThinkEat.mvc.Jpa.Dao.EatRepoDao;
 import ThinkEat.mvc.Jpa.Dao.PriceDao;
 import ThinkEat.mvc.Jpa.Dao.RestaurantDao;
 import ThinkEat.mvc.Jpa.Dao.UserDao;
-import ThinkEat.mvc.Jpa.Entity.EatRepo;
-import ThinkEat.mvc.Jpa.Entity.Price;
-import ThinkEat.mvc.Jpa.Entity.Restaurant;
-import ThinkEat.mvc.Jpa.Entity.User;
 import jakarta.transaction.Transactional;
 
 @SpringBootTest
@@ -32,34 +29,63 @@ public class SpringDaoTest {
 	PriceDao priceDao;
 	
 	//@Test
+	void createAcess() {
+		Authority authority = new Authority();
+		authority.setId(1);
+		authority.setAuthorityName("Standard Member");
+	}
+
+	void createAuthority() {
+		Authority authority = new Authority();
+		authority.setId(1);
+		authority.setAuthorityName("Standard Member");
+	}
+
 	void createUser() {
-		
 		User user = new User();
-		user.setLevelId(2);
 		user.setNickName("nickname");
 		user.setPassword("123");
-		user.setUseraccount("account");
+		user.setUserName("account");
 		userDao.save(user);
-		
+	}
+
+	void createRestauarnt() {
 		Restaurant restaurant = new Restaurant();
 		restaurant.setName("麥當勞");
 		restaurant.setAddress("台北市建國路一段456號");
 		restaurantDao.save(restaurant);
-		
+	}
+
+	void createPrice() {
 		Price price = new Price();
 		price.setName("100");
 		priceDao.save(price);
-		
-		EatRepo eatRepo = new EatRepo();
-		eatRepo.setUser(user);
-		eatRepo.setEatTitle("title");
-		eatRepo.setEatrepo("context");
-		eatRepo.setPrice(price);
-		eatRepo.setRestaurant(restaurant);
-		eatRepoDao.save(eatRepo);
-		
 	}
 
+	void createTag() {
+
+	}
+
+	void createEatrepo() {
+		EatRepo eatRepo = new EatRepo();
+		eatRepo.setEatTitle("title");
+		eatRepo.setArticle("context");
+		eatRepoDao.save(eatRepo);
+	}
+
+	void createPhoto() {
+
+	}
+
+	void createComment() {
+
+	}
+
+	void createFavList() {
+
+	}
+
+	/*
 	@Test
 	@Transactional
 	void queryUser() {
@@ -77,4 +103,5 @@ public class SpringDaoTest {
 					price.getName());
 		}
 	}
+	*/
 }
