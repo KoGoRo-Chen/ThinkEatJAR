@@ -53,21 +53,21 @@ public class SpringDaoTest {
 	void createAcess1() {
 		Access access1 = new Access();
 		access1.setAccessName("ShareOwnEatRepo");
-		AccessDao.save(access1);
+		accessDao.save(access1);
 	}
 
 	//@Test
 	void createAcess2() {
 		Access access2 = new Access();
 		access2.setAccessName("EditOwnEatRepo");
-		AccessDao.save(access2);
+		accessDao.save(access2);
 	}
 
 	//@Test
 	void createAcess3() {
 		Access access3 = new Access();
 		access3.setAccessName("DeleteOwnEatRepo");
-		AccessDao.save(access3);
+		accessDao.save(access3);
 	}
 
 	//@Test
@@ -76,6 +76,7 @@ public class SpringDaoTest {
 		authority.setId(1);
 		authority.setAuthorityName("Standard Member");
 	}
+
 
 	@Test
 	void createUser() {
@@ -86,6 +87,7 @@ public class SpringDaoTest {
 		userDao.save(user);
 	}
 
+	//@Test
 	void createRestauarnt() {
 		Restaurant restaurant = new Restaurant();
 		restaurant.setName("麥當勞");
@@ -93,16 +95,19 @@ public class SpringDaoTest {
 		restaurantDao.save(restaurant);
 	}
 
+	//@Test
 	void createPrice() {
 		Price price = new Price();
 		price.setName("100");
 		priceDao.save(price);
 	}
 
+	//@Test
 	void createTag() {
 
 	}
 
+	//@Test
 	void createEatrepo() {
 		EatRepo eatRepo = new EatRepo();
 		eatRepo.setEatTitle("title");
@@ -110,14 +115,17 @@ public class SpringDaoTest {
 		eatRepoDao.save(eatRepo);
 	}
 
+	//@Test
 	void createPhoto() {
 
 	}
 
+	//@Test
 	void createComment() {
 
 	}
 
+	//@Test
 	void createFavList() {
 
 	}

@@ -21,8 +21,7 @@ public class Access {
     @Column
     private String AccessFunction;
 
-    @ManyToMany(mappedBy = "authority")
-    @JoinColumn
-    private Authority authority;
+    @ManyToMany(mappedBy = "accessList")
+    private List<Authority> authorityList = new ArrayList<>();
 
 }
