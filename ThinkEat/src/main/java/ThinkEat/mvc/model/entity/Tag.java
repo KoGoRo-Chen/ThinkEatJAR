@@ -1,7 +1,7 @@
 package ThinkEat.mvc.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -10,7 +10,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tag")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = {"tag_EatRepoList"})
 public class Tag {
 
     @Id

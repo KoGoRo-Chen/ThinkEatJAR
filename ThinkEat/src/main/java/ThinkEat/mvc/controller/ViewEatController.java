@@ -60,10 +60,10 @@ public class ViewEatController {
     };
 
     //顯示ViewEat/EatRepo/{eatRepoId}頁面
-    @GetMapping("/EatRepo/{eatRepoDtoId}")
-    public String GetViewEatPage(@PathVariable("eatRepoDtoId") Integer eatRepoDtoId, Model model){
+    @GetMapping("/EatRepo/{eatRepoId}")
+    public String GetViewEatPage(@PathVariable("eatRepoId") Integer eatRepoId, Model model) {
         // 1. 根據 shareEatId 從數據庫中檢索相應的 ShareEatBean
-        EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoDtoId);
+        EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
         System.out.println("ViewEat頁面顯示eatRepoDto: " + eatRepoDto);
         model.addAttribute("eatRepoDto", eatRepoDto);
         System.out.println("新增成功" + eatRepoDto);

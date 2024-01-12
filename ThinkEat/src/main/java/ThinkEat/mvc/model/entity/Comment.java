@@ -1,11 +1,15 @@
 package ThinkEat.mvc.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name = "comment")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = {"comment_EatRepo", "comment_User"})
 public class Comment {
 
     @Id

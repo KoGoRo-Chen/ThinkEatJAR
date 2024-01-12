@@ -1,11 +1,14 @@
 package ThinkEat.mvc.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name = "favlist_eatrepo")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class FavList_EatRepo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

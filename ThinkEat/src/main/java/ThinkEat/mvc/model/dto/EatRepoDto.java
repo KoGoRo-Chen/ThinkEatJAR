@@ -11,15 +11,15 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"favListList", "restaurant"})
 public class EatRepoDto {
 
     private Integer id;
 
     private String title;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date date;
 
     private String article;
@@ -28,14 +28,23 @@ public class EatRepoDto {
 
     private RestaurantDto restaurant;
 
+    private Integer priceId;
     private PriceDto price;
 
     private List<FavListDto> favListList = new ArrayList<>();
 
+    private Integer tagId;
     private List<TagDto> eatRepo_TagList = new ArrayList<>();
 
     private List<CommentDto> cmtList = new ArrayList<>();
 
     private List<PictureDto> picList = new ArrayList<>();
 
+    public List<Integer> getTagIds() {
+        List<Integer> tagIds = new ArrayList<>();
+        for (TagDto tagDto : eatRepo_TagList) {
+            tagIds.add(tagDto.getId());
+        }
+        return tagIds;
+    }
 }

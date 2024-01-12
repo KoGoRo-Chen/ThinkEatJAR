@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"comment_EatRepo", "comment_User"})
 public class CommentDto {
 
     private Integer id;

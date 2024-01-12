@@ -8,7 +8,9 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "eatRepoList")
+@AllArgsConstructor
+@NoArgsConstructor
 public class RestaurantDto {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

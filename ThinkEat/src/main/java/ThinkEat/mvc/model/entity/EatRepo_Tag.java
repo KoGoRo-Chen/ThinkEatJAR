@@ -1,11 +1,14 @@
 package ThinkEat.mvc.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name = "eatrepo_tag")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class EatRepo_Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

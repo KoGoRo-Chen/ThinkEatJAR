@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Entity
 @Table(name = "restaurant")
+@Data
 public class Restaurant {
 
 	@Id

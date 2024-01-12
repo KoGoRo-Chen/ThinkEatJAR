@@ -1,17 +1,17 @@
 package ThinkEat.mvc.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "price")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = "eatRepoList")
 public class Price {
 
 	@Id
@@ -22,7 +22,7 @@ public class Price {
 	@Column
 	private String name;
 
-	@OneToOne(mappedBy = "price")
-	private EatRepo eatRepo;
+	@OneToMany(mappedBy = "price")
+	private List<EatRepo> eatRepoList;
 }
 //@Column(nullable = false)

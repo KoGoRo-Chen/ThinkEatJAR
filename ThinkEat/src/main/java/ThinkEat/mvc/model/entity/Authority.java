@@ -1,14 +1,18 @@
 package ThinkEat.mvc.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "authority")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = {"userList"})
 public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

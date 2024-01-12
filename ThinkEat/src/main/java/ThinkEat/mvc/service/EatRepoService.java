@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,15 +23,19 @@ import java.util.stream.Collectors;
 public class EatRepoService {
 
     private final EatRepoDao eatRepoDao;
-    private final TagDao tagDataDao;
+    private final TagDao tagDao;
     private final PriceDao priceDao;
     private final RestaurantService restaurantService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EatRepoService(EatRepoDao eatRepoDao, TagDao tagDataDao, PriceDao priceDao, @Lazy RestaurantService restaurantService, ModelMapper modelMapper) {
+    public EatRepoService(EatRepoDao eatRepoDao,
+                          TagDao tagDao,
+                          PriceDao priceDao,
+                          @Lazy RestaurantService restaurantService,
+                          ModelMapper modelMapper) {
         this.eatRepoDao = eatRepoDao;
-        this.tagDataDao = tagDataDao;
+        this.tagDao = tagDao;
         this.priceDao = priceDao;
         this.restaurantService = restaurantService;
         this.modelMapper = modelMapper;
@@ -38,19 +43,29 @@ public class EatRepoService {
 
     //新增文章
     @Transactional
-    public EatRepo addEatRepo(EatRepoDto eatRepoDto) {
+    public Integer addEatRepo(EatRepoDto eatRepoDto) {
+        System.out.println("eatRepoService: " + eatRepoDto);
         EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
+        //處理餐廳
         RestaurantDto restaurantDto = eatRepoDto.getRestaurant();
-        // 如果 ResDataDto 不為空，則進行相關處理
         if (restaurantDto != null) {
-            // 將 ResDataDto 映射為 ResData 對象
             Restaurant restaurant = modelMapper.map(restaurantDto, Restaurant.class);
-
-            // 將 ResData 設置到 EatRepo 中
             eatRepo.setRestaurant(restaurant);
         }
 
-        return eatRepoDao.save(eatRepo);
+        //處理價格
+        Price price = priceDao.findById(eatRepoDto.getPriceId()).get();
+        eatRepo.setPrice(price);
+
+        //處理標籤
+        List<Integer> tagIdList = eatRepoDto.getTagIds();
+        for (Integer tagId : tagIdList) {
+            Tag tag = tagDao.findById(tagId).get();
+            eatRepo.getEatRepo_TagList().add(tag);
+        }
+        eatRepoDao.save(eatRepo);
+
+        return eatRepo.getId();
     }
 
     //以ID修改文章

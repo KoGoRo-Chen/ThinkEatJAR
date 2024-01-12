@@ -41,14 +41,14 @@ public class RestaurantService {
     //新增
     @Transactional
     public Integer addRestaurant(RestaurantDto restaurantDto) {
-        Restaurant restaurant = new Restaurant(restaurantDto.getName(), restaurantDto.getAddress());
         System.out.println("restaurantService: " + restaurantDto);
 
         // 使用save方法保存實體，同時獲取包含ID的實體
-        Restaurant savedRestaurant = restaurantDao.save(restaurant);
+        Restaurant newRestaurant = modelMapper.map(restaurantDto, Restaurant.class);
+        restaurantDao.save(newRestaurant);
 
         // 提取保存後的ID
-        Integer restaurantId = savedRestaurant.getId();
+        Integer restaurantId = newRestaurant.getId();
         System.out.println("Saved Restaurant ID: " + restaurantId);
 
         return restaurantId;

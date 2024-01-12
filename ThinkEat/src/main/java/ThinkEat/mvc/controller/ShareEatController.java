@@ -63,7 +63,7 @@ public class ShareEatController {
         Integer id = restaurantService.addRestaurant(restaurantDto);
         restaurantDto.setId(id);
         // 將新增的餐廳 ID 添加到重定向 URL 的查詢字符串中
-        redirectAttributes.addFlashAttribute("restaurantDto", restaurantDto);
+//        redirectAttributes.addFlashAttribute("restaurantDto", restaurantDto);
         redirectAttributes.addAttribute("restaurantId", id);
         // 重導到食記填寫表單(ShareEat)
         return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{restaurantId}";
@@ -74,7 +74,7 @@ public class ShareEatController {
     public String GetShareEatPage(@PathVariable("restaurantId") Integer restaurantId,
                                   Model model) {
         RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
-
+        model.addAttribute("restaurantDto", restaurantDto);
         List<PriceDto> prices = priceService.findAllPrice();
         model.addAttribute("prices", prices);
         List<TagDto> tags = tagService.findAllTag();
@@ -99,7 +99,7 @@ public class ShareEatController {
         System.out.println("接收到restaurantDto:" + restaurantDto);
 
         // 處理價格
-        PriceDto priceDto = priceService.getPriceById(eatRepoDto.getPrice().getId());
+        PriceDto priceDto = priceService.getPriceById(eatRepoDto.getPriceId());
         eatRepoDto.setPrice(priceDto);
 
         //處理標籤
@@ -111,12 +111,12 @@ public class ShareEatController {
         eatRepoDto.setEatRepo_TagList(selectedTags);
 
         // 將食記保存到資料庫
-        eatRepoService.addEatRepo(eatRepoDto);
+        Integer eatRepoId = eatRepoService.addEatRepo(eatRepoDto);
         System.out.println(eatRepoDto);
         model.addAttribute("eatRepoDto", eatRepoDto);
 
         // 將新增的食記 ID 添加到重定向 URL 的查詢字符串中
-        redirectAttributes.addFlashAttribute("eatRepoId", eatRepoDto.getId());
+        redirectAttributes.addAttribute("eatRepoId", eatRepoId);
 
         // 重導到文章瀏覽頁面
         return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";

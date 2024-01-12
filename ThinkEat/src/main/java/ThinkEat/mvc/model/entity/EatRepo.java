@@ -3,17 +3,18 @@ package ThinkEat.mvc.model.entity;
 import java.util.*;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Data;
-import lombok.ToString;
-
 @Entity
 @Table(name = "eatrepo")
-@Data
-@ToString(exclude = {"eatRepo_User", "restaurant","price", "favListList", "eatRepo_TagList", "cmtList", "picList"})
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = {"article", "favListList", "cmtList", "picList"})
 public class EatRepo {
 
 	@Id
@@ -23,10 +24,10 @@ public class EatRepo {
 
 	@Column
 	private String title;
-	
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@Column(columnDefinition = "timestamp NOT NULL")
 	private Date date;
 
@@ -43,8 +44,8 @@ public class EatRepo {
 	@JoinColumn(name = "restaurant_id")
 	private Restaurant restaurant;
 
-	//每篇食記可以設定一項價位資料
-	@OneToOne
+	//每篇食記都可以設定一項價位資料
+	@ManyToOne
 	@JoinColumn(name = "price_id")
 	private Price price;
 
