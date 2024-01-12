@@ -4,7 +4,9 @@ import ThinkEat.mvc.model.entity.EatRepo;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -20,6 +22,6 @@ public class FavListDto {
 
     private UserDto favList_User;
 
-    private Set<EatRepoDto> favList_EatRepoList = new LinkedHashSet<>();
+    private List<EatRepoDto> favList_EatRepoList = new ArrayList<>();
 
 }

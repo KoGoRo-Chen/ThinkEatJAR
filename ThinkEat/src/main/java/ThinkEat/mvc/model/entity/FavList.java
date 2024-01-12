@@ -3,7 +3,9 @@ package ThinkEat.mvc.model.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,7 +32,7 @@ public class FavList {
             joinColumns = {@JoinColumn(name = "favList_id_ref", referencedColumnName = "favlist_id")},
             inverseJoinColumns = @JoinColumn(name = "eatrepo_id_ref", referencedColumnName = "eatrepo_id")
     )
-    Set<EatRepo> favList_EatRepoList = new LinkedHashSet<>();
+    private List<EatRepo> favList_EatRepoList = new ArrayList<>();
 
 }
 //@Column(nullable = false)

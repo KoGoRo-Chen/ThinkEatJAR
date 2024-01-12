@@ -1,11 +1,11 @@
 package ThinkEat.mvc.controller;
 
 import ThinkEat.mvc.model.dto.EatRepoDto;
-import ThinkEat.mvc.repository.ResDataDto;
+import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.service.EatRepoService;
-import ThinkEat.mvc.service.PriceDataService;
-import ThinkEat.mvc.service.ResDataService;
-import ThinkEat.mvc.service.TagDataService;
+import ThinkEat.mvc.service.PriceService;
+import ThinkEat.mvc.service.RestaurantService;
+import ThinkEat.mvc.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,41 +19,41 @@ import java.util.List;
 @RequestMapping("ViewEat/")
 public class ViewEatController {
 
-    private final PriceDataService priceDataService;
-    private final TagDataService tagDataService;
+    private final PriceService priceService;
+    private final TagService tagService;
     private final EatRepoService eatRepoService;
-    private final ResDataService resDataService;
+    private final RestaurantService restaurantService;
 
     @Autowired
-    public ViewEatController(PriceDataService priceDataService,
-                             TagDataService tagDataService,
+    public ViewEatController(PriceService priceService,
+                             TagService tagService,
                              EatRepoService eatRepoService,
-                             ResDataService resDataService) {
-        this.priceDataService = priceDataService;
-        this.tagDataService = tagDataService;
+                             RestaurantService restaurantService) {
+        this.priceService = priceService;
+        this.tagService = tagService;
         this.eatRepoService = eatRepoService;
-        this.resDataService = resDataService;
+        this.restaurantService = restaurantService;
     }
 
     //顯示ShowEat頁面(顯示所有餐廳)
     @GetMapping("/ShowEat")
     public String GetShowEatPage(Model model){
-        List<ResDataDto> resDtoSum = resDataService.getAllResData();
-        System.out.println(resDtoSum);
-        model.addAttribute("resDtoSum", resDtoSum);
+        List<RestaurantDto> restaurantDtoList = restaurantService.getAllRestaurant();
+        System.out.println(restaurantDtoList);
+        model.addAttribute("restaurantDtoList", restaurantDtoList);
         return "ViewEat/ShowEat";
     };
 
     //顯示ViewEat/Res/{ResId}/頁面
-    @GetMapping("/ResInfo/{resId}")
-    public String getResPage(@PathVariable("resId") Integer resId, Model model) {
+    @GetMapping("/ResInfo/{restaurantId}")
+    public String getResPage(@PathVariable("restaurantId") Integer restaurantId, Model model) {
         // 1. 根據 resId 從數據庫中檢索相應的 res
-        ResDataDto resDtoByResId = resDataService.getResDataById(resId);
-        List<EatRepoDto> eatsDtoByResId = resDataService.getAllEatRepoByResId(resId);
+        RestaurantDto restaurantDtoByResId = restaurantService.getRestaurantById(restaurantId);
+        List<EatRepoDto> eatRepoDtoByResId = restaurantService.getAllEatRepoByRestaurantId(restaurantId);
 
         // 2. 將檢索到的 res 及ID添加到模型中
-        model.addAttribute("resByResId", resDtoByResId);
-        model.addAttribute("eatsDtoByResId", eatsDtoByResId);
+        model.addAttribute("restaurantDtoByResId", restaurantDtoByResId);
+        model.addAttribute("eatRepoDtoByResId", eatRepoDtoByResId);
 
         // 返回 ViewEat 頁面
         return "ViewEat/ResInfo";
@@ -65,18 +65,8 @@ public class ViewEatController {
         // 1. 根據 shareEatId 從數據庫中檢索相應的 ShareEatBean
         EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoDtoId);
         System.out.println("ViewEat頁面顯示eatRepoDto: " + eatRepoDto);
-        ResDataDto resDataDto = eatRepoDto.getResDataDto();
-        System.out.println("ViewEat頁面顯示resDataDto: " + resDataDto);
-
-
-
-        model.addAttribute("eatRepoId", eatRepoDto.getEatRepoDtoId());
-        model.addAttribute("resId", resDataDto.getResId());
-        model.addAttribute("resName", resDataDto.getResName());
-        model.addAttribute("resAddress", resDataDto.getResAddress());
         model.addAttribute("eatRepoDto", eatRepoDto);
         System.out.println("新增成功" + eatRepoDto);
-
 
         // 返回 ViewEat 頁面
         return "ViewEat/EatRepo";

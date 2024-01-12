@@ -18,11 +18,11 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "eatrepo_id")
-    EatRepo comment_EatRepo;
+    private EatRepo comment_EatRepo;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    User comment_User;
+    private User comment_User;
 
 }
 

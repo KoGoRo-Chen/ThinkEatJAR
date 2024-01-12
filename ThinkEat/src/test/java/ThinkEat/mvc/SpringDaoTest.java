@@ -1,8 +1,7 @@
 package ThinkEat.mvc;
 
-import ThinkEat.mvc.Jpa.Entity.*;
 import ThinkEat.mvc.model.entity.*;
-import ThinkEat.mvc.repository.*;
+import ThinkEat.mvc.dao.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -132,47 +131,47 @@ public class SpringDaoTest {
 
 		//建立tag1
 		Tag tag1 = new Tag();
-		tag1.setTagName("日式");
+		tag1.setName("日式");
 		tagDao.save(tag1);
 
 		//建立tag2
 		Tag tag2 = new Tag();
-		tag2.setTagName("中式");
+		tag2.setName("中式");
 		tagDao.save(tag2);
 
 		//建立tag3
 		Tag tag3 = new Tag();
-		tag3.setTagName("美式");
+		tag3.setName("美式");
 		tagDao.save(tag3);
 
 		//建立tag4
 		Tag tag4 = new Tag();
-		tag4.setTagName("手搖");
+		tag4.setName("手搖");
 		tagDao.save(tag4);
 
 		//建立tag5
 		Tag tag5 = new Tag();
-		tag5.setTagName("會辣");
+		tag5.setName("會辣");
 		tagDao.save(tag5);
 
 		//建立tag6
 		Tag tag6 = new Tag();
-		tag6.setTagName("速食");
+		tag6.setName("速食");
 		tagDao.save(tag6);
 
 		//建立picture1
 		Picture picture1 = new Picture();
-		picture1.setPicPath("/pic1");
+		picture1.setPath("/pic1");
 		prictureDao.save(picture1);
 
 		//建立picture2
 		Picture picture2 = new Picture();
-		picture2.setPicPath("/pic2");
+		picture2.setPath("/pic2");
 		prictureDao.save(picture2);
 
 		//建立eatrepo1
 		EatRepo eatRepo1 = new EatRepo();
-		eatRepo1.setEatTitle("好吃");
+		eatRepo1.setTitle("好吃");
 		eatRepo1.setArticle("真的很好吃");
 		eatRepo1.setPrice(price3);
 		eatRepo1.getEatRepo_TagList().add(tag6);
@@ -182,7 +181,7 @@ public class SpringDaoTest {
 
 		//建立eatrepo2
 		EatRepo eatRepo2 = new EatRepo();
-		eatRepo2.setEatTitle("難吃");
+		eatRepo2.setTitle("難吃");
 		eatRepo2.setArticle("真的很難吃");
 		eatRepo2.setPrice(price1);
 		eatRepo2.getEatRepo_TagList().add(tag1);
@@ -238,7 +237,7 @@ public class SpringDaoTest {
 			System.out.println("- " + access.getAccessName());
 		}
 
-		List<User> users = authority.getUsers();
+		List<User> users = authority.getUserList();
 		if (users != null) {
 			System.out.println("Users with this authority:");
 			for (User user : users) {

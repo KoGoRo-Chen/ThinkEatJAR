@@ -14,19 +14,17 @@
 </header>
 
 <main>
-    <form th:object="${resDataDto}" method="post" th:action="@{/ThinkEat/ShareEat/AddResData}"
+    <form th:object="${restaurantDto}" method="post" th:action="@{/ThinkEat/ShareEat/AddRestaurant}"
           enctype="multipart/form-data">
         <fieldset>
             <!-- 餐廳名 -->
-            餐廳名稱：<input type="text" id="resDtoName" name="resDtoName" th:field="*{resName}"/>
+            餐廳名稱：<input type="text" id="name" name="name" th:field="*{name}"/>
             <p />
             <!-- 餐廳ID -->
-            <input id="resDtoId" name="resDtoId"
-                   th:field="*{resId}"
-                   type="hidden" />
+            <input id="id" field="*{id}" type="hidden"/>
             <p />
             <!-- 地址(googlemap) -->
-            餐廳地址：<input type="text" id="resDtoAddress" name="resDtoAddress" th:field="*{resAddress}"/>
+            餐廳地址：<input type="text" id="address" name="address" th:field="*{address}"/>
             <p />
             <!-- 前往食記發表 -->
             <input type="submit" value="前往食記發表"/>
@@ -40,8 +38,8 @@
 <!-- 清空表单的JavaScript函数 -->
 <script>
     function clearForm() {
-        document.getElementById("resDtoName").value = "";
-        document.getElementById("resDtoAddress").value = "";
+        document.getElementById("name").value = "";
+        document.getElementById("address").value = "";
     }
 </script>
 </body>

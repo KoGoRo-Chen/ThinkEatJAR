@@ -1,11 +1,11 @@
 package ThinkEat.mvc.model.dto;
 
 import ThinkEat.mvc.model.entity.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -18,6 +18,8 @@ public class EatRepoDto {
 
     private String title;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Date date;
 
     private String article;
@@ -28,12 +30,12 @@ public class EatRepoDto {
 
     private PriceDto price;
 
-    private Set<FavListDto> favListList = new LinkedHashSet<>();
+    private List<FavListDto> favListList = new ArrayList<>();
 
-    private Set<TagDto> eatRepo_TagList = new LinkedHashSet<>();
+    private List<TagDto> eatRepo_TagList = new ArrayList<>();
 
-    private Set<CommentDto> cmtList = new LinkedHashSet<>();
+    private List<CommentDto> cmtList = new ArrayList<>();
 
-    private Set<PictureDto> picList = new LinkedHashSet<>();
+    private List<PictureDto> picList = new ArrayList<>();
 
 }

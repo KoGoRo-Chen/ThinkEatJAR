@@ -2,7 +2,9 @@ package ThinkEat.mvc.model.dto;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -16,6 +18,6 @@ public class TagDto {
 
     private String name;
 
-    private Set<EatRepoDto> tag_EatRepoList = new LinkedHashSet<>();
+    private List<EatRepoDto> tag_EatRepoList = new ArrayList<>();
 
 }

@@ -29,7 +29,7 @@ public class Authority {
             joinColumns = {@JoinColumn(name = "authority_for_ref", referencedColumnName = "authority_id")},
             inverseJoinColumns = @JoinColumn(name = "access_for_ref", referencedColumnName = "access_id")
     )
-    List<Access> accessList = new ArrayList<>();
+    private List<Access> accessList = new ArrayList<>();
 
 
 }

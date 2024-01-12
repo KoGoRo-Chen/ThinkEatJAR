@@ -1,9 +1,9 @@
 package ThinkEat.mvc.controller;
 
 import ThinkEat.mvc.service.EatRepoService;
-import ThinkEat.mvc.service.PriceDataService;
-import ThinkEat.mvc.service.ResDataService;
-import ThinkEat.mvc.service.TagDataService;
+import ThinkEat.mvc.service.PriceService;
+import ThinkEat.mvc.service.RestaurantService;
+import ThinkEat.mvc.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,19 +13,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class ThinkEatController {
 	private EatRepoService eatRepoService;
-	private ResDataService resDataService;
-	private PriceDataService priceDataService;
-	private TagDataService tagDataService;
+    private RestaurantService restaurantService;
+    private PriceService priceService;
+    private TagService tagService;
 
 	@Autowired
-	public ThinkEatController(EatRepoService eatRepoService,
-							  ResDataService resDataService,
-							  PriceDataService priceDataService,
-							  TagDataService tagDataService) {
+    public ThinkEatController(EatRepoService eatRepoService, RestaurantService restaurantService, PriceService priceService, TagService tagService) {
 		this.eatRepoService = eatRepoService;
-		this.resDataService = resDataService;
-		this.priceDataService = priceDataService;
-		this.tagDataService = tagDataService;
+        this.restaurantService = restaurantService;
+        this.priceService = priceService;
+        this.tagService = tagService;
 	}
 
 	//顯示首頁

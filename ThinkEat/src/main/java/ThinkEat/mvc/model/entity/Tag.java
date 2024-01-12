@@ -3,7 +3,9 @@ package ThinkEat.mvc.model.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,7 +23,7 @@ public class Tag {
 
     //每個tag都可以被加入每篇文章，可重複
     @ManyToMany(mappedBy = "eatRepo_TagList")
-    private Set<EatRepo> tag_EatRepoList = new LinkedHashSet<>();
+    private List<EatRepo> tag_EatRepoList = new ArrayList<>();
 
 }
 //@Column(nullable = false)

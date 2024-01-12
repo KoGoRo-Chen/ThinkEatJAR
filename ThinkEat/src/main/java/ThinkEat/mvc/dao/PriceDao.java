@@ -1,4 +1,4 @@
-package ThinkEat.mvc.repository;
+package ThinkEat.mvc.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

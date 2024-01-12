@@ -34,12 +34,12 @@ public class EatRepo {
 	private String article;
 
 	//一個用戶可以發表多篇文章
-	@ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User eatRepo_User;
 
 	//每間餐廳可以有多篇文章
-	@ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "restaurant_id")
 	private Restaurant restaurant;
 
@@ -50,7 +50,7 @@ public class EatRepo {
 
 	//每個清單都可以收藏每篇文章，可以重複
 	@ManyToMany(mappedBy = "favList_EatRepoList")
-	private Set<FavList> favListList = new LinkedHashSet<>();
+    private List<FavList> favListList = new ArrayList<>();
 
 	//每篇文章可以擁有多個TAG標籤
 	@ManyToMany(targetEntity = Tag.class)
@@ -59,15 +59,15 @@ public class EatRepo {
 			joinColumns = {@JoinColumn(name = "eatrepo_id_ref", referencedColumnName = "eatrepo_id")},
 			inverseJoinColumns = @JoinColumn(name = "tag_id_ref", referencedColumnName = "tag_id")
 	)
-	private Set<Tag> eatRepo_TagList = new LinkedHashSet<>();
+    private List<Tag> eatRepo_TagList = new ArrayList<>();
 
 	//一篇文章可以擁有多個留言
 	@OneToMany(mappedBy = "comment_EatRepo")
-	private Set<Comment> cmtList = new LinkedHashSet<>();
+    private List<Comment> cmtList = new ArrayList<>();
 
 	//一篇文章可以擁有多張圖片
 	@OneToMany(mappedBy = "pic_EatRepo")
-	private Set<Picture> picList = new LinkedHashSet<>();
+    private List<Picture> picList = new ArrayList<>();
 
 
 	
