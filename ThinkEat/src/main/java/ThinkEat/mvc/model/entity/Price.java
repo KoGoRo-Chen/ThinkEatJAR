@@ -18,10 +18,11 @@ public class Price {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private Integer id;
-	
-	@Column(nullable = false)
+
+	@Column
 	private String name;
 
 	@OneToOne(mappedBy = "price")
 	private EatRepo eatRepo;
 }
+//@Column(nullable = false)

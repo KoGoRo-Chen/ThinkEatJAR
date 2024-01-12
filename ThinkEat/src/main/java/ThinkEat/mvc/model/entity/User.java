@@ -15,14 +15,14 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Integer id;
-	
-	@Column(nullable = false)
+
+	@Column
 	private String nickName;
-	
-	@Column(nullable = false)
+
+	@Column
 	private String password;
-	
-	@Column(nullable = false)
+
+	@Column
 	private String userName;
 
 	//一個用戶可發表多篇文章
@@ -41,4 +41,6 @@ public class User {
 	//一個用戶可建立多筆清單
 	@OneToMany(mappedBy = "favList_User")
 	List<FavList> favLists = new ArrayList<>();
+
 }
+//@Column(nullable = false)

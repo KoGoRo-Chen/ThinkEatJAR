@@ -15,7 +15,7 @@ public class FavList {
     @Column(name = "favlist_id")
     private Integer id;
 
-    @Column(nullable = false)
+    @Column
     private String favListName;
 
     //一個用戶可建立多筆清單
@@ -33,3 +33,4 @@ public class FavList {
     Set<EatRepo> favList_EatRepoList = new LinkedHashSet<>();
 
 }
+//@Column(nullable = false)

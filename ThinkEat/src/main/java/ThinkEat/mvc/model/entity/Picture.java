@@ -13,7 +13,7 @@ public class Picture {
     @Column(name = "picture_id")
     private Integer id;
 
-    @Column(nullable = false)
+    @Column
     private String Path;
 
     @ManyToOne(targetEntity = EatRepo.class)
@@ -22,3 +22,4 @@ public class Picture {
 
 
 }
+//@Column(nullable = false)

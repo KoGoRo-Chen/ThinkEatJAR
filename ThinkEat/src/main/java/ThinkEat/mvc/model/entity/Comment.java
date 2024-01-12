@@ -13,7 +13,7 @@ public class Comment {
     @Column(name = "comment_id")
     private Integer id;
 
-    @Column(nullable = false)
+    @Column
     private String commentContext;
 
     @ManyToOne
@@ -25,3 +25,5 @@ public class Comment {
     User comment_User;
 
 }
+
+//@Column(nullable = false)j

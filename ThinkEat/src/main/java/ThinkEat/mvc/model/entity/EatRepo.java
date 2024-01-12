@@ -21,16 +21,16 @@ public class EatRepo {
 	@Column(name = "eatrepo_id")
 	private Integer id;
 
-	@Column(nullable = false)
+	@Column
 	private String title;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
-	@Column(columnDefinition = "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP")
+	@Column(columnDefinition = "timestamp NOT NULL")
 	private Date date;
-	
-	@Column(nullable = false)
+
+	@Column
 	private String article;
 
 	//一個用戶可以發表多篇文章
@@ -72,3 +72,4 @@ public class EatRepo {
 
 	
 }
+//@Column(nullable = false)

@@ -21,13 +21,15 @@ public class Restaurant {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "restaurant_id")
 	private Integer id;
-	
-	@Column(nullable = false)
+
+	@Column
 	private String name;
-	
-	@Column(nullable = false)
+
+	@Column
 	private String address;
 	
 	@OneToMany(mappedBy = "restaurant")
 	private List<EatRepo> eatRepoList = new ArrayList<>();
+
 }
+//@Column(nullable = false)

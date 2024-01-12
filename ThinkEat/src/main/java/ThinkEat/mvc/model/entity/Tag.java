@@ -16,7 +16,7 @@ public class Tag {
     @Column(name = "tag_id")
     private Integer id;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
     //每個tag都可以被加入每篇文章，可重複
@@ -24,3 +24,4 @@ public class Tag {
     private Set<EatRepo> tag_EatRepoList = new LinkedHashSet<>();
 
 }
+//@Column(nullable = false)
