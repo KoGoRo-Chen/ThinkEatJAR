@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"eatRepoList", "commentList", "favLists"})
 public class UserDto {
 
     private Integer id;

@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"favList_User", "favList_EatRepoList"})
 public class FavListDto {
 
     private Integer id;

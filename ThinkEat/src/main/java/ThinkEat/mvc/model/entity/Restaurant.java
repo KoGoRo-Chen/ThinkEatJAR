@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name = "restaurant")
-@Data
+@Getter
+@Setter
+@ToString(exclude = "eatRepoList")
+@AllArgsConstructor
 public class Restaurant {
 
 	@Id
@@ -31,38 +34,6 @@ public class Restaurant {
 	public Restaurant(String name, String address) {
 		this.name = name;
 		this.address = address;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public List<EatRepo> getEatRepoList() {
-		return eatRepoList;
-	}
-
-	public void setEatRepoList(List<EatRepo> eatRepoList) {
-		this.eatRepoList = eatRepoList;
 	}
 }
 //@Column(nullable = false)

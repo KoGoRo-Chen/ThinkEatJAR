@@ -11,7 +11,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "tag_EatRepoList")
+@ToString(exclude = {"tag_EatRepoList"})
 public class TagDto {
 
     private Integer id;

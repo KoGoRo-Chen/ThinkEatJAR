@@ -11,7 +11,7 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"favListList", "restaurant"})
+@ToString(exclude = {"article", "favListList", "cmtList", "picList"})
 public class EatRepoDto {
 
     private Integer id;
