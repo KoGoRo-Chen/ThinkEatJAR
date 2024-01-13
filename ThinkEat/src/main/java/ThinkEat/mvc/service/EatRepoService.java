@@ -4,6 +4,7 @@ package ThinkEat.mvc.service;
 import ThinkEat.mvc.model.dto.EatRepoDto;
 import ThinkEat.mvc.model.dto.PriceDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
+import ThinkEat.mvc.model.dto.TagDto;
 import ThinkEat.mvc.model.entity.*;
 import ThinkEat.mvc.dao.EatRepoDao;
 import ThinkEat.mvc.dao.PriceDao;
@@ -58,13 +59,16 @@ public class EatRepoService {
         eatRepo.setPrice(price);
 
         //處理標籤
-        List<Integer> tagIdList = eatRepoDto.getTagIds();
-        for (Integer tagId : tagIdList) {
-            Tag tag = tagDao.findById(tagId).get();
-            eatRepo.getEatRepo_TagList().add(tag);
+        List<TagDto> tagDtoList = eatRepoDto.getEatRepo_TagList();
+        if (tagDtoList != null && !tagDtoList.isEmpty()) {
+            List<Tag> tagList = tagDtoList.stream()
+                    .map(tagDto -> modelMapper.map(tagDto, Tag.class))
+                    .collect(Collectors.toList());
+            eatRepo.setEatRepo_TagList(tagList);
         }
-        eatRepoDao.save(eatRepo);
 
+        //儲存食記並返回ID
+        eatRepoDao.save(eatRepo);
         return eatRepo.getId();
     }
 

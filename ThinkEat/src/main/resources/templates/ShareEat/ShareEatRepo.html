@@ -49,10 +49,9 @@
         </select> <p />
             <!-- 標籤 -->
             標籤：<span th:each="tag : ${tags}">
-                    <input type="checkbox" id="Tag" name="tagIds"
-                           th:field="*{tagIds}"
-                           th:value="${tag.id}"
-                           th:text="${tag.name}">
+                        <input type="checkbox" id="tag" name="tagIds"
+                               th:value="${tag.id}"
+                               th:text="${tag.name}">
                 </span>
             <p/>
             <!-- 食記 -->
@@ -75,15 +74,13 @@
     function clearForm() {
         document.getElementById("eatRepoTitle").value = "";
         document.getElementById("eatPic").value = "";
-        document.getElementById("eatDate").value = "";
+        document.getElementById("date").value = "";
 
         // 清空复选框
-        var checkboxes = document.getElementsByName("Tag");
+        var checkboxes = document.getElementsByName("tagIds");
         checkboxes.forEach(function (checkbox) {
             checkbox.checked = false;
         });
-
-        document.getElementById("eatRepo").value = "1";
     }
 </script>
 </body>

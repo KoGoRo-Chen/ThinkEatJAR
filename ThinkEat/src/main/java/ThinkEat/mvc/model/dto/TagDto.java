@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = {"tag_EatRepoList"})
 public class TagDto {
@@ -20,4 +19,8 @@ public class TagDto {
 
     private List<EatRepoDto> tag_EatRepoList = new ArrayList<>();
 
+    public TagDto(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

@@ -12,7 +12,6 @@ import java.util.Set;
 @Table(name = "tag")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = {"tag_EatRepoList"})
 public class Tag {
@@ -29,5 +28,9 @@ public class Tag {
     @ManyToMany(mappedBy = "eatRepo_TagList")
     private List<EatRepo> tag_EatRepoList = new ArrayList<>();
 
+    public Tag(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
 //@Column(nullable = false)

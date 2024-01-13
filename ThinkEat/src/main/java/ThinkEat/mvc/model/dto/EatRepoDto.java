@@ -9,8 +9,8 @@ import java.util.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString(exclude = {"article", "favListList", "cmtList", "picList"})
 public class EatRepoDto {
 
@@ -33,18 +33,13 @@ public class EatRepoDto {
 
     private List<FavListDto> favListList = new ArrayList<>();
 
-    private Integer tagId;
     private List<TagDto> eatRepo_TagList = new ArrayList<>();
+
 
     private List<CommentDto> cmtList = new ArrayList<>();
 
+
     private List<PictureDto> picList = new ArrayList<>();
 
-    public List<Integer> getTagIds() {
-        List<Integer> tagIds = new ArrayList<>();
-        for (TagDto tagDto : eatRepo_TagList) {
-            tagIds.add(tagDto.getId());
-        }
-        return tagIds;
-    }
+
 }

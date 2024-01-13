@@ -4,7 +4,6 @@ import ThinkEat.mvc.model.dto.EatRepoDto;
 import ThinkEat.mvc.model.dto.PriceDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.model.dto.TagDto;
-import ThinkEat.mvc.model.entity.Restaurant;
 import ThinkEat.mvc.service.EatRepoService;
 import ThinkEat.mvc.service.PriceService;
 import ThinkEat.mvc.service.RestaurantService;
@@ -14,11 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.yaml.snakeyaml.events.Event;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("ShareEat/")
@@ -91,6 +88,7 @@ public class ShareEatController {
     @PostMapping("/AddEatRepo")
     public String addEatRepo(@ModelAttribute("eatRepoDto") EatRepoDto eatRepoDto,
                              @RequestParam("restaurantId") Integer restaurantId,
+                             @RequestParam("tagIds") List<Integer> tagIds,
                              RedirectAttributes redirectAttributes, Model model) {
 
         // 根據 restaurantId 獲取相應的 RestaurantDto 對象，然後將其設置到 eatRepoDto 中
@@ -104,8 +102,8 @@ public class ShareEatController {
 
         //處理標籤
         List<TagDto> selectedTags = new ArrayList<>();
-        for (TagDto tagDto : eatRepoDto.getEatRepo_TagList()) {
-            TagDto fetchedTag = tagService.getTagById(tagDto.getId());
+        for (Integer tagId : tagIds) {
+            TagDto fetchedTag = tagService.getTagById(tagId);
             selectedTags.add(fetchedTag);
         }
         eatRepoDto.setEatRepo_TagList(selectedTags);

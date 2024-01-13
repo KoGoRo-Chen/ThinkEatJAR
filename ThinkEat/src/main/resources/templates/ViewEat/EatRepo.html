@@ -19,11 +19,11 @@
          style="min-height: 100vh; background-color: rgb(240, 240, 240)">
         <div class="returnToResView">
             <input type="button"
-                   th:value="'返回 ' + ${resName}"
-                   th:onclick="location.href='@{/ThinkEat/ViewEat/ResInfo/${resId}'"></input>
+                   th:value="'返回 ' + ${eatRepoDto.restaurant.getAddress()}"
+                   th:onclick="location.href='@{/ThinkEat/ViewEat/ResInfo/${eatRepoDto.restaurant.getId()}'"></input>
         </div>
         <div class="repoTitleArea">
-            <h3 th:text="${eatRepoDto.eatRepoDtoTitle}"></h3>
+            <h3 th:text="${eatRepoDto.title}"></h3>
         </div>
         <section class="d-flex justify-content-center bg-light">
 
@@ -36,29 +36,32 @@
                 <table>
                     <tr>
                         <td>文章Id：</td>
-                        <td th:text="${eatRepoDto.eatRepoDtoId}"></td>
+                        <td th:text="${eatRepoDto.id}"></td>
                     </tr>
                     <tr>
                         <td>餐廳名稱：</td>
-                        <td th:text="${resName}"></td>
+                        <td th:text="${eatRepoDto.restaurant.getName()}"></td>
                     </tr>
                     <tr>
                         <td>地址：</td>
-                        <td th:text="${resAddress}"></td>
+                        <td th:text="${eatRepoDto.restaurant.getAddress()}"></td>
                     </tr>
                     <tr>
                         <td>用餐日期：</td>
                         <td>
-                            <span th:text="${#dates.format(eatRepoDto.eatDateDto, 'yyyy-MM-dd E')}"></span>
+                            <span th:text="${#dates.format(eatRepoDto.date, 'yyyy-MM-dd E')}"></span>
                         </td>
                     </tr>
                     <tr>
                         <td>價位：</td>
-                        <td th:text="${eatRepoDto.getPriceName()}"></td>
+                        <td th:text="${eatRepoDto.price.getName()}"></td>
                     </tr>
                     <tr>
                         <td>標籤：</td>
-                        <td th:text="${eatRepoDto.getAllTagNames()}"></td>
+                        <td>
+                            <span th:each="tag : ${eatRepoDto.eatRepo_TagList}"
+                                  th:text="${tag.name}">、</span>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -78,7 +81,7 @@
                     </tr>
                     <tr>
                         <td>食記:</td>
-                        <td th:text="${eatRepoDto.repo}"></td>
+                        <td th:text="${eatRepoDto.article}"></td>
                     </tr>
                 </table>
             </div>
