@@ -47,13 +47,13 @@ public class ViewEatController {
     //顯示ViewEat/Res/{ResId}/頁面
     @GetMapping("/ResInfo/{restaurantId}")
     public String getResPage(@PathVariable("restaurantId") Integer restaurantId, Model model) {
-        // 1. 根據 resId 從數據庫中檢索相應的 res
-        RestaurantDto restaurantDtoByResId = restaurantService.getRestaurantById(restaurantId);
-        List<EatRepoDto> eatRepoDtoByResId = restaurantService.getAllEatRepoByRestaurantId(restaurantId);
+        // 1. 根據 restaurantId 從數據庫中檢索相應的 餐廳
+        RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
+        List<EatRepoDto> eatRepoDto = restaurantService.getAllEatRepoByRestaurantId(restaurantId);
 
-        // 2. 將檢索到的 res 及ID添加到模型中
-        model.addAttribute("restaurantDtoByResId", restaurantDtoByResId);
-        model.addAttribute("eatRepoDtoByResId", eatRepoDtoByResId);
+        // 2. 將檢索到的 餐廳 及 擁有的食記 添加到模型中
+        model.addAttribute("restaurantDto", restaurantDto);
+        model.addAttribute("eatRepoDto", eatRepoDto);
 
         // 返回 ViewEat 頁面
         return "ViewEat/ResInfo";
@@ -62,11 +62,12 @@ public class ViewEatController {
     //顯示ViewEat/EatRepo/{eatRepoId}頁面
     @GetMapping("/EatRepo/{eatRepoId}")
     public String GetViewEatPage(@PathVariable("eatRepoId") Integer eatRepoId, Model model) {
-        // 1. 根據 shareEatId 從數據庫中檢索相應的 ShareEatBean
+        // 1. 根據 eatRepoId 從數據庫中檢索相應的 食記
         EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
         System.out.println("ViewEat頁面顯示eatRepoDto: " + eatRepoDto);
         model.addAttribute("eatRepoDto", eatRepoDto);
         System.out.println("新增成功" + eatRepoDto);
+        model.addAttribute("restaurantId", eatRepoDto.getRestaurant().getId());
 
         // 返回 ViewEat 頁面
         return "ViewEat/EatRepo";

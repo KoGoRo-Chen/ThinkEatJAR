@@ -23,14 +23,9 @@
     <div class="container-fluid d-flex flex-column">
         <!-- 餐廳縮圖區 + 店名 + 地址、價位 +標籤 -->
         <div class="infoArea" style="background-image: ">
-            <div class="resName">${ resByResId.getResName() }</div>
+            <div th:text="${restaurantDto.name}"></div>
             <div class="resinfo">
-                <p> ${ resByResId.getResAddress() }</p>
-                <p>${ resByResId.price.getName() }</p>
-                <p>
-                    <c:forEach items="${ resByResId.tags }" var="tags">${ tags.getName() } &nbsp;
-                    </c:forEach>
-                </p>
+                <p th:text="${restaurantDto.address}"></p>
             </div>
         </div> <!-- 餐廳縮圖區結束 -->
         <!-- 食記一覽區 -->
@@ -48,23 +43,20 @@
                         <th>連結</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <c:forEach items="${ eatsByResId }" var="eatsByResId">
+                    <tbody th:each="eatRepoDto : ${eatRepoDto}">
                         <tr>
                             <!-- 發文者 -->
                             <td>會員功能尚待追加</td>
                             <!-- 發文日期 -->
-                            <td>
-                                <fmt:formatDate value="${ eatsByResId.getEatDate() }" pattern="yyyy-MM-dd E" />
+                            <td th:text="${#dates.format(eatRepoDto.date, 'yyyy-MM-dd E')}">
                             </td>
                             <!-- 發文標題 -->
-                            <td>${ eatsByResId.getRepoTitle() }</td>
+                            <td th:text="${eatRepoDto.title}"></td>
                             <!-- 連結 -->
                             <td>
-                                <a href="${pageContext.request.contextPath}/mvc/ViewEat/EatRepo/${eatsByResId.shareEatId}">點我前往</a>
+                                <a th:href="@{/ThinkEat/ViewEat/EatRepo/{id}(id=${eatRepoDto.id})}">點我前往</a>
                             </td>
                         </tr>
-                    </c:forEach>
                     </tbody>
                 </table>
             </fieldset>
