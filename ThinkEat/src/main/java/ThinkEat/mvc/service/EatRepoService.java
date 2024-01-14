@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,8 +56,13 @@ public class EatRepoService {
         }
 
         //處理價格
-        Price price = priceDao.findById(eatRepoDto.getPriceId()).get();
-        eatRepo.setPrice(price);
+        Optional<Price> priceToSet = priceDao.findById(eatRepoDto.getPriceId());
+        if (priceToSet.isPresent()) {
+            eatRepo.setPrice(priceToSet.get());
+        } else {
+            eatRepo.setPrice(null);
+        }
+
 
         //處理標籤
         List<TagDto> tagDtoList = eatRepoDto.getEatRepo_TagList();
@@ -65,6 +71,8 @@ public class EatRepoService {
                     .map(tagDto -> modelMapper.map(tagDto, Tag.class))
                     .collect(Collectors.toList());
             eatRepo.setEatRepo_TagList(tagList);
+        } else {
+            eatRepo.setEatRepo_TagList(Collections.emptyList());
         }
 
         //儲存食記並返回ID

@@ -75,10 +75,13 @@
                         </td>
                     </tr>
                 </table>
+
+                <!--重導到編輯食記頁面-->
                 <form method="get"
-                      th:action="@{/ThinkEat/ShareEat//ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                      th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
                     <input type="submit" value="修改">
                 </form>
+
             </div>
         </section>
 

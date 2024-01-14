@@ -15,29 +15,30 @@
 
 <main>
     <div>
-        <div th:text="${restaurantDto}"></div>
+        <div th:text="${eatRepoDto}"></div>
         <div th:text="${prices}"></div>
         <div th:text="${tags}"></div>
     </div>
-    <form th:object="${eatRepoDto}" method="post" th:action="@{/ShareEatRepo/Edit/EditEatRepo}"
+    <form th:object="${eatRepoDto}" method="post" th:action="@{/ThinkEat/ShareEat/EditEatRepo}"
           enctype="multipart/form-data">
         <fieldset>
-            <!-- 餐廳名 -->
+            <!-- 標題 -->
             標題：<input type="text" id="eatRepoTitle" name="eatRepoTitle" th:field="*{title}"/>
             <p/>
-            <!-- 餐廳ID -->
-            <input id="restaurantId" name="restaurantId" th:value="${eatRepoDto.getRestaurantDto().getId()}"
-                   type="hidden"/>
+            <!-- 食記ID -->
+            <input id="eatRepoId" name="eatRepoId" th:value="${eatRepoDto.id}"/>
             <!-- 上傳圖片
             上傳圖片：<input type="file" id="eatPic" name="eatPic" th:field="*{eatPic}" accept="image/jpeg, image/png, image/jpg" />-->
             <p/>
             <!-- 店名 -->
+            <!-- 食記ID -->
+            <span id="restaurantId" name="restaurantId" th:text="${eatRepoDto.restaurant.id}" style="display: none"/>
             餐廳名稱：
-            <span th:text="${eatRepoDto.getRestaurantDto().getName()}"/>
+            <span th:text="${eatRepoDto.restaurant.name}"/>
             <p/>
             <!-- 地址(googlemap) -->
             餐廳地址：
-            <span th:text="${eatRepoDto.getRestaurantDto().getAddress()}"/>
+            <span th:text="${eatRepoDto.restaurant.address}"/>
             <p/>
             <!-- 品嘗日期 -->
             品嘗日期：<input type="date" id="date" name="date" th:field="*{date}"/>
@@ -51,7 +52,7 @@
         </select>
             <!-- 重導到新增價位的頁面 -->
             <button type="button"
-                    th:onclick="'window.location.href=\'/ThinkEat/ShareEat/ShareEatRepo/' + ${restaurantDto.id} + '/CreateNewPrice\''">
+                    th:onclick="'window.location.href=\'/ThinkEat/ShareEat/ShareEatRepo/' + ${eatRepoDto.restaurant.id} + '/CreateNewPrice\''">
                 新增
                 Price
             </button>
@@ -64,7 +65,7 @@
                 </span>
             <!-- 重導到新增tag的頁面 -->
             <button type="button"
-                    th:onclick="'window.location.href=\'/ThinkEat/ShareEat/ShareEatRepo/' + ${restaurantDto.id} + '/CreateNewTag\''">
+                    th:onclick="'window.location.href=\'/ThinkEat/ShareEat/ShareEatRepo/' + ${eatRepoDto.restaurant.id} + '/CreateNewTag\''">
                 新增
                 Tag
             </button>

@@ -1,8 +1,10 @@
 package ThinkEat.mvc;
 
 import ThinkEat.mvc.dao.*;
+import ThinkEat.mvc.model.dto.EatRepoDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.model.entity.*;
+import ThinkEat.mvc.service.EatRepoService;
 import ThinkEat.mvc.service.RestaurantService;
 import ThinkEat.mvc.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -20,13 +22,27 @@ public class SpringDtoTest {
     @Autowired
     RestaurantService restaurantService;
 
-    @Test
+    @Autowired
+    EatRepoService eatRepoService;
+
+    //@Test
     void createRestaurant() {
         RestaurantDto restaurantDto1 = new RestaurantDto();
         restaurantDto1.setName("頂呱呱");
         restaurantDto1.setAddress("羅斯福路");
         restaurantService.addRestaurant(restaurantDto1);
         System.out.println(restaurantDto1);
+
+    }
+
+    @Test
+    void UpDateEatRepo() {
+        EatRepoDto eatRepoDto1 = new EatRepoDto();
+        eatRepoDto1.setTitle("好吃");
+        eatRepoDto1.setArticle("真的很好吃");
+        Integer eatRepoDto1Id = eatRepoService.addEatRepo(eatRepoDto1);
+        eatRepoDto1.setId(eatRepoDto1Id);
+        System.out.println("eatRepoDto1: " + eatRepoDto1);
 
     }
 

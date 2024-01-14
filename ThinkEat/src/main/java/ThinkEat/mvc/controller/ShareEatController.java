@@ -217,25 +217,31 @@ public class ShareEatController {
     @GetMapping("/ShareEatRepo/Edit/{eatRepoId}")
     public String GetEditEatRepoPage(@PathVariable("eatRepoId") Integer eatRepoId,
                                      Model model) {
-        model.addAttribute("restaurantDto", eatRepoService.getEatRepoByEatRepoId(eatRepoId));
+        model.addAttribute("eatRepoDto", eatRepoService.getEatRepoByEatRepoId(eatRepoId));
+        System.out.println("編輯頁面接收到的eatRepo: " + eatRepoService.getEatRepoByEatRepoId(eatRepoId));
         List<PriceDto> prices = priceService.findAllPrice();
         model.addAttribute("prices", prices);
         List<TagDto> tags = tagService.findAllTag();
         model.addAttribute("tags", tags);
 
-        return "ShareEat/ShareEatRepo/Edit";
+        return "ShareEat/Edit";
     }
 
-    //顯示食記編輯表單
-    @PostMapping("/ShareEatRepo/Edit/EditEatRepo")
+    //送出編輯結果
+    @PostMapping("/EditEatRepo")
     public String EditEatRepo(@RequestParam("eatRepoId") Integer eatRepoId,
-                              @RequestParam("eatRepoDto") EatRepoDto eatRepoDto,
+                              EatRepoDto eatRepoDto,
                               RedirectAttributes redirectAttributes,
                               Model model) {
         // 將食記保存到資料庫
-        eatRepoService.updateEatRepoByEatRepoId(eatRepoId, eatRepoDto);
+        eatRepoDto.setId(eatRepoId);
+        eatRepoDto.setTitle(eatRepoService.getEatRepoByEatRepoId(eatRepoId).getTitle());
+        eatRepoDto.setRestaurant(eatRepoService.getEatRepoByEatRepoId(eatRepoId).getRestaurant());
+        eatRepoDto.setPrice(eatRepoService.getEatRepoByEatRepoId(eatRepoId).getPrice());
+        eatRepoDto.setEatRepo_TagList(eatRepoService.getEatRepoByEatRepoId(eatRepoId).getEatRepo_TagList());
+        eatRepoDto.setArticle(eatRepoService.getEatRepoByEatRepoId(eatRepoId).getArticle());
         System.out.println(eatRepoDto);
-        model.addAttribute("eatRepoDto", eatRepoDto);
+        eatRepoService.updateEatRepoByEatRepoId(eatRepoId, eatRepoDto);
 
         // 將新增的食記 ID 添加到重定向 URL 的查詢字符串中
         redirectAttributes.addAttribute("eatRepoId", eatRepoId);
