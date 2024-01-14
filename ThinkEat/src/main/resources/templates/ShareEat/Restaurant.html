@@ -21,7 +21,7 @@
             餐廳名稱：<input type="text" id="name" name="name" th:field="${restaurantDto.name}"/>
             <p/>
             <!-- 餐廳ID -->
-            <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}"/>
+            <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}" type="hidden"/>
             <p/>
             <!-- 地址(googlemap) -->
             餐廳地址：<input type="text" id="address" name="address" th:field="${restaurantDto.address}"/>

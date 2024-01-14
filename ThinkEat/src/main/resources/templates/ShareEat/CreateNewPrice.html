@@ -14,14 +14,16 @@
 </header>
 
 <main>
-    <form th:object="${priceDto}" method="post" th:action="@{/ThinkEat/ShareEat/CreateNewPrice}"
-          enctype="multipart/form-data">
+    <form th:object="${priceDto}" method="post"
+          th:action="@{/ThinkEat/ShareEat/ShareEatRepo/{restaurantId}/CreateNewPrice}">
         <fieldset>
-            <!-- 餐廳名 -->
-            餐廳名稱：<input type="text" id="name" name="name" th:field="${priceDto.name}"/>
+            <!-- 新價位 -->
+            輸入新價格：<input type="text" id="name" name="name" th:field="${priceDto.name}"/>
             <p/>
+            <!-- 餐廳ID -->
+            <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}" type="hidden"/>
             <!-- 前往食記發表 -->
-            <input type="submit" value="前往食記發表"/>
+            <input type="submit" value="返回編輯食記"/>
 
             <!-- 一鍵清除所有內容(javascript) -->
             <button type="button" onclick="clearForm()">清空</button>

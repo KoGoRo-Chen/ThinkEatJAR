@@ -166,6 +166,8 @@ public class ShareEatController {
     @GetMapping("/ShareEatRepo/{restaurantId}/CreateNewPrice")
     public String GetCreateNewPricePage(@PathVariable("restaurantId") Integer restaurantId,
                                         Model model) {
+        RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
+        model.addAttribute("restaurantDto", restaurantDto);
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("priceDto", new PriceDto());
 
@@ -173,7 +175,7 @@ public class ShareEatController {
     }
 
     // 創建價格
-    @PostMapping("/CreateNewPrice")
+    @PostMapping("/ShareEatRepo/{restaurantId}/CreateNewPrice")
     public String CreateNewPrice(@ModelAttribute("priceDto") PriceDto priceDto,
                                  @RequestParam("restaurantId") Integer restaurantId,
                              RedirectAttributes redirectAttributes, Model model) {
@@ -186,14 +188,16 @@ public class ShareEatController {
     @GetMapping("/ShareEatRepo/{restaurantId}/CreateNewTag")
     public String GetCreateNewTagPage(@PathVariable("restaurantId") Integer restaurantId,
                                       Model model) {
+        RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
+        model.addAttribute("restaurantDto", restaurantDto);
         model.addAttribute("restaurantId", restaurantId);
-        model.addAttribute("TagDto", new TagDto());
+        model.addAttribute("tagDto", new TagDto());
 
         return "ShareEat/CreateNewTag";
     }
 
     // 創建TAG
-    @PostMapping("/CreateNewTag")
+    @PostMapping("/ShareEatRepo/{restaurantId}/CreateNewTag")
     public String CreateNewTag(@ModelAttribute("tagDto") TagDto tagDto,
                                @RequestParam("restaurantId") Integer restaurantId,
                                RedirectAttributes redirectAttributes, Model model) {
