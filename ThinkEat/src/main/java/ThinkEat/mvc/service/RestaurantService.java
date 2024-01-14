@@ -87,9 +87,12 @@ public class RestaurantService {
     //查詢所有餐廳
     public List<RestaurantDto> getAllRestaurant() {
         List<Restaurant> restaurantList = restaurantDao.findAll();
-        return restaurantList.stream()
-                .map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class))
-                .toList();
+        if (restaurantList != null) {
+            return restaurantList.stream()
+                    .map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class))
+                    .toList();
+        }
+        return null;
     }
 
     //尋找單間餐廳的所有食記

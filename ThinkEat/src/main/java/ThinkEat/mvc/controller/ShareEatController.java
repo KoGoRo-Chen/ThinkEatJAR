@@ -47,17 +47,24 @@ public class ShareEatController {
     //顯示餐廳選擇表單
     @GetMapping("/Restaurant")
     public String GetRestaurantPage(Model model) {
-        List<RestaurantDto> restaurantDtoList = restaurantService.getAllRestaurant();
-        model.addAttribute("restaurantDtoList", restaurantDtoList);
         // 添加 restaurantDto 到模型
         model.addAttribute("restaurantDto", new RestaurantDto());
+        List<RestaurantDto> restaurantDtoforNull = new ArrayList<>();
+        List<RestaurantDto> restaurantDtoList = restaurantService.getAllRestaurant();
+        if (restaurantDtoList != null) {
+            model.addAttribute("restaurantDtoList", restaurantDtoList);
+        } else {
+            model.addAttribute("restaurantDtoListforNull", restaurantDtoforNull); // or handle it accordingly
+        }
+
         return "ShareEat/Restaurant";
     }
 
     //在餐廳顯示頁面中選擇已經存在的餐廳
-    @PostMapping("/Restaurant/{restaurantId}")
+    @GetMapping("/Restaurant/{restaurantId}")
     public String PickThisRestaurant(@PathVariable("restaurantId") Integer restaurantId,
                                      Model model) {
+
         RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
         model.addAttribute("restaurantDto", restaurantDto);
         model.addAttribute("restaurantId", restaurantId);
