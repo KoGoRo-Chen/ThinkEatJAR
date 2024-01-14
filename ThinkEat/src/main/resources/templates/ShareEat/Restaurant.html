@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>選擇餐廳</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+</head>
+<body>
+<header>
+    <div th:insert="~{Fragment/Header :: header}"></div>
+</header>
+
+<main>
+    <form th:object="${restaurantDto}" method="post" th:action="@{/ThinkEat/ShareEat/ChooseRestaurant}"
+          enctype="multipart/form-data">
+        <fieldset>
+            <!-- 餐廳名 -->
+            餐廳名稱：<input type="text" id="name" name="name" th:field="${restaurantDto.name}"/>
+            <p/>
+            <!-- 餐廳ID -->
+            <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}"/>
+            <p/>
+            <!-- 地址(googlemap) -->
+            餐廳地址：<input type="text" id="address" name="address" th:field="${restaurantDto.address}"/>
+            <p/>
+            <!-- 前往食記發表 -->
+            <input type="submit" value="前往食記發表"/>
+
+            <!-- 一鍵清除所有內容(javascript) -->
+            <button type="button" onclick="clearForm()">清空</button>
+        </fieldset>
+    </form>
+    <table>
+        <thead>
+        <div>
+            <span>現有餐廳清單</span>
+            <span>
+                <form method="get"
+                      th:action="@{/ThinkEat/ShareEat/CreateRestaurant}">
+                    <input type="submit" value="建立餐廳">
+                </form>
+            </span>
+        </div>
+        <tr>
+            <th>餐廳名稱</th>
+            <th>地址</th>
+            <th>選擇這家餐廳</th>
+        </tr>
+        </thead>
+        <tbody th:each="restaurantDto : ${restaurantDtoList}">
+        <tr>
+            <!--餐廳名稱-->
+            <td th:text="${restaurantDto.name}"></td>
+            <!--餐廳地址-->
+            <td th:text="${restaurantDto.address}"></td>
+            <!--連結-->
+            <td>
+                <form th:object="${restaurantDto}"
+                      method="post"
+                      th:action="@{/ThinkEat/ShareEat/Restaurant/{restaurantId}(restaurantId=${restaurantDto.id})}">
+                    <input type="submit" value="選擇這家餐廳">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<!-- 清空表单的JavaScript函数 -->
+<script>
+    function clearForm() {
+        document.getElementById("name").value = "";
+        document.getElementById("address").value = "";
+    }
+</script>
+</body>
+</html>

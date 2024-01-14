@@ -2,7 +2,7 @@
 <html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>選擇餐廳</title>
+    <title>建立餐廳</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -14,20 +14,20 @@
 </header>
 
 <main>
-    <form th:object="${restaurantDto}" method="post" th:action="@{/ThinkEat/ShareEat/AddRestaurant}"
+    <form th:object="${restaurantDto}" method="post" th:action="@{/ThinkEat/ShareEat/CreateRestaurant}"
           enctype="multipart/form-data">
         <fieldset>
             <!-- 餐廳名 -->
             餐廳名稱：<input type="text" id="name" name="name" th:field="*{name}"/>
-            <p />
+            <p/>
             <!-- 餐廳ID -->
             <input id="id" field="*{id}" type="hidden"/>
-            <p />
+            <p/>
             <!-- 地址(googlemap) -->
             餐廳地址：<input type="text" id="address" name="address" th:field="*{address}"/>
-            <p />
+            <p/>
             <!-- 前往食記發表 -->
-            <input type="submit" value="前往食記發表"/>
+            <input type="submit" value="建立餐廳"/>
 
             <!-- 一鍵清除所有內容(javascript) -->
             <button type="button" onclick="clearForm()">清空</button>

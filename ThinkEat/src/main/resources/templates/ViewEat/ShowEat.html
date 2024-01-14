@@ -32,15 +32,14 @@
         <section class="col-10 d-flex justify-content-center align-items-center Intro" style="background-color: rgb(240, 240, 240);">
             <div class="bg-light d-flex flex-column justify-content-between" style="width: 90%; height: 95%">
 
-                <div th:text="${resSum}"></div>
-
                 <!-- 接收所有餐廳資訊，生成縮圖 -->
                 <div>
-                    <th:block th:each="eatRepo: ${resSum}">
+                    <th:block th:each="restaurantDto : ${restaurantDtoList}">
                         <figure>
                             <img style="height: 180px; width: 180px; background-color: red;">
                             <figcaption>
-                                <a th:href="@{${pageContext.request.contextPath}/ThinkEat/ViewEat/EatRepo/${eatRepo.resId}" th:text="${eatRepo.resName}"></a>
+                                <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
+                                   th:text="${restaurantDto.name}"></a>
                             </figcaption>
                         </figure>
                     </th:block>
