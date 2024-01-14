@@ -75,6 +75,10 @@
                         </td>
                     </tr>
                 </table>
+                <form method="get"
+                      th:action="@{/ThinkEat/ShareEat//ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                    <input type="submit" value="修改">
+                </form>
             </div>
         </section>
 
