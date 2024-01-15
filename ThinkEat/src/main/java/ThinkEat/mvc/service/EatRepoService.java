@@ -53,6 +53,8 @@ public class EatRepoService {
         if (restaurantDto != null) {
             Restaurant restaurant = modelMapper.map(restaurantDto, Restaurant.class);
             eatRepo.setRestaurant(restaurant);
+        } else {
+            eatRepo.setRestaurant(null);
         }
 
         //處理價格
@@ -80,16 +82,36 @@ public class EatRepoService {
         return eatRepo.getId();
     }
 
-    //以ID修改文章
     @Transactional
     public void updateEatRepoByEatRepoId(Integer eatRepoId, EatRepoDto eatRepoDto) {
         Optional<EatRepo> eatRepoOpt = eatRepoDao.findById(eatRepoId);
         if (eatRepoOpt.isPresent()) {
             EatRepo eatRepoToUpdate = eatRepoOpt.get();
-            modelMapper.map(eatRepoDto, eatRepoToUpdate);
+
+            // 更新標題和日期
+            eatRepoToUpdate.setTitle(eatRepoDto.getTitle());
+            eatRepoToUpdate.setDate(eatRepoDto.getDate());
+
+            // 更新價錢
+            Price priceToUpdate = priceDao.findById(eatRepoDto.getPriceId()).orElse(null);
+            eatRepoToUpdate.setPrice(priceToUpdate);
+
+            // 更新標籤
+            List<TagDto> tagDtoList = eatRepoDto.getEatRepo_TagList();
+            if (tagDtoList != null && !tagDtoList.isEmpty()) {
+                List<Tag> tagList = tagDtoList.stream()
+                        .map(tagDto -> modelMapper.map(tagDto, Tag.class))
+                        .collect(Collectors.toList());
+                eatRepoToUpdate.setEatRepo_TagList(tagList);
+            } else {
+                eatRepoToUpdate.setEatRepo_TagList(Collections.emptyList());
+            }
+
+            // 更新文章內容
+            eatRepoToUpdate.setArticle(eatRepoDto.getArticle());
+
             eatRepoDao.save(eatRepoToUpdate);
         }
-
     }
 
     //以ID刪除文章

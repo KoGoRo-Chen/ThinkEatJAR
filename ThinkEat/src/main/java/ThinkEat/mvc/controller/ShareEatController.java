@@ -227,26 +227,36 @@ public class ShareEatController {
         return "ShareEat/Edit";
     }
 
-    //送出編輯結果
+    // 處理編輯頁面提交
     @PostMapping("/EditEatRepo")
-    public String EditEatRepo(@RequestParam("eatRepoId") Integer eatRepoId,
-                              EatRepoDto eatRepoDto,
+    public String editEatRepo(@RequestParam("eatRepoId") Integer eatRepoId,
+                              @RequestParam("tagIds") List<Integer> tagIds,
+                              @RequestParam("tagIds") Integer priceId,
+                              @ModelAttribute("eatRepoDto") EatRepoDto eatRepoDto,
                               RedirectAttributes redirectAttributes,
                               Model model) {
-        // 將食記保存到資料庫
-        eatRepoDto.setId(eatRepoId);
-        eatRepoDto.setTitle(eatRepoService.getEatRepoByEatRepoId(eatRepoId).getTitle());
-        eatRepoDto.setRestaurant(eatRepoService.getEatRepoByEatRepoId(eatRepoId).getRestaurant());
-        eatRepoDto.setPrice(eatRepoService.getEatRepoByEatRepoId(eatRepoId).getPrice());
-        eatRepoDto.setEatRepo_TagList(eatRepoService.getEatRepoByEatRepoId(eatRepoId).getEatRepo_TagList());
-        eatRepoDto.setArticle(eatRepoService.getEatRepoByEatRepoId(eatRepoId).getArticle());
-        System.out.println(eatRepoDto);
-        eatRepoService.updateEatRepoByEatRepoId(eatRepoId, eatRepoDto);
 
-        // 將新增的食記 ID 添加到重定向 URL 的查詢字符串中
+        // 處理價格
+        PriceDto priceDto = priceService.getPriceById(priceId);
+        eatRepoDto.setPrice(priceDto);
+
+        //處理標籤
+        List<TagDto> selectedTags = new ArrayList<>();
+        for (Integer tagId : tagIds) {
+            TagDto fetchedTag = tagService.getTagById(tagId);
+            selectedTags.add(fetchedTag);
+        }
+        eatRepoDto.setEatRepo_TagList(selectedTags);
+
+        // 處理編輯的邏輯
+        System.out.println("編輯頁面接收到的資料:" + eatRepoDto);
+        eatRepoService.updateEatRepoByEatRepoId(eatRepoId, eatRepoDto);
+        eatRepoDto.setId(eatRepoId);
+        System.out.println("更新後的資料:" + eatRepoDto);
+
         redirectAttributes.addAttribute("eatRepoId", eatRepoId);
 
-        // 重導到文章瀏覽頁面
+        // 重定向到食記查看頁面，這裡使用/{eatRepoId}作為占位符，根據實際情況修改
         return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";
     }
 }

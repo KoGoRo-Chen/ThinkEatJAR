@@ -26,7 +26,7 @@
             標題：<input type="text" id="eatRepoTitle" name="eatRepoTitle" th:field="*{title}"/>
             <p/>
             <!-- 食記ID -->
-            <input id="eatRepoId" name="eatRepoId" th:value="${eatRepoDto.id}"/>
+            <input id="eatRepoId" name="eatRepoId" th:value="${eatRepoDto.id}" type="hidden"/>
             <!-- 上傳圖片
             上傳圖片：<input type="file" id="eatPic" name="eatPic" th:field="*{eatPic}" accept="image/jpeg, image/png, image/jpg" />-->
             <p/>
