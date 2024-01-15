@@ -16,7 +16,11 @@
 
 <!-- Main區塊 -->
 <main>
-
+    <img th:src="${filepath}">
+    <form action="upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="pic">
+        <input type="submit">
+    </form>
 </main>
 
 </body>
