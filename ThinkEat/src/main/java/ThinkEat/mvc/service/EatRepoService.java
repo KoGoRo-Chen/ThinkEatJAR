@@ -1,21 +1,22 @@
 package ThinkEat.mvc.service;
 
 
-import ThinkEat.mvc.model.dto.EatRepoDto;
-import ThinkEat.mvc.model.dto.PriceDto;
-import ThinkEat.mvc.model.dto.RestaurantDto;
-import ThinkEat.mvc.model.dto.TagDto;
-import ThinkEat.mvc.model.entity.*;
 import ThinkEat.mvc.dao.EatRepoDao;
 import ThinkEat.mvc.dao.PriceDao;
 import ThinkEat.mvc.dao.TagDao;
+import ThinkEat.mvc.model.dto.EatRepoDto;
+import ThinkEat.mvc.model.dto.RestaurantDto;
+import ThinkEat.mvc.model.dto.TagDto;
+import ThinkEat.mvc.model.entity.EatRepo;
+import ThinkEat.mvc.model.entity.Price;
+import ThinkEat.mvc.model.entity.Restaurant;
+import ThinkEat.mvc.model.entity.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -126,7 +127,7 @@ public class EatRepoService {
     //以ID尋找單篇食記
     public EatRepoDto getEatRepoByEatRepoId(Integer eatRepoId) {
         Optional<EatRepo> eatRepoOpt = eatRepoDao.findById(eatRepoId);
-        if(eatRepoOpt.isPresent()){
+        if (eatRepoOpt.isPresent()) {
             EatRepo eatRepo = eatRepoOpt.get();
             EatRepoDto eatRepoDto = modelMapper.map(eatRepo, EatRepoDto.class);
             return eatRepoDto;

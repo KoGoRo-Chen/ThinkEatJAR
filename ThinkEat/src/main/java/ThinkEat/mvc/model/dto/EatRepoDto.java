@@ -1,11 +1,12 @@
 package ThinkEat.mvc.model.dto;
 
-import ThinkEat.mvc.model.entity.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter

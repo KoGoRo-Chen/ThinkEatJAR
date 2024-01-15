@@ -1,9 +1,8 @@
 package ThinkEat.mvc.dao;
 
+import ThinkEat.mvc.model.entity.EatRepo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import ThinkEat.mvc.model.entity.EatRepo;
-
-public interface EatRepoDao extends JpaRepository<EatRepo, Integer>{
+public interface EatRepoDao extends JpaRepository<EatRepo, Integer> {
 
 }

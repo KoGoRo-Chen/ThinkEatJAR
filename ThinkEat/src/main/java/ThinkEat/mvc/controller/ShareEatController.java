@@ -10,10 +10,7 @@ import ThinkEat.mvc.service.EatRepoService;
 import ThinkEat.mvc.service.PriceService;
 import ThinkEat.mvc.service.RestaurantService;
 import ThinkEat.mvc.service.TagService;
-import jakarta.websocket.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -118,7 +115,7 @@ public class ShareEatController {
     //顯示食記填寫表單(ShareEat)
     @GetMapping("/ShareEatRepo/{restaurantId}")
     public String GetEatRepoPage(@PathVariable("restaurantId") Integer restaurantId,
-                                  Model model) {
+                                 Model model) {
         RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
         model.addAttribute("restaurantDto", restaurantDto);
         List<PriceDto> prices = priceService.findAllPrice();

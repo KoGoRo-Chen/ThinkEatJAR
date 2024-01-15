@@ -1,9 +1,9 @@
 package ThinkEat.mvc.model.dto;
 
-import ThinkEat.mvc.model.entity.EatRepo;
-import ThinkEat.mvc.model.entity.Tag;
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter

@@ -1,6 +1,5 @@
 package ThinkEat.mvc.model.dto;
 
-import ThinkEat.mvc.model.entity.EatRepo;
 import lombok.*;
 
 import java.util.List;
@@ -12,9 +11,7 @@ import java.util.List;
 @ToString(exclude = "eatRepoList")
 public class PriceDto {
 
-    private Integer id;
-
-    private String name;
-
     List<EatRepoDto> eatRepoList;
+    private Integer id;
+    private String name;
 }

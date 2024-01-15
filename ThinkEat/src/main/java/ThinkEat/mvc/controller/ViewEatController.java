@@ -37,12 +37,14 @@ public class ViewEatController {
 
     //顯示ShowEat頁面(顯示所有餐廳)
     @GetMapping("/ShowEat")
-    public String GetShowEatPage(Model model){
+    public String GetShowEatPage(Model model) {
         List<RestaurantDto> restaurantDtoList = restaurantService.getAllRestaurant();
         System.out.println(restaurantDtoList);
         model.addAttribute("restaurantDtoList", restaurantDtoList);
         return "ViewEat/ShowEat";
-    };
+    }
+
+    ;
 
     //顯示ViewEat/Res/{ResId}/頁面
     @GetMapping("/ResInfo/{restaurantId}")
@@ -57,7 +59,9 @@ public class ViewEatController {
 
         // 返回 ViewEat 頁面
         return "ViewEat/ResInfo";
-    };
+    }
+
+    ;
 
     //顯示ViewEat/EatRepo/{eatRepoId}頁面
     @GetMapping("/EatRepo/{eatRepoId}")
@@ -71,7 +75,9 @@ public class ViewEatController {
 
         // 返回 ViewEat 頁面
         return "ViewEat/EatRepo";
-    };
+    }
+
+    ;
 
 
 }

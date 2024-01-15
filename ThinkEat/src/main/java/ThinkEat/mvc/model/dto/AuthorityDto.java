@@ -1,7 +1,5 @@
 package ThinkEat.mvc.model.dto;
 
-import ThinkEat.mvc.model.entity.Access;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;

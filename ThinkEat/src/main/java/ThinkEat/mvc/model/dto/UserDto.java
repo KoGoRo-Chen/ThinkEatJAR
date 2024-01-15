@@ -1,7 +1,6 @@
 package ThinkEat.mvc.model.dto;
 
 import ThinkEat.mvc.model.entity.EatRepo;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
