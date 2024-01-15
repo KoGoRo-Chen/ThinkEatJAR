@@ -9,10 +9,12 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 </head>
 <body>
+<!-- Header區塊 -->
 <header>
     <div th:insert="~{Fragment/Header :: header}"></div>
 </header>
 
+<!-- Main區塊 -->
 <main>
     <div>
         <div th:text="${restaurantDto}"></div>

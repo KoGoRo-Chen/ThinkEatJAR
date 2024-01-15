@@ -9,9 +9,12 @@
             <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
         </head>
         <body>
+        <!-- Header區塊 -->
         <header>
             <div th:insert="~{Fragment/Header :: header}"></div>
         </header>
+
+        <!-- Main區塊 -->
             <form  id="loginForm" method="post" action="">
                 <fieldset>
                     請輸入新密碼: <input type="password" id="newpassword" name="newpassword" placeholder="請輸入新密碼" value="pass123" required /><p />
