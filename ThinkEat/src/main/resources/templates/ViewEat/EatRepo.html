@@ -2,19 +2,12 @@
 <html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>食紀</title>
+    <title th:text="'食記：' + ${eatRepoDto.title} + ' 餐廳：' + ${eatRepoDto.restaurant.getName()} "></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script>
-        function redirectToResInfo(restaurantId) {
-            // 构建目标URL
-            var targetUrl = '/ThinkEat/ViewEat/ResInfo/' + restaurantId;
-
-            // 使用 JavaScript 跳转到目标页面
-            window.location.href = targetUrl;
-        }
     </script>
 </head>
 <body>
@@ -27,8 +20,6 @@
     <div class="container-fluid d-flex flex-column"
          style="min-height: 100vh; background-color: rgb(240, 240, 240)">
         <div class="returnToResView">
-            <p th:text="${eatRepoDto.restaurant.getName()}"></p>
-            <p th:text="${restaurantId}"></p>
             <input type="button"
                    th:value="'返回 ' + ${eatRepoDto.restaurant.getName()}"
                    th:onclick="'redirectToResInfo(\'' + ${restaurantId} + '\')'">
