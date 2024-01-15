@@ -16,10 +16,12 @@
 
 <!-- Main區塊 -->
 <main>
-    <img th:src="${filepath}">
-    <form action="upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="pic">
-        <input type="submit">
+    <div th:if="${pictureDto != null}">
+        <img th:src="${pictureDto.path}">
+    </div>
+    <form th:object="${pictureDto}" th:action="@{/ThinkEat/Test/Upload}" method="post" enctype="multipart/form-data">
+        <input type="file" name="picture" th:field="${pictureDto}">
+        <input type="submit" value="Upload">
     </form>
 </main>
 
