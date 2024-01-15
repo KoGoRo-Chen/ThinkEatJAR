@@ -4,6 +4,7 @@ package ThinkEat.mvc.service;
 import ThinkEat.mvc.dao.EatRepoDao;
 import ThinkEat.mvc.dao.PriceDao;
 import ThinkEat.mvc.dao.TagDao;
+import ThinkEat.mvc.model.dto.CommentDto;
 import ThinkEat.mvc.model.dto.EatRepoDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.model.dto.TagDto;
@@ -134,6 +135,19 @@ public class EatRepoService {
         }
         return null;
     }
+
+    //以ID尋找單篇食記中的所有留言
+    public List<CommentDto> findAllCommentByEatRepoId(Integer eatRepoId) {
+        EatRepoDto eatRepoDto = getEatRepoByEatRepoId(eatRepoId);
+        if (eatRepoDto.getCmtList().isEmpty()) {
+            return null;
+        } else {
+            List<CommentDto> commentListByRestaurantId = eatRepoDto.getCmtList();
+            return commentListByRestaurantId;
+        }
+    }
+
+
 
     //尋找所有食紀
     public List<EatRepoDto> findAllEatRepo() {

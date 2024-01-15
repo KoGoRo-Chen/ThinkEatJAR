@@ -18,6 +18,9 @@ public class Picture {
     private Integer id;
 
     @Column
+    private String filename;
+
+    @Column
     private String Path;
 
     @ManyToOne(targetEntity = EatRepo.class)

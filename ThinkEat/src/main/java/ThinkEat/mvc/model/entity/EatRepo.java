@@ -26,7 +26,6 @@ public class EatRepo {
     @Column
     private String title;
 
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @Column(columnDefinition = "timestamp NOT NULL")

@@ -11,6 +11,8 @@ public class PictureDto {
 
     private Integer id;
 
+    private String filename;
+
     private String Path;
 
     private EatRepoDto pic_EatRepo;

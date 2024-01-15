@@ -74,6 +74,12 @@
                     <input type="submit" value="修改">
                 </form>
 
+                <!--刪除食記-->
+                <form method=""
+                      th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                    <input type="submit" value="刪除">
+                </form>
+
             </div>
         </section>
 
@@ -99,26 +105,51 @@
 
         <!-- 留言區 -->
         <section class="cmtArea ">
+            <!-- 所有留言一覽區 -->
+            <div class="row">
+                <table>
+                    <thead>
+                    <tr>
+                        <td>留言人</td>
+                        <td>留言內容</td>
+                        <td>
+                            其他功能
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody th:each="commentDto : ${commentDtoList}">
+                    <tr>
+                        <td>placeholder</td>
+                        <td th:text="${commentDto.commentContext}"></td>
+                        <td>
+                            <input type="button" method="post" th:value="'修改'">
+                            <input type="button" method="post" th:value="'刪除'">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <!-- 發表留言 -->
             <div class="row">
-                <form action="#" method="post">
+                <form th:action="@{/ThinkEat/ViewEat/EatRepo/PostComment}"
+                      th:object="${commentDto}"
+                      method="post">
                     <fieldset>
                         <legend>發表留言</legend>
-                        <textarea rows="5" cols="80"></textarea>
+                        <!-- 食記ID -->
+                        <input id="eatRepoId" name="eatRepoId"
+                               th:value="${eatRepoDto.id}"
+                               type="hidden"/>
+                        <textarea id="commentContext" name="commentContext"
+                                  th:field="*{commentContext}"
+                                  rows="5" cols="80"></textarea>
                         <P />
                         <input type="submit" value="發表留言">
-                        <button>清空</button>
+                        <button type="reset">清空</button>
                     </fieldset>
                 </form>
-                <!-- 所有留言一覽區 -->
-                <div class="row">
-                    <table>
-                        <tr>
-                            <td>{使用者ID：}</td>
-                            <td>{該使用者投稿留言}</td>
-                        </tr>
-                    </table>
-                </div>
+
             </div>
         </section>
         <!-- 功能：編輯文章(限發表者) -->

@@ -2,6 +2,8 @@ package ThinkEat.mvc.model.dto;
 
 import lombok.*;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,6 +14,8 @@ public class CommentDto {
     private Integer id;
 
     private String commentContext;
+
+    private Date date;
 
     private EatRepoDto comment_EatRepo;
 
