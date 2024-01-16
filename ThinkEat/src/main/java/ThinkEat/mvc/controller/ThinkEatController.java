@@ -32,25 +32,11 @@ public class ThinkEatController {
         return "Index";
     }
 
-    ;
-
-    //顯示收藏頁面
-    @GetMapping("/MyFavEat")
-    public String GetMyFavEatPage() {
-        return "MyFavEat";
-    }
-
-    ;
-
     //顯示抽選頁面
     @GetMapping("/DecideEat")
     public String GetDecideEatPage() {
         return "DecideEat";
     }
-
-    ;
-
-
 }
 
 

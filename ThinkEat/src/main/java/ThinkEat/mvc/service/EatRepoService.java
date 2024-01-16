@@ -147,8 +147,6 @@ public class EatRepoService {
         }
     }
 
-
-
     //尋找所有食紀
     public List<EatRepoDto> findAllEatRepo() {
         List<EatRepo> eatRepoList = eatRepoDao.findAll();
