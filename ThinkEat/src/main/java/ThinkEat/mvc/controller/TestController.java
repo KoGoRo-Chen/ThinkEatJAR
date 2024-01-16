@@ -4,6 +4,8 @@ import ThinkEat.mvc.model.dto.PictureDto;
 import ThinkEat.mvc.service.PictureService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +27,15 @@ import java.nio.file.Paths;
 @RequestMapping("Test/")
 public class TestController {
     private final PictureService pictureService;
+    private final ResourceLoader resourceLoader;
+
     private static final String IMAGE_FOLDER = "C:/Users/marge/OneDrive/Desktop/MyClassDemo/ThinkEatJAR/img/";
 
     @Autowired
-    public TestController(PictureService pictureService) {
+    public TestController(PictureService pictureService,
+                          ResourceLoader resourceLoader) {
         this.pictureService = pictureService;
+        this.resourceLoader = resourceLoader;
     }
 
 
@@ -53,34 +59,42 @@ public class TestController {
         return "Test/PicUploadTest";
     }
 
-    //顯示圖片
-    @GetMapping("/Get")
-    @ResponseBody
-    public ResponseEntity<byte[]> getImage(@RequestParam String fileName) throws IOException {
-        Path imagePath = Paths.get(IMAGE_FOLDER, fileName);
-
-        // 讀取圖片為byte陣列
-        byte[] imageBytes = Files.readAllBytes(imagePath);
-
-        // 將byte陣列轉換為BufferedImage
-        BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
-
-        // 處理BufferedImage（這裡可以添加您的圖片處理邏輯）
-
-        // 將處理後的BufferedImage轉換為byte陣列
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
-        byte[] processedImageBytes = byteArrayOutputStream.toByteArray();
-
-        // 設定HTTP頭部，告訴瀏覽器圖片的MIME類型
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-
-        // 返回ResponseEntity，包含圖片資料和HTTP頭部
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(processedImageBytes.length)
-                .body(processedImageBytes);
+    @GetMapping("/image")
+    public String getImage(Model model) {
+        Resource image = resourceLoader.getResource("static/images/1705405519228_OIP.jpg");
+        model.addAttribute("image", image);
+        return "Test/PicUploadTest"; // Thymeleaf的頁面名稱
     }
+
+
+//    //顯示圖片
+//    @GetMapping("/Get")
+//    @ResponseBody
+//    public ResponseEntity<byte[]> getImage(@RequestParam String fileName) throws IOException {
+//        Path imagePath = Paths.get(IMAGE_FOLDER, fileName);
+//
+//        // 讀取圖片為byte陣列
+//        byte[] imageBytes = Files.readAllBytes(imagePath);
+//
+//        // 將byte陣列轉換為BufferedImage
+//        BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
+//
+//        // 處理BufferedImage（這裡可以添加您的圖片處理邏輯）
+//
+//        // 將處理後的BufferedImage轉換為byte陣列
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
+//        byte[] processedImageBytes = byteArrayOutputStream.toByteArray();
+//
+//        // 設定HTTP頭部，告訴瀏覽器圖片的MIME類型
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.IMAGE_JPEG);
+//
+//        // 返回ResponseEntity，包含圖片資料和HTTP頭部
+//        return ResponseEntity.ok()
+//                .headers(headers)
+//                .contentLength(processedImageBytes.length)
+//                .body(processedImageBytes);
+//    }
 }
 

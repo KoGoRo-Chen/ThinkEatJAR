@@ -1,40 +1,51 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>圖片上傳功能測試</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--&lt;!&ndash; Header區塊 &ndash;&gt;-->
+<!--<header>-->
+<!--    <div th:insert="~{Fragment/Header :: header}"></div>-->
+<!--</header>-->
+
+<!--&lt;!&ndash; Main區塊 &ndash;&gt;-->
+<!--<main>-->
+<!--    <div th:if="${pictureDto != null}">-->
+<!--        <div>hardcode-->
+<!--        <img src="C:/Users/marge/OneDrive/Desktop/MyClassDemo/ThinkEatJAR/img/1705379037034_scareddog.jpg">-->
+<!--        </div>-->
+<!--        </p>-->
+<!--        <div> imageIo-->
+<!--            <img th:src="@{/image/get(imageName='1705379037034_scareddog.jpg')}" alt="Scared Dog">-->
+<!--        </div>-->
+<!--        </p>-->
+<!--        <div th:text="${pictureDto.path}"></div>-->
+<!--    </div>-->
+<!--    <form th:object="${pictureDto}"-->
+<!--          th:action="@{/ThinkEat/Test/Upload}"-->
+<!--          method="post"-->
+<!--          enctype="multipart/form-data">-->
+<!--        <input type="file" name="picture" accept="image/*">-->
+<!--        <input type="submit" value="上傳圖片">-->
+<!--    </form>-->
+<!--</main>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
-<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>圖片上傳功能測試</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <title>Image Page</title>
 </head>
 <body>
-<!-- Header區塊 -->
-<header>
-    <div th:insert="~{Fragment/Header :: header}"></div>
-</header>
-
-<!-- Main區塊 -->
-<main>
-    <div th:if="${pictureDto != null}">
-        <div>hardcode
-        <img src="C:/Users/marge/OneDrive/Desktop/MyClassDemo/ThinkEatJAR/img/1705379037034_scareddog.jpg">
-        </div>
-        </p>
-        <div> imageIo
-            <img th:src="@{/image/get(imageName='1705379037034_scareddog.jpg')}" alt="Scared Dog">
-        </div>
-        </p>
-        <div th:text="${pictureDto.path}"></div>
-    </div>
-    <form th:object="${pictureDto}"
-          th:action="@{/ThinkEat/Test/Upload}"
-          method="post"
-          enctype="multipart/form-data">
-        <input type="file" name="picture" accept="image/*">
-        <input type="submit" value="上傳圖片">
-    </form>
-</main>
-
+<img th:src="@{${image}}"/>
 </body>
 </html>

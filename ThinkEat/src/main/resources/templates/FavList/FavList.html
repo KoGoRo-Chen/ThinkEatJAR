@@ -37,11 +37,15 @@
                         <div>
                             <!-- 功能區 -->
                             <!-- 新增 -->
-                            <input type="button" href="#">
+                            <input type="button"
+                                   th:onclick="'window.location.href=\'/ThinkEat/FavList/CreateFavList/'">
                             <!-- 修改 -->
-                            <input type="button" href="#">
+                            <input type="button"
+                                   th:onclick="'window.location.href=\'/ThinkEat/FavList/CreateFavList/'">>
                             <!-- 刪除 -->
-                            <input type="button" href="#">
+                            <form method="Post" action="">
+                                <input type="submit" value="刪除">
+                            </form>
                             <!-- 功能區結束 -->
 
                             <!-- 清單顯示區 -->

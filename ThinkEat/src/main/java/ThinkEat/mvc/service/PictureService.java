@@ -46,7 +46,7 @@ public class PictureService {
             pictureDto.setFilename(fileName);
 
             // 構建圖片的完整路徑
-            String filePath = "C://Users//marge//OneDrive//Desktop//MyClassDemo//ThinkEatJAR//img//";
+            String filePath = "C:\\Users\\kogor\\Desktop\\MyJavaProject\\IntelliJ\\ThinkEatJAR\\img\\";
             System.out.println("上傳圖片路徑:" + filePath);
 
             // 創建 File 對象

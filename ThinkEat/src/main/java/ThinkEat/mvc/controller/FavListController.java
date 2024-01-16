@@ -31,10 +31,22 @@ public class FavListController {
         this.favListServiceService = favListServiceService;
     }
 
-    //顯示收藏頁面
+    //顯示收藏清單頁面
     @GetMapping("/")
     public String getFavListPage() {
         return "FavList/FavList";
+    }
+
+    //顯示創造收藏清單頁面
+    @GetMapping("/CreateFavList")
+    public String getCreateFavListPage() {
+        return "FavList/CreateFavList";
+    }
+
+    //顯示編輯收藏清單頁面
+    @GetMapping("/CreateFavList/{FavListID}")
+    public String getEditListPage() {
+        return "FavList/CreateFavList";
     }
 
 }
