@@ -17,8 +17,14 @@
 <!-- Main區塊 -->
 <main>
     <div th:if="${pictureDto != null}">
-        <img th:src="${pictureDto.path}">
+        <div>hardcode
         <img src="C:/Users/marge/OneDrive/Desktop/MyClassDemo/ThinkEatJAR/img/1705379037034_scareddog.jpg">
+        </div>
+        </p>
+        <div> imageIo
+            <img th:src="@{/image/get(imageName='1705379037034_scareddog.jpg')}" alt="Scared Dog">
+        </div>
+        </p>
         <div th:text="${pictureDto.path}"></div>
     </div>
     <form th:object="${pictureDto}"
