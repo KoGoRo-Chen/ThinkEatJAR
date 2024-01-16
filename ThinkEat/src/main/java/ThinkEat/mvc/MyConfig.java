@@ -27,4 +27,5 @@ public class MyConfig {
         HiddenHttpMethodFilter filter = new HiddenHttpMethodFilter();
         return filter;
     }
+
 }

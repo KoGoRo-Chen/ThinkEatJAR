@@ -2,6 +2,7 @@ package ThinkEat.mvc.controller;
 
 import ThinkEat.mvc.model.dto.PictureDto;
 import ThinkEat.mvc.service.PictureService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
@@ -38,6 +40,7 @@ public class TestController {
     @PostMapping("/Upload")
     public String UploadPicture(@RequestPart("picture") MultipartFile multipartFile,
                                 @ModelAttribute("pictureDto") PictureDto pictureDto,
+                                HttpServletResponse response,
                                 Model model) {
         Integer picId = pictureService.addPicture(pictureDto, multipartFile);
         System.out.println(pictureService.getPictureById(picId).getPath());

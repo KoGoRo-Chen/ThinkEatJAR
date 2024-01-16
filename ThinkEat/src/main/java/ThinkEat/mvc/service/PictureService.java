@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -44,20 +45,28 @@ public class PictureService {
             String fileName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
             pictureDto.setFilename(fileName);
 
-            // 構建文件的完整路徑
-            String relativePath = "static/img/" + fileName;
-            String filePath = ResourceUtils.getURL("classpath:").getPath() + relativePath;
-            String realPath = filePath.replace('/', '\\').substring(1);
-            System.out.println(realPath);
-            // 創建 File 對象
-            File targetFile = new File(realPath);
+            // 構建圖片的完整路徑
+            String filePath = "C://Users//marge//OneDrive//Desktop//MyClassDemo//ThinkEatJAR//img//";
+            System.out.println("上傳圖片路徑:" + filePath);
 
-            // 將 MultipartFile 寫入到目標文件
-            multipartFile.transferTo(targetFile);
+            // 創建 File 對象
+            File targetFile = new File(filePath, fileName);
+            // 檢查目錄是否存在，不存在則創建
+            if (!targetFile.getParentFile().exists()) {
+                targetFile.getParentFile().mkdirs();
+            }
+
+            // 將 MultipartFile 寫入到目標文件前
+            // 檢查文件是否已存在
+            if (targetFile.exists()) {
+                throw new FileAlreadyExistsException("文件已存在");
+            } else {
+                multipartFile.transferTo(targetFile);
+            }
 
             // 設定圖片路徑
-            pictureDto.setPath(realPath);
-        Picture picture = modelMapper.map(pictureDto, Picture.class);
+            pictureDto.setPath(targetFile.getAbsolutePath());
+            Picture picture = modelMapper.map(pictureDto, Picture.class);
             pictureDao.save(picture);
             return picture.getId();
         } catch (IOException e) {
