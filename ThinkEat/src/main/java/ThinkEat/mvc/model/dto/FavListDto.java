@@ -14,10 +14,13 @@ public class FavListDto {
 
     private Integer id;
 
+    private Integer listId;
+
     private String favListName;
 
     private UserDto favList_User;
 
+    private Integer favListId;
     private List<EatRepoDto> favList_EatRepoList = new ArrayList<>();
 
 }

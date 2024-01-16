@@ -3,6 +3,7 @@ package ThinkEat.mvc.controller;
 import ThinkEat.mvc.model.dto.CommentDto;
 import ThinkEat.mvc.model.dto.EatRepoDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
+import ThinkEat.mvc.model.entity.FavList;
 import ThinkEat.mvc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("ViewEat/")
 public class ViewEatController {
 
+    private final FavListService favListService;
     private final PriceService priceService;
     private final TagService tagService;
     private final EatRepoService eatRepoService;
@@ -23,11 +25,12 @@ public class ViewEatController {
     private final RestaurantService restaurantService;
 
     @Autowired
-    public ViewEatController(PriceService priceService,
+    public ViewEatController(FavListService favListService, PriceService priceService,
                              TagService tagService,
                              EatRepoService eatRepoService,
                              CommentService commentService,
                              RestaurantService restaurantService) {
+        this.favListService = favListService;
         this.priceService = priceService;
         this.tagService = tagService;
         this.eatRepoService = eatRepoService;
@@ -69,6 +72,10 @@ public class ViewEatController {
         System.out.println("新增成功" + eatRepoDto);
         model.addAttribute("restaurantId", eatRepoDto.getRestaurant().getId());
         model.addAttribute("eatRepoId", eatRepoDto.getId());
+
+        //加入收藏清單
+        model.addAttribute("allFavList", favListService.findAllFavList());
+
 
         //處理留言
         List<CommentDto> commentDtoList = eatRepoService.findAllCommentByEatRepoId(eatRepoId);

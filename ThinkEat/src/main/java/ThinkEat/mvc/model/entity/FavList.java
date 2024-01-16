@@ -19,6 +19,10 @@ public class FavList {
     @Column(name = "favlist_id")
     private Integer id;
 
+    @Column(name = "listId")
+    private Integer listId;
+
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column
     private String favListName;
 

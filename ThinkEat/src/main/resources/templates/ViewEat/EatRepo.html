@@ -9,6 +9,16 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script>
     </script>
+    <style>
+        .notification {
+        background-color: red; /* 綠色背景 */
+        color: white; /* 白色文字 */
+        text-align: center; /* 文字置中 */
+        padding: 16px; /* 內邊距 */
+        margin: 16px 0; /* 外邊距 */
+        border-radius: 4px; /* 圓角 */
+        }
+    </style>
 </head>
 <body>
 <!-- Header區塊 -->
@@ -23,7 +33,7 @@
         <div class="returnToResView">
             <input type="button"
                    th:value="'返回 ' + ${eatRepoDto.restaurant.getName()}"
-                   th:onclick="'redirectToResInfo(\'' + ${restaurantId} + '\')'">
+                   th:onclick="|window.location.href='/ThinkEat/ViewEat/ResInfo/' + ${restaurantId} |">
         </div>
         <div class="repoTitleArea">
             <h3 th:text="${eatRepoDto.title}"></h3>
@@ -80,6 +90,27 @@
                     <input type="submit" value="刪除">
                 </form>
 
+                <!--添加收藏
+                <form method="post"
+                      th:action="@{/ThinkEat/FavList/AddFavList/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                    <input type="submit" value="添加收藏">
+                </form>-->
+
+                <!--添加收藏-->
+                <form method="post"
+                      th:action="@{/ThinkEat/FavList/AddFavList/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                    添加收藏：<select id="favListId" name="favListId">
+                    <option th:each="favList : ${allFavList}"
+                            th:value="${favList.id}"
+                            th:text="${favList.favListName}">
+                    </option>
+                </select>
+                    <input type="submit" value="添加收藏">
+                </form>
+                <!-- 在頁面中顯示通知 -->
+                <div th:if="${message}">
+                    <p th:text="${message}" class="notification"></p>
+                </div>
             </div>
         </section>
 

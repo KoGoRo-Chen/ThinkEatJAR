@@ -19,16 +19,7 @@
       th:object="${favListDto}"
       th:action="@{/ThinkEat/FavList/Create}">
     <fieldset>
-        請輸入清單名稱：
-        <!-- 輸入清單名字 -->
-        <input id="favListName"
-               name="favListName"
-               th:field="*{favListName}">
-        </P>
-        <!--送出-->
-        <input type="submit" th:value="建立清單">
-        <!--送出-->
-        <input type="reset" th:value="清除">
+
     </fieldset>
 </form>
 
