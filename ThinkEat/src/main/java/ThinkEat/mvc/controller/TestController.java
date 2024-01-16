@@ -4,39 +4,26 @@ import ThinkEat.mvc.model.dto.PictureDto;
 import ThinkEat.mvc.service.PictureService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 @Controller
 @RequestMapping("Test/")
 public class TestController {
     private final PictureService pictureService;
-    private final ResourceLoader resourceLoader;
-
     private static final String IMAGE_FOLDER = "C:/Users/marge/OneDrive/Desktop/MyClassDemo/ThinkEatJAR/img/";
 
     @Autowired
-    public TestController(PictureService pictureService,
-                          ResourceLoader resourceLoader) {
+    public TestController(PictureService pictureService) {
         this.pictureService = pictureService;
-        this.resourceLoader = resourceLoader;
     }
+
+    @Value("${spring.mvc.servlet.path:/}") // 如果屬性不存在，默認為 "/"
+    private String servletPath;
 
 
     //顯示上傳圖片頁面
@@ -61,7 +48,7 @@ public class TestController {
 
     @GetMapping("/image")
     public String getImage(Model model) {
-        String imagePath = "/ThinkEat/images/1705405519228_OIP.jpg"; // 靜態資源的相對路徑
+        String imagePath = servletPath + "1705405519228_OIP.jpg"; // 靜態資源的相對路徑
         model.addAttribute("imagePath", imagePath);
         // Thymeleaf的頁面名稱
         return "Test/PicUploadTest";
