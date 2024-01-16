@@ -61,9 +61,10 @@ public class TestController {
 
     @GetMapping("/image")
     public String getImage(Model model) {
-        Resource image = resourceLoader.getResource("static/images/1705405519228_OIP.jpg");
-        model.addAttribute("image", image);
-        return "Test/PicUploadTest"; // Thymeleaf的頁面名稱
+        String imagePath = "/ThinkEat/images/1705405519228_OIP.jpg"; // 靜態資源的相對路徑
+        model.addAttribute("imagePath", imagePath);
+        // Thymeleaf的頁面名稱
+        return "Test/PicUploadTest";
     }
 
 
