@@ -5,17 +5,18 @@ import ThinkEat.mvc.service.PictureService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("Test/")
 public class TestController {
     private final PictureService pictureService;
-    private static final String IMAGE_FOLDER = "C:/Users/marge/OneDrive/Desktop/MyClassDemo/ThinkEatJAR/img/";
 
     @Autowired
     public TestController(PictureService pictureService) {
@@ -28,21 +29,21 @@ public class TestController {
 
     //顯示上傳圖片頁面
     @GetMapping("/PicUploadTest")
-    public String GetPicUploadTestPage(Model model) {
-        PictureDto pictureDto = new PictureDto();
-        model.addAttribute("pictureDto", pictureDto);
+    public String GetPicUploadTestPage(Model model) throws IOException {
+
         return "Test/PicUploadTest";
     }
 
     //處理圖片上傳
     @PostMapping("/Upload")
     public String UploadPicture(@RequestPart("picture") MultipartFile multipartFile,
-                                @ModelAttribute("pictureDto") PictureDto pictureDto,
                                 HttpServletResponse response,
                                 Model model) {
+        PictureDto pictureDto = new PictureDto();
         Integer picId = pictureService.addPicture(pictureDto, multipartFile);
+        model.addAttribute("pictureDto", pictureDto);
         System.out.println(pictureService.getPictureById(picId).getPath());
-        model.addAttribute("pictureDto", pictureService.getPictureById(picId));
+        model.addAttribute("imagePath", pictureService.getPictureById(picId).getPath());
         return "Test/PicUploadTest";
     }
 

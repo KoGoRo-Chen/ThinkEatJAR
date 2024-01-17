@@ -65,7 +65,7 @@ public class PictureService {
             }
 
             // 設定圖片路徑
-            pictureDto.setPath(targetFile.getAbsolutePath());
+            pictureDto.setPath("http://localhost:9990/ThinkEat/image/" + fileName);
             Picture picture = modelMapper.map(pictureDto, Picture.class);
             pictureDao.save(picture);
             return picture.getId();
