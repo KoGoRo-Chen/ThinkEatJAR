@@ -57,6 +57,8 @@ public class FavListController {
         //載入清單中的所有餐廳
         List<RestaurantDto> restaurantDtoList = favListService.findAllRestaurantsInFavList(favListDtoId);
         model.addAttribute("restaurantDtoList", restaurantDtoList);
+        model.addAttribute("favListDtoName", favListService.getFavListById(favListDtoId).getFavListName());
+        model.addAttribute("favListDtoId", favListDtoId);
 
         return "FavList/FavList";
     }
@@ -79,10 +81,31 @@ public class FavListController {
     }
 
     //顯示編輯收藏清單頁面
-    @GetMapping("/CreateFavList/{favListID}")
-    public String getEditListPage() {
+    @GetMapping("/Edit/{favListDtoId}")
+    public String getEditFavListPage(@PathVariable("favListDtoId") Integer favListDtoId,
+                                     Model model) {
+        //載入所有清單(用於側邊欄)
+        List<FavListDto> favListDtoList = favListService.findAllFavList();
+        model.addAttribute("favListDtoList", favListDtoList);
 
-        return "redirect:/ThinkEat/FavList/";
+        //載入清單中的所有餐廳
+        List<RestaurantDto> restaurantDtoList = favListService.findAllRestaurantsInFavList(favListDtoId);
+        model.addAttribute("restaurantDtoList", restaurantDtoList);
+        model.addAttribute("favListDto", favListService.getFavListById(favListDtoId));
+        model.addAttribute("favListDtoId", favListDtoId);
+
+        return "FavList/EditFavList";
+    }
+
+    //送出清單編輯結果
+    @PostMapping("Edit/EditName/{favListDtoId}")
+    public String EditFavListName(@PathVariable("favListDtoId") Integer favListDtoId,
+                                  @ModelAttribute("favListDto") FavListDto favListDto,
+                                  RedirectAttributes redirectAttributes,
+                                  Model model) {
+        favListService.updateFavListById(favListDtoId, favListDto);
+        redirectAttributes.addAttribute("favListDtoId", favListDtoId);
+        return "redirect:/ThinkEat/FavList/{favListDtoId}";
     }
 
     //將文章添加至收藏清單
@@ -100,5 +123,21 @@ public class FavListController {
         redirectAttributes.addFlashAttribute("message", "添加至收藏成功");
         return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";
     }
+
+    //在收藏清單中移除餐廳
+    @PostMapping("/RemoveRestaurant/{restaurantId}")
+    public String RemoveRestaurantFromList(@PathVariable("restaurantId") Integer restaurantId,
+                                           @RequestParam("favListId") Integer favListDtoId,
+                                           RedirectAttributes redirectAttributes) {
+        //將餐廳從清單中移除
+        List<RestaurantDto> restaurantDtoList = favListService.RemoveRestaurantFromFavList(favListDtoId, restaurantId);
+
+        redirectAttributes.addFlashAttribute("restaurantDtoList", restaurantDtoList);
+        redirectAttributes.addAttribute("favListDtoId", favListDtoId);
+
+        return "redirect:/ThinkEat/FavList/{favListDtoId}";
+    }
+
+
 
 }

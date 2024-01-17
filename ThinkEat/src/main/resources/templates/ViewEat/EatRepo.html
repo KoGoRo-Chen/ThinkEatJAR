@@ -18,6 +18,19 @@
         margin: 16px 0; /* 外邊距 */
         border-radius: 4px; /* 圓角 */
         }
+
+        .notification.fade-in {
+         animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+
     </style>
 </head>
 <body>
@@ -105,6 +118,7 @@
                             th:text="${favList.favListName}">
                     </option>
                 </select>
+
                     <input type="submit" value="添加收藏">
                 </form>
                 <!-- 在頁面中顯示通知 -->

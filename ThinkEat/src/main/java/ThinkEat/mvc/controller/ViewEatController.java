@@ -76,7 +76,6 @@ public class ViewEatController {
         //加入收藏清單
         model.addAttribute("allFavList", favListService.findAllFavList());
 
-
         //處理留言
         List<CommentDto> commentDtoList = eatRepoService.findAllCommentByEatRepoId(eatRepoId);
         model.addAttribute("commentDtoList", commentDtoList);

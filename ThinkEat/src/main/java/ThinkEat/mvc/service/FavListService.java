@@ -50,13 +50,6 @@ public class FavListService {
             // 更新標題
             favListToUpdate.setFavListName(favListDto.getFavListName());
 
-            // 更新文章
-            List<EatRepoDto> eatRepoDtoList = favListDto.getFavList_EatRepoList();
-            List<EatRepo> eatRepoList = eatRepoDtoList.stream()
-                    .map(eatRepoDto -> modelMapper.map(eatRepoDto, EatRepo.class))
-                    .toList();
-            favListToUpdate.setFavList_EatRepoList(eatRepoList);
-
             //儲存更新
             favListDao.save(favListToUpdate);
             return favListToUpdate.getId();
@@ -142,12 +135,60 @@ public class FavListService {
             List<RestaurantDto> restaurantDtoList = uniqueRestaurants.stream()
                     .map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class))
                     .toList();
+
             //儲存restaurantList
             restaurantList.addAll(restaurantDtoList);
         }
 
         return restaurantList;
     }
+
+    // 將餐廳從清單中移除
+    public List<RestaurantDto> RemoveRestaurantFromFavList(Integer favListId, Integer restaurantId) {
+        List<RestaurantDto> restaurantList = new ArrayList<>();
+
+        // 根據 favListId 找出 FavList
+        Optional<FavList> favListOpt = favListDao.findById(favListId);
+
+        if (favListOpt.isPresent()) {
+            FavList favList = favListOpt.get();
+
+            // 取得 FavList 內的所有食記
+            List<EatRepo> eatRepoListInFavList = favList.getFavList_EatRepoList();
+
+            //依餐廳ID尋找所有食記並刪除
+            Iterator<EatRepo> iterator = eatRepoListInFavList.iterator();
+            while (iterator.hasNext()) {
+                EatRepo eatRepo = iterator.next();
+                if (eatRepo.getRestaurant().getId().equals(restaurantId)) {
+                    iterator.remove();  // 使用 Iterator 刪除元素
+                }
+            }
+
+            // 更新 FavList 內的食記清單
+            favList.setFavList_EatRepoList(eatRepoListInFavList);
+            favListDao.save(favList);
+
+            // 重新建立 FavList 內的餐廳列表
+            Set<Restaurant> uniqueRestaurants = new HashSet<>();
+            for (EatRepo eatRepo : eatRepoListInFavList) {
+                Restaurant restaurant = eatRepo.getRestaurant();
+                uniqueRestaurants.add(restaurant);
+            }
+
+            // 將 uniqueRestaurants 裡的 restaurant 轉換成 Dto
+            List<RestaurantDto> restaurantDtoList = uniqueRestaurants.stream()
+                    .map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class))
+                    .toList();
+
+            return restaurantDtoList;
+        }
+
+        return null;
+    }
+
+
+
 
 
 }
