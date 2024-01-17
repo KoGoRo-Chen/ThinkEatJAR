@@ -21,7 +21,10 @@ public class Picture {
     private String filename;
 
     @Column
-    private String Path;
+    private String filePath;
+
+    @Column
+    private String htmlPath;
 
     @ManyToOne(targetEntity = EatRepo.class)
     @JoinColumn(name = "eatrepo_id")

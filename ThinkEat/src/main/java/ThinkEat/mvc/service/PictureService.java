@@ -27,9 +27,6 @@ public class PictureService {
     private final PictureDao pictureDao;
     private final ModelMapper modelMapper;
 
-    @Value("${upload.dir}")
-    private String uploadDir;
-
     @Autowired
     public PictureService(PictureDao pictureDao, ModelMapper modelMapper) {
         this.pictureDao = pictureDao;
@@ -65,7 +62,8 @@ public class PictureService {
             }
 
             // 設定圖片路徑
-            pictureDto.setPath("http://localhost:9990/ThinkEat/image/" + fileName);
+            pictureDto.setFilePath(filePath + fileName);
+            pictureDto.setHtmlPath("http://localhost:9990/ThinkEat/image/" + fileName);
             Picture picture = modelMapper.map(pictureDto, Picture.class);
             pictureDao.save(picture);
             return picture.getId();

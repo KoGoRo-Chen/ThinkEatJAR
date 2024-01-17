@@ -13,7 +13,9 @@ public class PictureDto {
 
     private String filename;
 
-    private String Path;
+    private String filePath;
+
+    private String htmlPath;
 
     private EatRepoDto pic_EatRepo;
 
