@@ -11,7 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("FavList/")
@@ -56,6 +59,11 @@ public class FavListController {
 
         //載入清單中的所有餐廳
         List<RestaurantDto> restaurantDtoList = favListService.findAllRestaurantsInFavList(favListDtoId);
+        //獲得清單中餐廳的總數
+        Integer totalRestaurants = restaurantDtoList.size();
+        Integer count = 0;
+        model.addAttribute("count", count);
+        model.addAttribute("totalRestaurants", totalRestaurants);
         model.addAttribute("restaurantDtoList", restaurantDtoList);
         model.addAttribute("favListDtoName", favListService.getFavListById(favListDtoId).getFavListName());
         model.addAttribute("favListDtoId", favListDtoId);
@@ -138,6 +146,35 @@ public class FavListController {
         return "redirect:/ThinkEat/FavList/{favListDtoId}";
     }
 
+    //抽選餐廳
+    @GetMapping("/{favListDtoId}/count/{count}")
+    public String PickRestaurantByCount(@RequestParam("count") Integer count,
+                                        @RequestParam("favListDtoId") Integer favListDtoId,
+                                        RedirectAttributes redirectAttributes,
+                                        Model model) {
+        FavListDto favListDto = favListService.getFavListById(favListDtoId);
+        if (count <= favListDto.getFavList_EatRepoList().size()) {
+            List<RestaurantDto> selectedRestaurants = favListService.PickRestaurantDtoByCount(favListDtoId, count);
+            model.addAttribute("selectedRestaurants", selectedRestaurants);
+        }
+
+        //載入所有清單(用於側邊欄)
+        List<FavListDto> favListDtoList = favListService.findAllFavList();
+        model.addAttribute("favListDtoList", favListDtoList);
+
+
+        //載入清單中的所有餐廳
+        List<RestaurantDto> restaurantDtoList = favListService.findAllRestaurantsInFavList(favListDtoId);
+        Integer totalRestaurants = restaurantDtoList.size();
+        model.addAttribute("count", count);
+        model.addAttribute("totalRestaurants", totalRestaurants);
+        model.addAttribute("restaurantDtoList", restaurantDtoList);
+        model.addAttribute("favListDtoName", favListService.getFavListById(favListDtoId).getFavListName());
+        model.addAttribute("favListDtoId", favListDtoId);
+
+        return "FavList/FavList";
+    }
 
 
 }
+

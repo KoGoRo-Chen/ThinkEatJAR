@@ -59,9 +59,37 @@
                         </button>
                         <!-- 功能區結束 -->
                     </section>
+                    <!-- 抽選功能區 -->
+                    <section>
+                        <form method="Get"
+                              th:action="@{/ThinkEat/FavList/{favListDtoId}/count/{count}(favListDtoId=${favListDtoId}, count=${count})}">
+                            <span th:text="'本清單中共有 ' + ${totalRestaurants} + ' 家餐廳' "></span>
+                            從中抽取：<select id="count" name="count">
+                            <option th:each="count : ${#numbers.sequence(1, totalRestaurants)}"
+                                    th:value="${count}"
+                                    th:text="${count}">
+                            </option>
+                        </select>
+                            清單ID：<input type="text" id="favListDtoId" name="favListDtoId" th:value="${favListDtoId}">
+                            <input type="submit" value="抽取">
+                        </form>
+                        <!-- 抽選結果區 -->
+                        <div th:if="${selectedRestaurants}">
+                            <th:block th:each="restaurantDto : ${selectedRestaurants}">
+                                <figure>
+                                    <img style="height: 180px; width: 180px; background-color: green;">
+                                    <figcaption class="d-flex">
+                                        <div>
+                                            <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
+                                               th:text="${restaurantDto.name}"></a>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+                            </th:block>
+                        </div>
+                    </section>
 
                     <!-- 清單顯示區 -->
-
                     <th:block th:each="restaurantDto : ${restaurantDtoList}">
                         <figure>
                             <img style="height: 180px; width: 180px; background-color: red;">
@@ -73,7 +101,7 @@
                                 <!-- 從清單中移除文章 -->
                                 <form method="post"
                                       th:action="@{/ThinkEat/FavList/RemoveRestaurant/{restaurantId}(restaurantId=${restaurantDto.id}, favListId=${favListDtoId})}">
-                                    <input type="submit" th:value="移除這篇文章">
+                                    <input type="submit" th:value="移除這間餐廳">
                                 </form>
                             </figcaption>
                         </figure>

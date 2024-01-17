@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FavListService {
@@ -186,6 +187,44 @@ public class FavListService {
 
         return null;
     }
+
+
+    //隨機抽出指定數量的餐廳
+    @Transactional
+    public List<RestaurantDto> PickRestaurantDtoByCount(Integer favListId, Integer count) {
+        // 根據 favListId 找出 FavList
+        Optional<FavList> favListOpt = favListDao.findById(favListId);
+
+        if (favListOpt.isPresent()) {
+            FavList favList = favListOpt.get();
+
+            // 取得 FavList 內的所有食記
+            List<EatRepo> eatRepoListInFavList = favList.getFavList_EatRepoList();
+
+            // 用 Set 來確保餐廳不會重複
+            Set<Restaurant> uniqueRestaurants = new HashSet<>();
+
+            // 遍歷每一個食記，取得對應的餐廳
+            for (EatRepo eatRepo : eatRepoListInFavList) {
+                Restaurant restaurant = eatRepo.getRestaurant();
+
+                // 將餐廳加入 Set
+                uniqueRestaurants.add(restaurant);
+            }
+            // 將 uniqueRestaurants 裡的 restaurant 轉換成 Dto
+            List<RestaurantDto> restaurantDtoList = uniqueRestaurants.stream()
+                    .map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class))
+                    .collect(Collectors.toCollection(ArrayList::new));
+            Collections.shuffle(restaurantDtoList);
+
+            List<RestaurantDto> selectedRestaurants = restaurantDtoList.stream()
+                    .limit(count)
+                    .collect(Collectors.toList());
+            return selectedRestaurants;
+        }
+        return null;
+    }
+
 
 
 
