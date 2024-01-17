@@ -16,15 +16,13 @@
 
 <!-- Main區塊 -->
 <main>
-    <div>
+    <div th:each="imagePath : ${imagePaths}">
         <img th:src="${imagePath}">
     </div>
 
     </div>
-    <form th:action="@{/ThinkEat/Test/Upload}"
-          method="post"
-          enctype="multipart/form-data">
-        <input type="file" name="picture" accept="image/*">
+    <form th:action="@{/ThinkEat/Test/Upload}" method="post" enctype="multipart/form-data">
+        <input type="file" name="pictures" accept="image/*" multiple>
         <input type="submit" value="上傳圖片">
     </form>
 </main>
