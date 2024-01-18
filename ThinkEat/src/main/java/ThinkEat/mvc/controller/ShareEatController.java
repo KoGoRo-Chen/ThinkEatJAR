@@ -234,49 +234,26 @@ public class ShareEatController {
     @GetMapping("/ShareEatRepo/Edit/{eatRepoId}")
     public String GetEditEatRepoPage(@PathVariable("eatRepoId") Integer eatRepoId,
                                      Model model) {
-        model.addAttribute("eatRepoDto", eatRepoService.getEatRepoByEatRepoId(eatRepoId));
-        System.out.println("編輯頁面接收到的eatRepo: " + eatRepoService.getEatRepoByEatRepoId(eatRepoId));
+        RestaurantDto restaurantDto = eatRepoService.getEatRepoByEatRepoId(eatRepoId).getRestaurant();
+        model.addAttribute("restaurantDto", restaurantDto);
+
+        //價格
         List<PriceDto> prices = priceService.findAllPrice();
         model.addAttribute("prices", prices);
+        PriceDto priceDto = new PriceDto();
+        model.addAttribute("priceDto", priceDto);
+
+        //標籤
         List<TagDto> tags = tagService.findAllTag();
         model.addAttribute("tags", tags);
+        TagDto tagDto = new TagDto();
+        model.addAttribute("tagDto", tagDto);
+
+        EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
+        model.addAttribute("eatRepoDto", eatRepoDto);
 
         return "ShareEat/Edit";
     }
-
-    // 處理編輯頁面提交
-    @PostMapping("/EditEatRepo")
-    public String editEatRepo(@RequestParam("eatRepoId") Integer eatRepoId,
-                              @RequestParam("tagIds") List<Integer> tagIds,
-                              @RequestParam("tagIds") Integer priceId,
-                              @ModelAttribute("eatRepoDto") EatRepoDto eatRepoDto,
-                              RedirectAttributes redirectAttributes,
-                              Model model) {
-
-        // 處理價格
-        PriceDto priceDto = priceService.getPriceById(priceId);
-        eatRepoDto.setPrice(priceDto);
-
-        //處理標籤
-        List<TagDto> selectedTags = new ArrayList<>();
-        for (Integer tagId : tagIds) {
-            TagDto fetchedTag = tagService.getTagById(tagId);
-            selectedTags.add(fetchedTag);
-        }
-        eatRepoDto.setEatRepo_TagList(selectedTags);
-
-        // 處理編輯的邏輯
-        System.out.println("編輯頁面接收到的資料:" + eatRepoDto);
-        eatRepoService.updateEatRepoByEatRepoId(eatRepoId, eatRepoDto);
-        eatRepoDto.setId(eatRepoId);
-        System.out.println("更新後的資料:" + eatRepoDto);
-
-        redirectAttributes.addAttribute("eatRepoId", eatRepoId);
-
-        // 重定向到食記查看頁面，這裡使用/{eatRepoId}作為占位符，根據實際情況修改
-        return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";
-    }
-
 
     //刪除文章
     @PostMapping("/ShareEatRepo/Delete/{eatRepoId}")

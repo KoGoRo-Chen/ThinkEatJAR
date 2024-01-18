@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>編輯食記</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 </head>
 <body>
@@ -16,31 +18,100 @@
 
 <!-- Main區塊 -->
 <main>
-    <div>
-        <div th:text="${eatRepoDto}"></div>
-        <div th:text="${prices}"></div>
-        <div th:text="${tags}"></div>
+
+    <!-- 互動視窗1 新增價位 -->
+    <div class="modal fade" id="addPriceModal"
+         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">增加新價位</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:object="${priceDto}" method="post"
+                          th:action="@{/ThinkEat/ShareEat/CreateNewPrice}">
+                        <fieldset>
+                            <!-- 新價位 -->
+                            輸入新價格：<input type="text" id="name" name="name" th:field="${priceDto.name}"/>
+                            <p/>
+                            <!-- 餐廳ID -->
+                            <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}" type="hidden"/>
+                            <!-- 食記ID -->
+                            <input id="eatRepoId" name="eatRepoId" th:value="${eatRepoId}" type="hidden"/>
+                            <!-- 儲存資料 -->
+                            <input type="submit" value="確認送出"/>
+                            <!-- 清空輸入的內容 -->
+                            <button type="reset">清空</button>
+                        </fieldset>
+                    </form>
+                </div>
+                .
+            </div>
+        </div>
     </div>
-    <form th:object="${eatRepoDto}" method="post" th:action="@{/ThinkEat/ShareEat/EditEatRepo}"
+
+    <!-- 互動視窗2 新增標籤 -->
+    <div class="modal fade" id="addTagModal" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">增加新標籤</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:object="${tagDto}" method="post"
+                          th:action="@{/ThinkEat/ShareEat/CreateNewTag}">
+                        <fieldset>
+                            <!-- 新標籤 -->
+                            輸入新Tag：<input type="text" id="name" name="name" th:field="${tagDto.name}"/>
+                            <p/>
+                            <!-- 餐廳ID -->
+                            <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}" type="hidden"/>
+                            <!-- 食記ID -->
+                            <input id="eatRepoId" name="eatRepoId" th:value="${eatRepoId}" type="hidden"/>
+                            <!-- 前往食記發表 -->
+                            <input type="submit" value="確認送出"/>
+                            <!-- 清空輸入的內容 -->
+                            <button type="reset">清空</button>
+                        </fieldset>
+                    </form>
+                </div>
+                .
+            </div>
+        </div>
+    </div>
+
+    <!-- 食記內容撰寫區 -->
+    <form th:object="${eatRepoDto}" method="post" th:action="@{/ThinkEat/ShareEat/AddEatRepo}"
           enctype="multipart/form-data">
         <fieldset>
+            <!-- 食記圖片上傳區 -->
+            <div>
+                <span>上傳圖片：</span>
+                <input type="file" id="progressbarTWInput" name="multipartFileList"
+                       accept="image/**" multiple>
+                <div id="preview_progressbarTW_imgs"
+                     style="width:100%; height: 500px; overflow:scroll">
+                    <button type="button" id="deleteImageBtn" style="display: none">移除</button>
+                </div>
+            </div>
             <!-- 標題 -->
             標題：<input type="text" id="eatRepoTitle" name="eatRepoTitle" th:field="*{title}"/>
             <p/>
             <!-- 食記ID -->
-            <input id="eatRepoId" name="eatRepoId" th:value="${eatRepoDto.id}" type="hidden"/>
-            <!-- 上傳圖片
-            上傳圖片：<input type="file" id="eatPic" name="eatPic" th:field="*{eatPic}" accept="image/jpeg, image/png, image/jpg" />-->
+            <input id="eatRepoId" name="eatRepoId" th:value="${eatRepoId}" type="hidden"/>
+            <!-- 餐廳ID -->
+            <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}" type="hidden"/>
             <p/>
             <!-- 店名 -->
-            <!-- 食記ID -->
-            <span id="restaurantId" name="restaurantId" th:text="${eatRepoDto.restaurant.id}" style="display: none"/>
             餐廳名稱：
-            <span th:text="${eatRepoDto.restaurant.name}"/>
+            <span th:text="${restaurantDto.name}"/>
             <p/>
             <!-- 地址(googlemap) -->
             餐廳地址：
-            <span th:text="${eatRepoDto.restaurant.address}"/>
+            <span th:text="${restaurantDto.address}"/>
             <p/>
             <!-- 品嘗日期 -->
             品嘗日期：<input type="date" id="date" name="date" th:field="*{date}"/>
@@ -52,12 +123,15 @@
                     th:text="${price.name}">
             </option>
         </select>
-            <!-- 重導到新增價位的頁面 -->
-            <button type="button"
-                    th:onclick="'window.location.href=\'/ThinkEat/ShareEat/ShareEatRepo/' + ${eatRepoDto.restaurant.id} + '/CreateNewPrice\''">
-                新增
-                Price
-            </button>
+            <span>
+                    <!-- 建立新價位 互動視窗 -->
+                    <button type="button" class=""
+                            data-bs-toggle="modal"
+                            data-bs-target="#addPriceModal"
+                            onclick="clearModalContent()">
+                        增加新價位
+                    </button>
+                </span>
             <p/>
             <!-- 標籤 -->
             標籤：<span th:each="tag : ${tags}">
@@ -65,12 +139,16 @@
                            th:value="${tag.id}"
                            th:text="${tag.name}">
                 </span>
-            <!-- 重導到新增tag的頁面 -->
-            <button type="button"
-                    th:onclick="'window.location.href=\'/ThinkEat/ShareEat/ShareEatRepo/' + ${eatRepoDto.restaurant.id} + '/CreateNewTag\''">
-                新增
-                Tag
-            </button>
+            <span>
+                    <!-- 建立新標籤 -->
+                    <button type="button" class=""
+                            data-bs-toggle="modal"
+                            data-bs-target="#addTagModal"
+                            onclick="clearModalContent()">
+                        增加新標籤
+                    </button>
+                </span>
+            <p/>
             <p/>
             <!-- 食記 -->
             <div>食記：</div>
@@ -82,45 +160,50 @@
             <input type="submit" value="發表文章"/>
 
             <!-- 一鍵清除所有內容(javascript) -->
-            <button type="button" onclick="clearForm()">清空</button>
+            <button type="reset">清空內容</button>
         </fieldset>
     </form>
 </main>
 
-</body>
-<script>
-    // 清空input
-    function clearForm() {
-        document.getElementById("eatRepoTitle").value = "";
-        document.getElementById("eatPic").value = "";
-        document.getElementById("date").value = "";
 
-        // 清空複選框
-        var checkboxes = document.getElementsByName("tagIds");
-        checkboxes.forEach(function (checkbox) {
-            checkbox.checked = false;
-        });
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+    // 清空 modal 內容的JavaScript函数
+    function clearModalContent() {
+        document.getElementById("name").value = "";
+    }
+
+    $("#progressbarTWInput").change(function () {
+        $("#preview_progressbarTW_imgs").html(""); // 清除預覽
+        readURL(this);
+    });
+
+    function readURL(input) {
+    var maxImages = 3; // 設定最大圖片數量
+
+    if (input.files && input.files.length > 0) {
+    if (input.files.length > maxImages) {
+        alert("最多只能上傳 " + maxImages + " 張圖片");
+        // 如果超過限制，可以清除已選擇的檔案
+        $("#progressbarTWInput").val('');
+        return;
+    }
+
+    for (var i = 0; i < input.files.length; i++) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var img = $("<div class='image-container'></div>")
+                .append($("<img width='300' height='200'>").attr('src', e.target.result));
+            $("#preview_progressbarTW_imgs").append(img);
+        };
+        reader.readAsDataURL(input.files[i]);
+    }
+    } else {
+    var noPictures = $("<p>目前沒有圖片</p>");
+    $("#preview_progressbarTW_imgs").append(noPictures);
+    }
     }
 </script>
+</body>
 </html>
-
-<!--
-<button type="button" onclick="openModal('Add Tag', 'tag')">新增 Tag</button>
--->
-
-<!--
-<button type="button" onclick="openModal('Add Price', 'price')">新增 Price</button>
--->
-
-<!-- 模態框
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2 id="modalTitle"></h2>
-        <form id="modalForm">
-            <label for="modalInput">名稱：</label>
-            <input type="text" id="modalInput" name="modalInput" required>
-            <button type="button" onclick="addNewItem()">新增</button>
-        </form>
-    </div>
-</div> -->

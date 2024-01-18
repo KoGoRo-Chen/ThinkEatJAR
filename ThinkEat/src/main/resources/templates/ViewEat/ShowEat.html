@@ -2,7 +2,7 @@
 <html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>發表食記</title>
+    <title>看所有餐廳</title>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
             rel="stylesheet">
@@ -34,7 +34,7 @@
             <div class="bg-light d-flex flex-column justify-content-between" style="width: 90%; height: 95%">
 
                 <!-- 接收所有餐廳資訊，生成縮圖 -->
-                <div class="pagination">
+                <div class="pagination d-flex flex-wrap">
                     <th:block th:each="restaurantDto : ${restaurantDtoList}">
                         <figure>
                             <img th:src="${restaurantDto.resPicList.get(0).htmlPath}"

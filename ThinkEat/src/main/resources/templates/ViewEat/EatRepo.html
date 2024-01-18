@@ -70,14 +70,17 @@
             <h3 th:text="${eatRepoDto.title}"></h3>
         </div>
         <section class="d-flex justify-content-center bg-light">
-            <!--圖片區-->
+            <div th:each="imagePath : ${imagePaths}">
+                <img th:src="${imagePath}" class="d-block w-50 h-50">
+            </div>
+            <!--圖片區
             <div id="carouselExampleControls" class="carousel slide"
                  data-bs-ride="carousel" data-bs-interval="false">
-                <div class="carousel-inner">
-                    <div class="carousel-item active"
-                         th:each="imagePath : ${imagePaths}">
-                        <img th:src="${imagePath}" class="d-block w-100" alt="...">
+                <div class="carousel-inner" th:each="imagePath : ${imagePaths}">
+                    <div class="carousel-item active">
+                        <img th:src="${imagePath}" class="d-block w-50 h-50" alt="...">
                     </div>
+                </div>
                     <button th:if="${#lists.size(imagePaths) > 1}" class="carousel-control-prev" type="button"
                             data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -88,7 +91,8 @@
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
-            </div>
+
+            </div>-->
 
             <!--文章區 -->
             <div class="eatInfoArea mx-2">
