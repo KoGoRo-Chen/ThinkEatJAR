@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"article", "favListList", "cmtList", "picList"})
+@ToString(exclude = {"article", "favListList", "cmtList"})
 public class EatRepoDto {
 
     private Integer id;

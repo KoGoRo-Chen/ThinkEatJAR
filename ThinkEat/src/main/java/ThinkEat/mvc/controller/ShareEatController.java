@@ -176,7 +176,7 @@ public class ShareEatController {
     public String addEatRepo(@ModelAttribute("eatRepoDto") EatRepoDto eatRepoDto,
                              @RequestParam("restaurantId") Integer restaurantId,
                              @RequestParam("tagIds") List<Integer> tagIds,
-                             @RequestPart("picList") List<MultipartFile> multipartFileList,
+                             @RequestPart("multipartFileList") List<MultipartFile> multipartFileList,
                              RedirectAttributes redirectAttributes,
                              Model model) {
 
@@ -189,10 +189,12 @@ public class ShareEatController {
         for (MultipartFile multipartFile : multipartFileList) {
             PictureDto pictureDto = new PictureDto();
             Integer picId = pictureService.addPicture(pictureDto, multipartFile);
+            pictureDto.setId(picId);
             eatRepoDto.getPicList().add(pictureService.getPictureById(picId));
+            System.out.println(eatRepoDto.getPicList());
         }
 
-        //CO處理價格
+        //處理價格
         PriceDto priceDto = priceService.getPriceById(eatRepoDto.getPriceId());
         eatRepoDto.setPrice(priceDto);
 

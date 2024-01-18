@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"article", "favListList", "cmtList", "picList"})
+@ToString(exclude = {"article", "favListList", "cmtList"})
 public class EatRepo {
 
     @Id
