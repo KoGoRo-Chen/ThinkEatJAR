@@ -2,17 +2,15 @@
 <html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>我的收藏清單</title>
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
-            rel="stylesheet">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script
-            src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <title>觀看收藏清單</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 </head>
+<body>
 <body>
 <!-- Header區塊 -->
 <header>
@@ -21,6 +19,98 @@
 
 <!-- Main區塊 -->
 <main>
+
+    <!-- 互動視窗1 建立清單 -->
+    <div class="modal fade" id="addFavListModal"
+         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">建立新的收藏清單</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="Post"
+                          th:object="${favListDto}"
+                          th:action="@{/ThinkEat/FavList/Create}">
+                        <fieldset>
+                            請輸入清單名稱：
+                            <!-- 輸入清單名字 -->
+                            <input id="favListName"
+                                   name="favListName"
+                                   th:field="*{favListName}">
+                            </P>
+                            <!--送出-->
+                            <input type="submit" th:value="建立清單">
+                            <!--送出-->
+                            <input type="reset" th:value="清除">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 互動視窗2 修改清單名稱 -->
+    <div class="modal fade" id="editFavListModal" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">修改收藏清單</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="Post"
+                          th:object="${favListDto}"
+                          th:action="@{/ThinkEat/FavList/Edit/{favListDtoId}(favListDtoId=${favListDtoId})}">
+                        <fieldset>
+                            請輸入新的清單名稱：
+                            <!-- 輸入清單名字 -->
+                            <input id="favListName"
+                                   name="favListName"
+                                   th:field="*{favListName}">
+                            </P>
+                            <!--送出-->
+                            <input type="submit" th:value="建立清單">
+                            <!--送出-->
+                            <input type="reset" th:value="清除">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 互動視窗3 抽選結果區 -->
+    <div class="modal fade" id="showGachaResultModal" name="showGachaResultModal" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">修改收藏清單</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <th:block th:each="restaurantDto : ${selectedRestaurants}">
+                            <figure>
+                                <img style="height: 180px; width: 180px; background-color: green;">
+                                <figcaption class="d-flex">
+                                    <div>
+                                        <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
+                                           th:text="${restaurantDto.name}"></a>
+                                    </div>
+                                </figcaption>
+                            </figure>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- 側邊攔 -->
     <div class="container-fluid d-flex mx-0 px-0" style="min-height: 100vh; ">
         <aside class="mh-100" style="background-color: rgb(254, 241, 154); width: 15%">
@@ -32,6 +122,15 @@
                    class="d-block py-3">
                 </a>
             </nav>
+            <!-- 建立清單 互動視窗 -->
+            <span class="mx-2 mt-1">
+              <button type="button" class=""
+                      data-bs-toggle="modal"
+                      data-bs-target="#addFavListModal"
+                      onclick="clearModalContent()">
+                  建立新的清單
+               </button>
+            </span>
         </aside>
         <!-- 主內容區 -->
         <section class="col-10 d-flex justify-content-center align-items-center Intro"
@@ -39,39 +138,42 @@
             <div class="bg-light d-flex flex-column justify-content-between" style="width: 90%; height: 95%">
                 <div>
                     <!-- 功能區 -->
-                    <section class="">
+                    <section class="d-flex justify-content-between mt-2">
                         <!-- 標題 -->
                         <h3 th:text="${favListDtoName}"></h3>
-                        <!-- 新增 -->
-                        <button type="button"
-                                th:onclick="|window.location.href='/ThinkEat/FavList/CreateFavList'|">
-                            建立清單
-                        </button>
-                        <!-- 修改 -->
-                        <button type="button"
-                                th:onclick="|window.location.href='/ThinkEat/FavList/Edit/'+'${favListDtoId}'|">
-                            修改清單
-                        </button>
+                        <div>
+                            <!-- 修改清單 互動視窗 -->
+                            <button type="button" class="mx-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editFavListModal"
+                                    onclick="clearModalContent()">
+                                修改這張清單
+                            </button>
                         <!-- 刪除 -->
-                        <button type="button"
+                            <button type="button" class="mx-1"
                                 th:onclick="'window.location.href=\'/ThinkEat/FavList/CreateFavList'">
                             刪除清單
                         </button>
+                        </div>
                         <!-- 功能區結束 -->
                     </section>
                     <!-- 抽選功能區 -->
-                    <section>
-                        <form method="Get"
-                              th:action="@{/ThinkEat/FavList/{favListDtoId}/count/{count}(favListDtoId=${favListDtoId}, count=${count})}">
-                            <span th:text="'本清單中共有 ' + ${totalRestaurants} + ' 家餐廳' "></span>
+                    <section class="d-flex justify-content-between mt-1">
+                        <form id="gachaForm" method="post"
+                              th:action="@{/ThinkEat/FavList/Gacha/{count}(count=${count})}">
+                            <span th:text="'本清單中共有 ' + ${totalRestaurants} + ' 家餐廳，' "></span>
                             從中抽取：<select id="count" name="count">
                             <option th:each="count : ${#numbers.sequence(1, totalRestaurants)}"
                                     th:value="${count}"
                                     th:text="${count}">
                             </option>
                         </select>
-                            清單ID：<input type="text" id="favListDtoId" name="favListDtoId" th:value="${favListDtoId}">
-                            <input type="submit" value="抽取">
+                            <input id="favListDtoId" name="favListDtoId" th:value="${favListDtoId}" type="hidden">
+                            <span class="mx-3">
+                                <input type="submit" class="mx-1" value="抽取"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#showGachaResultModal">
+                            </span>
                         </form>
                         <!-- 抽選結果區 -->
                         <div th:if="${selectedRestaurants}">
@@ -91,20 +193,20 @@
 
                     <!-- 清單顯示區 -->
                     <th:block th:each="restaurantDto : ${restaurantDtoList}">
-                        <figure>
+                        <div>
                             <img style="height: 180px; width: 180px; background-color: red;">
-                            <figcaption class="d-flex">
+                            <figcaption class="d-flex flex-column mt-2">
                                 <div>
-                                <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
-                                   th:text="${restaurantDto.name}"></a>
-                                </div>
+                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
+                                       th:text="${restaurantDto.name}"></a>
                                 <!-- 從清單中移除文章 -->
                                 <form method="post"
                                       th:action="@{/ThinkEat/FavList/RemoveRestaurant/{restaurantId}(restaurantId=${restaurantDto.id}, favListId=${favListDtoId})}">
                                     <input type="submit" th:value="移除這間餐廳">
                                 </form>
+                                </div>
                             </figcaption>
-                        </figure>
+                        </div>
                     </th:block>
                 </div><!-- 餐廳縮圖區結束 -->
 
@@ -133,4 +235,6 @@
         </section>
     </div>
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

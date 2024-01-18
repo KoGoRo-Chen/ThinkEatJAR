@@ -108,6 +108,12 @@ public class PictureUploadController {
 
     }
 
+    //使用IMAGEIO的測試
+    @GetMapping("/BootsTrapModalTest")
+    public String GetBootsTrapModalTest() throws IOException {
+
+        return "Test/BootsTrapModalTest";
+    }
 
 
 }

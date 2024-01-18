@@ -19,17 +19,35 @@
         border-radius: 4px; /* 圓角 */
         }
 
-        .notification.fade-in {
-         animation: fadeIn 0.5s ease-in-out;
-        }
+    .notification.fade-in {
+        animation: fadeIn 0.0s ease-in-out;
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+    .notification.fade-out {
+        animation: fadeOut 0.1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            visibility: hidden;
+        }
+        to {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            visibility: visible;
+        }
+        to {
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
 
     </style>
 </head>
@@ -52,30 +70,24 @@
             <h3 th:text="${eatRepoDto.title}"></h3>
         </div>
         <section class="d-flex justify-content-center bg-light">
-            <!--圖片區 -->
-            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <!--圖片區-->
+            <div id="carouselExampleControls" class="carousel slide"
+                 data-bs-ride="carousel" data-bs-interval="false">
                 <div class="carousel-inner">
                     <div class="carousel-item active"
                          th:each="imagePath : ${imagePaths}">
                         <img th:src="${imagePath}" class="d-block w-100" alt="...">
                     </div>
-                    <div class="carousel-item">
-                        <img th:src="${imagePath}" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img th:src="${imagePath}" class="d-block w-100" alt="...">
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
-                        data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
-                        data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                    <button th:if="${#lists.size(imagePaths) > 1}" class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button th:if="${#lists.size(imagePaths) > 1}" class="carousel-control-next" type="button"
+                            data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
             </div>
 
             <!--文章區 -->
@@ -111,24 +123,19 @@
                         </td>
                     </tr>
                 </table>
-
-                <!--重導到編輯食記頁面-->
-                <form method="get"
-                      th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
-                    <input type="submit" value="編輯文章">
-                </form>
-
-                <!--刪除食記-->
-                <form method="post"
-                      th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Delete/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
-                    <input type="submit" value="刪除文章">
-                </form>
-
-                <!--添加收藏
-                <form method="post"
-                      th:action="@{/ThinkEat/FavList/AddFavList/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
-                    <input type="submit" value="添加收藏">
-                </form>-->
+                <!-- 編輯文章和刪除文章的按鈕 -->
+                <div class="d-flex">
+                    <!-- 編輯文章 -->
+                    <form method="get"
+                          th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                        <input type="submit" value="編輯文章">
+                    </form>
+                    <!-- 刪除文章 -->
+                    <form method="post"
+                          th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Delete/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                        <input type="submit" value="刪除文章">
+                    </form>
+                </div>
 
                 <!--添加收藏-->
                 <form method="post"
@@ -143,12 +150,12 @@
                     <input type="submit" value="添加收藏">
                 </form>
                 <!-- 在頁面中顯示通知 -->
-                <div th:if="${message}">
-                    <p th:text="${message}" class="notification"></p>
+                <div id="notification" th:if="${message}" class="notification fade-in">
+                    <p th:text="${message}"></p>
                 </div>
             </div>
         </section>
-
+        </p>
         <!--  食記區  -->
         <section class="eatRepoArea">
             <div>
@@ -168,7 +175,7 @@
                 </table>
             </div>
         </section>
-
+        </p>
         <!-- 留言區 -->
         <section class="cmtArea ">
             <!-- 所有留言一覽區 -->
@@ -195,7 +202,7 @@
                     </tbody>
                 </table>
             </div>
-
+            </p>
             <!-- 發表留言 -->
             <div class="row">
                 <form th:action="@{/ThinkEat/ViewEat/EatRepo/PostComment}"
@@ -218,21 +225,32 @@
 
             </div>
         </section>
-        <!-- 功能：編輯文章(限發表者) -->
-        <!-- 功能：加入收藏(所有人) -->
-        <!-- 功能：返回一覽 -->
+
     </div>
 </main>
+
+<!-- 在頁面底部添加以下 JavaScript 代碼 -->
+<script>
+    // 監聽頁面載入事件
+    document.addEventListener('DOMContentLoaded', function () {
+        // 在通知顯示後，設置一定時間後自動隱藏
+        var notification = document.getElementById('notification');
+        if (notification) {
+            setTimeout(function () {
+                // 添加 'fade-out' 類別，觸發淡出效果
+                notification.classList.add('fade-out');
+                notification.addEventListener('animationend', function () {
+                    // 動畫結束後將通知隱藏
+                    notification.style.display = 'none';
+                });
+            }, 800); // 設定自動隱藏的時間，這裡設定為3秒（3000毫秒）
+        }
+    });
+</script>
+
 </body>
 </html>
 
-<!--
-       <div class="returnToResView">
-            <input type="button"
-                   th:value="'返回 ' +  ${eatRepoDto.restaurant.getAddress()}"
-                   th:onclick="location.href='@{/ThinkEat/ViewEat/ResInfo/${eatRepoDto.restaurant.getId()}'"></input>
-        </div>
--->
 
 
 

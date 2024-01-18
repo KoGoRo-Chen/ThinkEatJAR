@@ -69,26 +69,21 @@ public class ShareEatController {
         return "ShareEat/Restaurant";
     }
 
-    // 顯示建立餐廳頁面
-    @GetMapping("/Restaurant/CreateRestaurant")
-    public String GetCreateRestaurantPage(Model model) {
-        RestaurantDto restaurantDto = new RestaurantDto();
-        // 不需要再創建一個新的 RestaurantDto
-        model.addAttribute("restaurantDto", restaurantDto);
-        return "ShareEat/CreateRestaurant";
-    }
-
     // 創建餐廳
     @PostMapping("/CreateRestaurant")
-    public String CreateRestaurantPage(@ModelAttribute("RestaurantDto") RestaurantDto restaurantDto,
+    public String CreateRestaurantPage(RestaurantDto restaurantDto,
                                        RedirectAttributes redirectAttributes,
                                        Model model) {
+        RestaurantDto newRestaurantDto = new RestaurantDto();
+        model.addAttribute("newRestaurantDto", newRestaurantDto);
+        newRestaurantDto.setName(restaurantDto.getName());
+        newRestaurantDto.setAddress(restaurantDto.getAddress());
+
         // 將餐廳保存到資料庫
-        Integer id = restaurantService.addRestaurant(restaurantDto);
+        Integer id = restaurantService.addRestaurant(newRestaurantDto);
         restaurantDto.setId(id);
 
         // 將新增的餐廳 ID 添加到重定向 URL 的查詢字符串中
-        //redirectAttributes.addFlashAttribute("restaurantDto", restaurantDto);
         redirectAttributes.addAttribute("restaurantId", id);
 
         return "redirect:/ThinkEat/ShareEat/Restaurant/{restaurantId}";
@@ -125,15 +120,21 @@ public class ShareEatController {
                                  Model model) {
         RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
         model.addAttribute("restaurantDto", restaurantDto);
+
+        //價格
         List<PriceDto> prices = priceService.findAllPrice();
         model.addAttribute("prices", prices);
+        PriceDto priceDto = new PriceDto();
+        model.addAttribute("priceDto", priceDto);
+
+        //標籤
         List<TagDto> tags = tagService.findAllTag();
         model.addAttribute("tags", tags);
+        TagDto tagDto = new TagDto();
+        model.addAttribute("tagDto", tagDto);
 
         EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
         model.addAttribute("eatRepoDto", eatRepoDto);
-
-
 
         return "ShareEat/ShareEatRepo";
     }
@@ -190,6 +191,43 @@ public class ShareEatController {
         return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";
     }
 
+    // 增加新價格
+    @PostMapping("/CreateNewPrice")
+    public String CreateNewPrice(@ModelAttribute("priceDto") PriceDto newPriceDto,
+                                 @RequestParam("restaurantId") Integer restaurantId,
+                                 @RequestParam("eatRepoId") Integer eatRepoId,
+                                 RedirectAttributes redirectAttributes, Model model) {
+        // 使用新價格的名稱設置PriceDto
+        newPriceDto.setName(newPriceDto.getName());
+
+        // 將新價格添加到數據庫
+        Price price = priceService.addPrice(newPriceDto);
+
+        // 重定向到相應的頁面
+        redirectAttributes.addAttribute("restaurantId", restaurantId);
+        redirectAttributes.addAttribute("eatRepoId", eatRepoId);
+        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{restaurantId}/EatRepoId/{eatRepoId}";
+    }
+
+    // 增加新TAG
+    @PostMapping("/CreateNewTag")
+    public String CreateNewTag(@ModelAttribute("tagDto") TagDto newTagDto,
+                               @RequestParam("restaurantId") Integer restaurantId,
+                               @RequestParam("eatRepoId") Integer eatRepoId,
+                               RedirectAttributes redirectAttributes, Model model) {
+        // 使用新Tag的名稱設置tagDto
+        newTagDto.setName(newTagDto.getName());
+
+        // 將新價格添加到數據庫
+        Tag tag = tagService.addTag(newTagDto);
+
+        // 重定向到相應的頁面
+        redirectAttributes.addAttribute("restaurantId", restaurantId);
+        redirectAttributes.addAttribute("eatRepoId", eatRepoId);
+        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{restaurantId}/EatRepoId/{eatRepoId}";
+    }
+
+
 
     //顯示食記編輯表單
     @GetMapping("/ShareEatRepo/Edit/{eatRepoId}")
@@ -238,49 +276,6 @@ public class ShareEatController {
         return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";
     }
 
-    //顯示創建價格表單
-    @GetMapping("/ShareEatRepo/{restaurantId}/CreateNewPrice")
-    public String GetCreateNewPricePage(@PathVariable("restaurantId") Integer restaurantId,
-                                        Model model) {
-        RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
-        model.addAttribute("restaurantDto", restaurantDto);
-        model.addAttribute("restaurantId", restaurantId);
-        model.addAttribute("priceDto", new PriceDto());
-
-        return "ShareEat/CreateNewPrice";
-    }
-
-    // 創建價格
-    @PostMapping("/ShareEatRepo/{restaurantId}/CreateNewPrice")
-    public String CreateNewPrice(@ModelAttribute("priceDto") PriceDto priceDto,
-                                 @RequestParam("restaurantId") Integer restaurantId,
-                                 RedirectAttributes redirectAttributes, Model model) {
-        Price price = priceService.addPrice(priceDto);
-        redirectAttributes.addAttribute("restaurantId", restaurantId);
-        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{restaurantId}";
-    }
-
-    //顯示創建TAG表單
-    @GetMapping("/ShareEatRepo/{restaurantId}/CreateNewTag")
-    public String GetCreateNewTagPage(@PathVariable("restaurantId") Integer restaurantId,
-                                      Model model) {
-        RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
-        model.addAttribute("restaurantDto", restaurantDto);
-        model.addAttribute("restaurantId", restaurantId);
-        model.addAttribute("tagDto", new TagDto());
-
-        return "ShareEat/CreateNewTag";
-    }
-
-    // 創建TAG
-    @PostMapping("/ShareEatRepo/{restaurantId}/CreateNewTag")
-    public String CreateNewTag(@ModelAttribute("tagDto") TagDto tagDto,
-                               @RequestParam("restaurantId") Integer restaurantId,
-                               RedirectAttributes redirectAttributes, Model model) {
-        Tag tag = tagService.addTag(tagDto);
-        redirectAttributes.addAttribute("restaurantId", restaurantId);
-        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{restaurantId}";
-    }
 
     //刪除文章
     @PostMapping("/ShareEatRepo/Delete/{eatRepoId}")

@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>選擇餐廳</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 </head>
 <body>
@@ -16,6 +18,41 @@
 
 <!-- Main區塊 -->
 <main>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">增加新餐廳</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:object="${restaurantDto}" method="post" th:action="@{/ThinkEat/ShareEat/CreateRestaurant}"
+                          enctype="multipart/form-data">
+                        <fieldset>
+                            <!-- 餐廳名 -->
+                            餐廳名稱：<input type="text" id="name" name="name" th:field="*{name}"/>
+                            <p/>
+                            <!-- 餐廳ID -->
+                            <input id="id" field="*{id}" type="hidden"/>
+                            <p/>
+                            <!-- 地址(googlemap) -->
+                            餐廳地址：<input type="text" id="address" name="address" th:field="*{address}"/>
+                            <p/>
+                            <!-- 前往食記發表 -->
+                            <input type="submit" value="建立餐廳"/>
+
+                            <!-- 一鍵清除所有內容(javascript) -->
+                            <button type="button" onclick="clearForm()">清空</button>
+                        </fieldset>
+                    </form>
+                </div>
+                .
+            </div>
+        </div>
+    </div>
+
+
     <form th:object="${restaurantDto}" method="post" th:action="@{/ThinkEat/ShareEat/ChooseRestaurant}"
           enctype="multipart/form-data">
         <fieldset>
@@ -39,12 +76,15 @@
         <thead>
         <div>
             <span>現有餐廳清單</span>
-            <span>
-                <form method="get"
-                      th:action="@{/ThinkEat/ShareEat/Restaurant/CreateRestaurant}">
-                    <input type="submit" value="建立餐廳">
-                </form>
-            </span>
+            <div>
+                <!-- Button trigger modal -->
+                <button type="button" class=""
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                        onclick="clearModalContent()">
+                    增加新餐廳
+                </button>
+            </div>
         </div>
         <tr>
             <th>餐廳名稱</th>
@@ -75,11 +115,19 @@
         </tr>
         </tbody>
     </table>
+
+
 </main>
 
-<!-- 清空表单的JavaScript函数 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function clearForm() {
+        document.getElementById("name").value = "";
+        document.getElementById("address").value = "";
+    }
+
+    // 清空 modal 內容的JavaScript函数
+    function clearModalContent() {
         document.getElementById("name").value = "";
         document.getElementById("address").value = "";
     }
