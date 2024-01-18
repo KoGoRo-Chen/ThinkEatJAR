@@ -159,8 +159,8 @@
                     </section>
                     <!-- 抽選功能區 -->
                     <section class="d-flex justify-content-between mt-1">
-                        <form id="gachaForm" method="post"
-                              th:action="@{/ThinkEat/FavList/Gacha/{count}(count=${count})}">
+                        <form method="Get"
+                              th:action="@{/ThinkEat/FavList/{favListDtoId}/count/{count}(favListDtoId=${favListDtoId}, count=${count})}">
                             <span th:text="'本清單中共有 ' + ${totalRestaurants} + ' 家餐廳，' "></span>
                             從中抽取：<select id="count" name="count">
                             <option th:each="count : ${#numbers.sequence(1, totalRestaurants)}"
