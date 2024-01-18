@@ -43,28 +43,11 @@ public class EatRepoService {
         this.modelMapper = modelMapper;
     }
 
-    //新增文章
+    //新增只有餐廳資料的空白文章
     @Transactional
-    public Integer addEatRepo(EatRepoDto eatRepoDto) {
+    public Integer addEatRepoOnlyHaveRestaurant(EatRepoDto eatRepoDto) {
         System.out.println("eatRepoService: " + eatRepoDto);
         EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
-
-        //處理圖片
-        List<Integer> picDtoIdList = eatRepoDto.getPicIdList();
-        if(picDtoIdList != null){
-            for(Integer picId : picDtoIdList){
-                Picture picture = pictureDao.findById(picId).get();
-                System.out.println(picture);
-                eatRepo.getPicList().add(picture);
-            }
-            System.out.println(eatRepo.getPicList());
-
-//            List<Picture>pictureList = pictureDtoList.stream()
-//                                                     .map(pictureDto -> modelMapper.map(pictureDto, Picture.class))
-//                                                     .toList();
-//            System.out.println(pictureList);
-//            eatRepo.setPicList(pictureList);
-        }
 
         //處理餐廳
         RestaurantDto restaurantDto = eatRepoDto.getRestaurant();
@@ -75,30 +58,61 @@ public class EatRepoService {
             eatRepo.setRestaurant(null);
         }
 
-        //處理價格
-        Optional<Price> priceToSet = priceDao.findById(eatRepoDto.getPriceId());
-        if (priceToSet.isPresent()) {
-            eatRepo.setPrice(priceToSet.get());
-        } else {
-            eatRepo.setPrice(null);
-        }
-
-
-        //處理標籤
-        List<TagDto> tagDtoList = eatRepoDto.getEatRepo_TagList();
-        if (tagDtoList != null && !tagDtoList.isEmpty()) {
-            List<Tag> tagList = tagDtoList.stream()
-                    .map(tagDto -> modelMapper.map(tagDto, Tag.class))
-                    .collect(Collectors.toList());
-            eatRepo.setEatRepo_TagList(tagList);
-        } else {
-            eatRepo.setEatRepo_TagList(Collections.emptyList());
-        }
-
         //儲存食記並返回ID
         eatRepoDao.save(eatRepo);
         return eatRepo.getId();
     }
+
+//    //新增文章
+//    @Transactional
+//    public Integer addEatRepo(EatRepoDto eatRepoDto) {
+//        System.out.println("eatRepoService: " + eatRepoDto);
+//        EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
+//
+//        //處理圖片
+//        List<Integer> picDtoIdList = eatRepoDto.getPicIdList();
+//        if(picDtoIdList != null){
+//            for(Integer picId : picDtoIdList){
+//                Picture picture = pictureDao.findById(picId).get();
+//                System.out.println(picture);
+//                eatRepo.getPicList().add(picture);
+//            }
+//            System.out.println(eatRepo.getPicList());
+//        }
+//
+//        //處理餐廳
+//        RestaurantDto restaurantDto = eatRepoDto.getRestaurant();
+//        if (restaurantDto != null) {
+//            Restaurant restaurant = modelMapper.map(restaurantDto, Restaurant.class);
+//            eatRepo.setRestaurant(restaurant);
+//        } else {
+//            eatRepo.setRestaurant(null);
+//        }
+//
+//        //處理價格
+//        Optional<Price> priceToSet = priceDao.findById(eatRepoDto.getPriceId());
+//        if (priceToSet.isPresent()) {
+//            eatRepo.setPrice(priceToSet.get());
+//        } else {
+//            eatRepo.setPrice(null);
+//        }
+//
+//
+//        //處理標籤
+//        List<TagDto> tagDtoList = eatRepoDto.getEatRepo_TagList();
+//        if (tagDtoList != null && !tagDtoList.isEmpty()) {
+//            List<Tag> tagList = tagDtoList.stream()
+//                    .map(tagDto -> modelMapper.map(tagDto, Tag.class))
+//                    .collect(Collectors.toList());
+//            eatRepo.setEatRepo_TagList(tagList);
+//        } else {
+//            eatRepo.setEatRepo_TagList(Collections.emptyList());
+//        }
+//
+//        //儲存食記並返回ID
+//        eatRepoDao.save(eatRepo);
+//        return eatRepo.getId();
+//    }
 
     @Transactional
     public void updateEatRepoByEatRepoId(Integer eatRepoId, EatRepoDto eatRepoDto) {
@@ -113,6 +127,12 @@ public class EatRepoService {
             // 更新價錢
             Price priceToUpdate = priceDao.findById(eatRepoDto.getPriceId()).orElse(null);
             eatRepoToUpdate.setPrice(priceToUpdate);
+
+            //更新圖片
+            List<Picture> pictureList = eatRepoDto.getPicList().stream()
+                                                               .map(pictureDto -> modelMapper.map(pictureDto, Picture.class))
+                                                               .collect(Collectors.toList());
+            eatRepoToUpdate.setPicList(pictureList);
 
             // 更新標籤
             List<TagDto> tagDtoList = eatRepoDto.getEatRepo_TagList();
