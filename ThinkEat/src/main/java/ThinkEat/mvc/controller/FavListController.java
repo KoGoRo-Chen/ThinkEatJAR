@@ -44,8 +44,20 @@ public class FavListController {
     //顯示收藏清單頁面(跳轉用)
     @GetMapping("/")
     public String getFavListPage(RedirectAttributes redirectAttributes) {
+        //設定預設清單Id為1
         Integer favListDtoId = 1;
-        redirectAttributes.addAttribute("favListDtoId", favListDtoId);
+
+        Integer newId = 0;
+        if (favListService.getFavListById(favListDtoId) == null) {
+            FavListDto favListDto = new FavListDto();
+            favListDto.setFavListName("預設清單");
+            newId = favListService.addFavList(favListDto);
+        }
+
+        if (newId == favListDtoId) {
+            redirectAttributes.addAttribute("favListDtoId", favListDtoId);
+        }
+
         return "redirect:/ThinkEat/FavList/{favListDtoId}";
     }
 
@@ -53,22 +65,26 @@ public class FavListController {
     @GetMapping("/{favListDtoId}")
     public String getFavListPageById(@PathVariable("favListDtoId") Integer favListDtoId,
                                      Model model) {
-        //載入所有清單(用於側邊欄)
-        List<FavListDto> favListDtoList = favListService.findAllFavList();
-        model.addAttribute("favListDtoList", favListDtoList);
+        if (favListDtoId > 0) {
+            //載入所有清單(用於側邊欄)
+            List<FavListDto> favListDtoList = favListService.findAllFavList();
+            model.addAttribute("favListDtoList", favListDtoList);
 
-        //載入清單中的所有餐廳
-        List<RestaurantDto> restaurantDtoList = favListService.findAllRestaurantsInFavList(favListDtoId);
-        //獲得清單中餐廳的總數
-        Integer totalRestaurants = restaurantDtoList.size();
-        Integer count = 0;
-        model.addAttribute("count", count);
-        model.addAttribute("totalRestaurants", totalRestaurants);
-        model.addAttribute("restaurantDtoList", restaurantDtoList);
-        model.addAttribute("favListDtoName", favListService.getFavListById(favListDtoId).getFavListName());
-        model.addAttribute("favListDtoId", favListDtoId);
+            //載入清單中的所有餐廳
+            List<RestaurantDto> restaurantDtoList = favListService.findAllRestaurantsInFavList(favListDtoId);
+            //獲得清單中餐廳的總數
+            Integer totalRestaurants = restaurantDtoList.size();
+            Integer count = 0;
+            model.addAttribute("count", count);
+            model.addAttribute("totalRestaurants", totalRestaurants);
+            model.addAttribute("restaurantDtoList", restaurantDtoList);
+            model.addAttribute("favListDtoName", favListService.getFavListById(favListDtoId).getFavListName());
+            model.addAttribute("favListDtoId", favListDtoId);
 
-        return "FavList/FavList";
+            return "FavList/FavList";
+        }
+
+        return "redirect:/ThinkEat/FavList/";
     }
 
     //顯示創造收藏清單頁面

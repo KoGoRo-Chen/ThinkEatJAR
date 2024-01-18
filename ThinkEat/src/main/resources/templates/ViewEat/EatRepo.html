@@ -53,10 +53,29 @@
         </div>
         <section class="d-flex justify-content-center bg-light">
             <!--圖片區 -->
-            <div class="eatPicArea mx-2"
-                 style="width: 500px; height: 500px;">
-                    <img th:each="imagePath : ${imagePaths}"
-                         th:src="${imagePath}">
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active"
+                         th:each="imagePath : ${imagePaths}">
+                        <img th:src="${imagePath}" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img th:src="${imagePath}" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img th:src="${imagePath}" class="d-block w-100" alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
 
             <!--文章區 -->
@@ -96,13 +115,13 @@
                 <!--重導到編輯食記頁面-->
                 <form method="get"
                       th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
-                    <input type="submit" value="修改">
+                    <input type="submit" value="編輯文章">
                 </form>
 
                 <!--刪除食記-->
-                <form method=""
-                      th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
-                    <input type="submit" value="刪除">
+                <form method="post"
+                      th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Delete/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                    <input type="submit" value="刪除文章">
                 </form>
 
                 <!--添加收藏

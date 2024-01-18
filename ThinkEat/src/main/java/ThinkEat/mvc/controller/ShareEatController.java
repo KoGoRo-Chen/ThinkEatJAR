@@ -238,7 +238,6 @@ public class ShareEatController {
         return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";
     }
 
-
     //顯示創建價格表單
     @GetMapping("/ShareEatRepo/{restaurantId}/CreateNewPrice")
     public String GetCreateNewPricePage(@PathVariable("restaurantId") Integer restaurantId,
@@ -282,4 +281,19 @@ public class ShareEatController {
         redirectAttributes.addAttribute("restaurantId", restaurantId);
         return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{restaurantId}";
     }
+
+    //刪除文章
+    @PostMapping("/ShareEatRepo/Delete/{eatRepoId}")
+    public String CreateNewTag(@PathVariable("eatRepoId") Integer eatRepoId,
+                               RedirectAttributes redirectAttributes) {
+        EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
+        RestaurantDto restaurantDto = eatRepoDto.getRestaurant();
+        Integer restaurantId = restaurantDto.getId();
+        eatRepoService.delete(eatRepoId);
+
+        redirectAttributes.addAttribute("restaurantId", restaurantId);
+        return "redirect:/ThinkEat/ViewEat/ResInfo/{restaurantId}";
+    }
+
+
 }

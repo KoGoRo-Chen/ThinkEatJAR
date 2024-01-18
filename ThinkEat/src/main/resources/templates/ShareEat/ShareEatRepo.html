@@ -104,7 +104,16 @@
     });
 
     function readURL(input) {
+        var maxImages = 3; // 設定最大圖片數量
+
         if (input.files && input.files.length > 0) {
+            if (input.files.length > maxImages) {
+                alert("最多只能上傳 " + maxImages + " 張圖片");
+                // 如果超過限制，可以清除已選擇的檔案
+                $("#progressbarTWInput").val('');
+                return;
+            }
+
             for (var i = 0; i < input.files.length; i++) {
                 var reader = new FileReader();
                 reader.onload = function (e) {

@@ -35,39 +35,39 @@ public class EatRepo {
     private String article;
 
     //一個用戶可以發表多篇文章
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User eatRepo_User;
 
     //每間餐廳可以有多篇文章
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
     //每篇食記都可以設定一項價位資料
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "price_id")
     private Price price;
 
     //每個清單都可以收藏每篇文章，可以重複
-    @ManyToMany(mappedBy = "favList_EatRepoList")
+    @ManyToMany(mappedBy = "favList_EatRepoList", cascade = CascadeType.DETACH)
     private List<FavList> favListList = new ArrayList<>();
 
     //每篇文章可以擁有多個TAG標籤
-    @ManyToMany(targetEntity = Tag.class)
+    @ManyToMany(targetEntity = Tag.class, cascade = CascadeType.DETACH)
     @JoinTable(
             name = "eatrepo_tag",
-            joinColumns = {@JoinColumn(name = "eatrepo_id_ref", referencedColumnName = "eatrepo_id")},
-            inverseJoinColumns = @JoinColumn(name = "tag_id_ref", referencedColumnName = "tag_id")
+            joinColumns = {@JoinColumn(name = "eatrepo_for_ref", referencedColumnName = "eatrepo_id")},
+            inverseJoinColumns = @JoinColumn(name = "tag_for_ref", referencedColumnName = "tag_id")
     )
     private List<Tag> eatRepo_TagList = new ArrayList<>();
 
     //一篇文章可以擁有多個留言
-    @OneToMany(mappedBy = "comment_EatRepo")
+    @OneToMany(mappedBy = "comment_EatRepo", cascade = CascadeType.DETACH)
     private List<Comment> cmtList = new ArrayList<>();
 
     //一篇文章可以擁有多張圖片
-    @OneToMany(mappedBy = "pic_EatRepo")
+    @OneToMany(mappedBy = "pic_EatRepo", cascade = CascadeType.DETACH)
     private List<Picture> picList = new ArrayList<>();
 
 

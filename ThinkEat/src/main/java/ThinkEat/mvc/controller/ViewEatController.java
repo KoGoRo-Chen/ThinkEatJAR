@@ -52,7 +52,7 @@ public class ViewEatController {
         return "ViewEat/ShowEat";
     }
 
-    //顯示ViewEat/Res/{ResId}/頁面
+    //顯示ViewEat//ResInfo/{restaurantId}/頁面
     @GetMapping("/ResInfo/{restaurantId}")
     public String getResPage(@PathVariable("restaurantId") Integer restaurantId, Model model) {
         // 1. 根據 restaurantId 從數據庫中檢索相應的 餐廳
