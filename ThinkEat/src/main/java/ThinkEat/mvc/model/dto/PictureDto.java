@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"pic_EatRepo"})
+@ToString(exclude = {"pic_EatRepo", "pic_Restaurant"})
 public class PictureDto {
 
     private Integer id;
@@ -19,5 +19,6 @@ public class PictureDto {
 
     private EatRepoDto pic_EatRepo;
 
+    private RestaurantDto pic_Restaurant;
 
 }

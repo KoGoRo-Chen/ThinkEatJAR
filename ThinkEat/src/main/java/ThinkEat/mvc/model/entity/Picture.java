@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"pic_EatRepo"})
+@ToString(exclude = {"pic_EatRepo", "pic_Restaurant"})
 public class Picture {
 
     @Id
@@ -30,6 +30,9 @@ public class Picture {
     @JoinColumn(name = "eatrepo_id")
     private EatRepo pic_EatRepo;
 
+    @ManyToOne(targetEntity = Restaurant.class)
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant pic_Restaurant;
 
 }
 //@Column(nullable = false)

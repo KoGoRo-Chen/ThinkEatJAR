@@ -6,17 +6,21 @@ import ThinkEat.mvc.dao.PriceDao;
 import ThinkEat.mvc.dao.RestaurantDao;
 import ThinkEat.mvc.dao.TagDao;
 import ThinkEat.mvc.model.dto.EatRepoDto;
+import ThinkEat.mvc.model.dto.PictureDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.model.entity.EatRepo;
+import ThinkEat.mvc.model.entity.Picture;
 import ThinkEat.mvc.model.entity.Restaurant;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantService {
@@ -105,6 +109,26 @@ public class RestaurantService {
                     .toList();
         }
         return Collections.emptyList();
+    }
+
+    //尋找單間餐廳的所有食記的所有照片
+    public List<PictureDto> getAllPictureByRestaurantId(Integer restaurantId) {
+        Restaurant restaurant = restaurantDao.findById(restaurantId).get();
+        List<PictureDto> pictureDtoList = restaurant.getResPicList().stream()
+                .map(picture -> modelMapper.map(picture, PictureDto.class))
+                .toList();
+        return pictureDtoList;
+    }
+
+    //尋找單間餐廳的所有食記的第一張照片
+    public PictureDto getFirstPictureByRestaurantId(Integer restaurantId) {
+        Restaurant restaurant = restaurantDao.findById(restaurantId).get();
+        // 檢查是否有照片
+        if (!restaurant.getResPicList().isEmpty()) {
+            PictureDto pictureDto = modelMapper.map(restaurant.getResPicList().get(0), PictureDto.class);
+            return pictureDto;
+        }
+        return null;
     }
 
 

@@ -142,33 +142,28 @@ public class FavListController {
         return "redirect:/ThinkEat/FavList/{favListDtoId}";
     }
 
-    //抽選餐廳
-    @GetMapping("/{favListDtoId}/count/{count}")
+    //處理餐廳抽選
+    @PostMapping("/{favListDtoId}/Gacha/{count}")
     public String PickRestaurantByCount(@RequestParam("count") Integer count,
                                         @RequestParam("favListDtoId") Integer favListDtoId,
                                         RedirectAttributes redirectAttributes,
                                         Model model) {
+
         FavListDto favListDto = favListService.getFavListById(favListDtoId);
         if (count <= favListDto.getFavList_EatRepoList().size()) {
             List<RestaurantDto> selectedRestaurants = favListService.PickRestaurantDtoByCount(favListDtoId, count);
             model.addAttribute("selectedRestaurants", selectedRestaurants);
         }
 
-        //載入所有清單(用於側邊欄)
-        List<FavListDto> favListDtoList = favListService.findAllFavList();
-        model.addAttribute("favListDtoList", favListDtoList);
+        return "FavList/GachaResult";
+    }
 
 
-        //載入清單中的所有餐廳
-        List<RestaurantDto> restaurantDtoList = favListService.findAllRestaurantsInFavList(favListDtoId);
-        Integer totalRestaurants = restaurantDtoList.size();
-        model.addAttribute("count", count);
-        model.addAttribute("totalRestaurants", totalRestaurants);
-        model.addAttribute("restaurantDtoList", restaurantDtoList);
-        model.addAttribute("favListDtoName", favListService.getFavListById(favListDtoId).getFavListName());
-        model.addAttribute("favListDtoId", favListDtoId);
+    @GetMapping("/GachaResult")
+    public String GetGachaResultPage(@ModelAttribute("selectedRestaurants") List<RestaurantDto> selectedRestaurants,
+                                     Model model) {
 
-        return "FavList/FavList";
+        return "FavList/GachaResult";
     }
 
 

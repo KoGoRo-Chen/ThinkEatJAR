@@ -160,6 +160,7 @@ public class ShareEatController {
         for (MultipartFile multipartFile : multipartFileList) {
             PictureDto pictureDto = new PictureDto();
             pictureDto.setPic_EatRepo(eatRepoService.getEatRepoByEatRepoId(eatRepoId));
+            pictureDto.setPic_Restaurant(restaurantService.getRestaurantById(restaurantId));
             Integer picDtoId = pictureService.addPicture(pictureDto, multipartFile);
             pictureDto.setId(picDtoId);
             eatRepoDto.getPicList().add(pictureDto);

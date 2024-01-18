@@ -12,6 +12,46 @@
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script
             src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <style>
+        /* Style for the table and legend */
+.ViewAlleatRepo {
+    margin-top: 20px;
+}
+
+.eatRepoPic {
+    height: 480px;
+    width: auto;
+}
+
+legend {
+    font-size: 1.5em;
+}
+
+table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #dee2e6; /* Bootstrap table border color */
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Alternate row background color */
+}
+
+a {
+    text-decoration: none;
+    color: #007bff; /* Bootstrap primary color */
+}
+
+    </style>
 </head>
 <body>
 <!-- Header區塊 -->
@@ -23,45 +63,60 @@
 <main>
     <div class="container-fluid d-flex flex-column">
         <!-- 餐廳縮圖區 + 店名 + 地址、價位 +標籤 -->
+        <!--圖片區-->
+        <div id="carouselExampleControls" class="carousel slide"
+             data-bs-ride="carousel" data-bs-interval="false">
+            <div class="carousel-inner">
+                <div class="carousel-item active"
+                     th:each="imagePath : ${restaurantImagePathList}">
+                    <img th:src="${imagePath}" class="d-block w-100 eatRepoPic" alt="...">
+                </div>
+                <button th:if="${#lists.size(restaurantImagePathList) > 1}" class="carousel-control-prev" type="button"
+                        data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button th:if="${#lists.size(restaurantImagePathList) > 1}" class="carousel-control-next" type="button"
+                        data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
         <div class="infoArea" style="background-image: ">
-            <div th:text="${restaurantDto.name}"></div>
+            <div th:text="'餐廳名稱：' + ${restaurantDto.name}"></div>
             <div class="resinfo">
-                <p th:text="${restaurantDto.address}"></p>
+                <p th:text="'地址：' + ${restaurantDto.address}"></p>
             </div>
         </div> <!-- 餐廳縮圖區結束 -->
-        <!-- 食記一覽區 -->
+
+            <!-- View AlleatRepo Section -->
         <div class="ViewAlleatRepo">
-            <fieldset class="">
+            <fieldset>
                 <legend>
                     <span>食記一覽</span>
                 </legend>
                 <table>
                     <thead>
                     <tr>
-                        <th>發文者</th>
-                        <th>品嘗日期</th>
-                        <th>標題</th>
-                        <th>連結</th>
+                        <th class="bg-warning">發文者</th>
+                        <th class="bg-warning">品嘗日期</th>
+                        <th class="bg-warning">標題</th>
+                        <th class="bg-warning">連結</th>
                     </tr>
                     </thead>
                     <tbody th:each="eatRepoDto : ${eatRepoDto}">
-                        <tr>
-                            <!-- 發文者 -->
-                            <td>會員功能尚待追加</td>
-                            <!-- 發文日期 -->
-                            <td th:text="${#dates.format(eatRepoDto.date, 'yyyy-MM-dd E')}">
-                            </td>
-                            <!-- 發文標題 -->
-                            <td th:text="${eatRepoDto.title}"></td>
-                            <!-- 連結 -->
-                            <td>
-                                <a th:href="@{/ThinkEat/ViewEat/EatRepo/{id}(id=${eatRepoDto.id})}">點我前往</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>會員功能尚待追加</td>
+                        <td th:text="${#dates.format(eatRepoDto.date, 'yyyy-MM-dd E')}"></td>
+                        <td th:text="${eatRepoDto.title}"></td>
+                        <td>
+                            <a th:href="@{/ThinkEat/ViewEat/EatRepo/{id}(id=${eatRepoDto.id})}">點我前往</a>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </fieldset>
-        </div><!-- 食記一覽區結束 -->
+        </div><!-- View AlleatRepo Section Ends -->
     </div>
 </main>
 

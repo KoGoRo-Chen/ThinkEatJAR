@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>顯示抽選結果</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+</head>
+<body>
+<body>
+<!-- Header區塊 -->
+<header>
+    <div th:insert="~{Fragment/Header :: header}"></div>
+</header>
+
+<!-- Main區塊 -->
+<main>
+    <div class="container-fluid d-flex justify-content-center mx-0 px-0"
+         style="min-height: 100vh; background-color: rgb(240, 240, 240);">
+        <!-- 主內容區 -->
+        <section class="col-10 mh-100 d-flex justify-content-center align-items-center Intro"
+                 style="background-color: rgb(240, 240, 240);">
+            <div class="bg-light d-flex justify-content-center " style="width: 90%; height: 95%">
+                <div>
+                    <div class="d-flex justify-content-center">
+                        <h3>抽選結果</h3>
+                    </div>
+
+                    <!-- 清單顯示區 -->
+                    <th:block d-flex justify-content-center th:each="restaurantDto : ${selectedRestaurants}">
+                        <div>
+                            <img style="height: 360px; width: 360px; background-color: red;">
+                            <figcaption class="d-flex flex-column mt-2">
+                                <div>
+                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
+                                       th:text="${restaurantDto.name}"></a>
+                                </div>
+                            </figcaption>
+                        </div>
+                    </th:block>
+                </div><!-- 餐廳縮圖區結束 -->
+            </div> <!-- 大div區結束 -->
+        </section>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>

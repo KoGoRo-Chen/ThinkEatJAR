@@ -37,7 +37,8 @@
                 <div>
                     <th:block th:each="restaurantDto : ${restaurantDtoList}">
                         <figure>
-                            <img style="height: 180px; width: 180px; background-color: red;">
+                            <img th:src="${restaurantDto.resPicList.get(0).htmlPath}"
+                                 style="height: 180px; width: 180px; background-color: red;">
                             <figcaption>
                                 <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
                                    th:text="${restaurantDto.name}"></a>

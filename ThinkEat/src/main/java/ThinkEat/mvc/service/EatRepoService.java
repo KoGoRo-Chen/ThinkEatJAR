@@ -63,57 +63,6 @@ public class EatRepoService {
         return eatRepo.getId();
     }
 
-//    //新增文章
-//    @Transactional
-//    public Integer addEatRepo(EatRepoDto eatRepoDto) {
-//        System.out.println("eatRepoService: " + eatRepoDto);
-//        EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
-//
-//        //處理圖片
-//        List<Integer> picDtoIdList = eatRepoDto.getPicIdList();
-//        if(picDtoIdList != null){
-//            for(Integer picId : picDtoIdList){
-//                Picture picture = pictureDao.findById(picId).get();
-//                System.out.println(picture);
-//                eatRepo.getPicList().add(picture);
-//            }
-//            System.out.println(eatRepo.getPicList());
-//        }
-//
-//        //處理餐廳
-//        RestaurantDto restaurantDto = eatRepoDto.getRestaurant();
-//        if (restaurantDto != null) {
-//            Restaurant restaurant = modelMapper.map(restaurantDto, Restaurant.class);
-//            eatRepo.setRestaurant(restaurant);
-//        } else {
-//            eatRepo.setRestaurant(null);
-//        }
-//
-//        //處理價格
-//        Optional<Price> priceToSet = priceDao.findById(eatRepoDto.getPriceId());
-//        if (priceToSet.isPresent()) {
-//            eatRepo.setPrice(priceToSet.get());
-//        } else {
-//            eatRepo.setPrice(null);
-//        }
-//
-//
-//        //處理標籤
-//        List<TagDto> tagDtoList = eatRepoDto.getEatRepo_TagList();
-//        if (tagDtoList != null && !tagDtoList.isEmpty()) {
-//            List<Tag> tagList = tagDtoList.stream()
-//                    .map(tagDto -> modelMapper.map(tagDto, Tag.class))
-//                    .collect(Collectors.toList());
-//            eatRepo.setEatRepo_TagList(tagList);
-//        } else {
-//            eatRepo.setEatRepo_TagList(Collections.emptyList());
-//        }
-//
-//        //儲存食記並返回ID
-//        eatRepoDao.save(eatRepo);
-//        return eatRepo.getId();
-//    }
-
     @Transactional
     public void updateEatRepoByEatRepoId(Integer eatRepoId, EatRepoDto eatRepoDto) {
         Optional<EatRepo> eatRepoOpt = eatRepoDao.findById(eatRepoId);

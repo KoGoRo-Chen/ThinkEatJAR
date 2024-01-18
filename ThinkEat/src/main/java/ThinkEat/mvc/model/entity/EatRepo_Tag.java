@@ -18,11 +18,11 @@ public class EatRepo_Tag {
     @Column(name = "er_tag_ref_id")
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "eatrepo_for_ref")
     private EatRepo eatRepo_for_ref;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "tag_for_ref")
     private Tag tag_for_ref;
 

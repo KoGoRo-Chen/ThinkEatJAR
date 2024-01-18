@@ -88,22 +88,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">修改收藏清單</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">抽選結果</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div>
-                        <th:block th:each="restaurantDto : ${selectedRestaurants}">
-                            <figure>
-                                <img style="height: 180px; width: 180px; background-color: green;">
-                                <figcaption class="d-flex">
-                                    <div>
-                                        <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
-                                           th:text="${restaurantDto.name}"></a>
-                                    </div>
-                                </figcaption>
-                            </figure>
-                        </th:block>
+                    <div th:each="restaurantDto : ${selectedRestaurants}">
+                        <figure>
+                            <img style="height: 180px; width: 180px; background-color: green;">
+                            <figcaption class="d-flex">
+                                <div>
+                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
+                                       th:text="${restaurantDto.name}"></a>
+                                </div>
+                            </figcaption>
+                        </figure>
                     </div>
                 </div>
             </div>
@@ -159,41 +157,23 @@
                     </section>
                     <!-- 抽選功能區 -->
                     <section class="d-flex justify-content-between mt-1">
-                        <form method="Get"
-                              th:action="@{/ThinkEat/FavList/{favListDtoId}/count/{count}(favListDtoId=${favListDtoId}, count=${count})}">
-                            <span th:text="'本清單中共有 ' + ${totalRestaurants} + ' 家餐廳，' "></span>
+                        <form method="post"
+                              th:action="@{/ThinkEat/FavList/{favListDtoId}/Gacha/{count}(favListDtoId=${favListDtoId}, count=${count})}">
+                            <span th:text="'本清單中共有 ' + ${totalRestaurants} + ' 家餐廳' "></span>
                             從中抽取：<select id="count" name="count">
                             <option th:each="count : ${#numbers.sequence(1, totalRestaurants)}"
                                     th:value="${count}"
                                     th:text="${count}">
                             </option>
                         </select>
-                            <input id="favListDtoId" name="favListDtoId" th:value="${favListDtoId}" type="hidden">
-                            <span class="mx-3">
-                                <input type="submit" class="mx-1" value="抽取"
-                                       data-bs-toggle="modal"
-                                       data-bs-target="#showGachaResultModal">
-                            </span>
+                            <input type="hidden" id="favListDtoId" name="favListDtoId" th:value="${favListDtoId}">
+                            <input type="submit" value="抽取">
                         </form>
-                        <!-- 抽選結果區 -->
-                        <div th:if="${selectedRestaurants}">
-                            <th:block th:each="restaurantDto : ${selectedRestaurants}">
-                                <figure>
-                                    <img style="height: 180px; width: 180px; background-color: green;">
-                                    <figcaption class="d-flex">
-                                        <div>
-                                            <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
-                                               th:text="${restaurantDto.name}"></a>
-                                        </div>
-                                    </figcaption>
-                                </figure>
-                            </th:block>
-                        </div>
                     </section>
 
                     <!-- 清單顯示區 -->
                     <th:block th:each="restaurantDto : ${restaurantDtoList}">
-                        <div>
+                        <div class="">
                             <img style="height: 180px; width: 180px; background-color: red;">
                             <figcaption class="d-flex flex-column mt-2">
                                 <div>

@@ -47,19 +47,27 @@ public class ViewEatController {
     @GetMapping("/ShowEat")
     public String GetShowEatPage(Model model) {
         List<RestaurantDto> restaurantDtoList = restaurantService.getAllRestaurant();
-        System.out.println(restaurantDtoList);
         model.addAttribute("restaurantDtoList", restaurantDtoList);
         return "ViewEat/ShowEat";
     }
 
     //顯示ViewEat//ResInfo/{restaurantId}/頁面
     @GetMapping("/ResInfo/{restaurantId}")
-    public String getResPage(@PathVariable("restaurantId") Integer restaurantId, Model model) {
-        // 1. 根據 restaurantId 從數據庫中檢索相應的 餐廳
+    public String getResPage(@PathVariable("restaurantId") Integer restaurantId,
+                             Model model) {
+        // 根據 restaurantId 從數據庫中檢索相應的 餐廳
         RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
         List<EatRepoDto> eatRepoDto = restaurantService.getAllEatRepoByRestaurantId(restaurantId);
 
-        // 2. 將檢索到的 餐廳 及 擁有的食記 添加到模型中
+        // 取得屬於這間餐廳的所有食記的照片
+        List<PictureDto> pictureDtoList = restaurantService.getAllPictureByRestaurantId(restaurantId);
+        List<String> restaurantImagePathList = new ArrayList<>();
+        for (PictureDto pictureDto : pictureDtoList) {
+            restaurantImagePathList.add(pictureDto.getHtmlPath());
+        }
+        model.addAttribute("restaurantImagePathList", restaurantImagePathList);
+
+        // 將檢索到的 餐廳 及 擁有的食記 添加到模型中
         model.addAttribute("restaurantDto", restaurantDto);
         model.addAttribute("eatRepoDto", eatRepoDto);
 

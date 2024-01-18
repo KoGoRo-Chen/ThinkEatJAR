@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "restaurant")
 @Getter
 @Setter
-@ToString(exclude = "eatRepoList")
+@ToString(exclude = {"eatRepoList", "resPicList"})
 @AllArgsConstructor
 public class Restaurant {
 
@@ -31,6 +31,10 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<EatRepo> eatRepoList = new ArrayList<>();
 
+    //一篇餐廳可以擁有多張圖片
+    @OneToMany(mappedBy = "pic_Restaurant", cascade = CascadeType.DETACH)
+    private List<Picture> resPicList = new ArrayList<>();
+
     public Restaurant() {
     }
 
@@ -38,5 +42,7 @@ public class Restaurant {
         this.name = name;
         this.address = address;
     }
+
+
 }
 //@Column(nullable = false)
