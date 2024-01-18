@@ -55,9 +55,9 @@ public class EatRepoService {
             List<Picture>pictureList = pictureDtoList.stream()
                                                      .map(pictureDto -> modelMapper.map(pictureDto, Picture.class))
                                                      .toList();
-            for(Picture picture : pictureList){
-                eatRepo.getPicList().add(picture);
-            }
+            System.out.println(pictureList);
+            eatRepo.setPicList(pictureList);
+            System.out.println(eatRepo.getPicList());
         }
 
         //處理餐廳
