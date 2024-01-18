@@ -34,7 +34,7 @@
             <div class="bg-light d-flex flex-column justify-content-between" style="width: 90%; height: 95%">
 
                 <!-- 接收所有餐廳資訊，生成縮圖 -->
-                <div>
+                <div class="pagination">
                     <th:block th:each="restaurantDto : ${restaurantDtoList}">
                         <figure>
                             <img th:src="${restaurantDto.resPicList.get(0).htmlPath}"

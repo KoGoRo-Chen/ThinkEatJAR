@@ -1,12 +1,11 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.model.dto.CommentDto;
-import ThinkEat.mvc.model.dto.EatRepoDto;
-import ThinkEat.mvc.model.dto.PictureDto;
-import ThinkEat.mvc.model.dto.RestaurantDto;
+import ThinkEat.mvc.model.dto.*;
 import ThinkEat.mvc.model.entity.FavList;
 import ThinkEat.mvc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,9 +44,15 @@ public class ViewEatController {
 
     //顯示ShowEat頁面(顯示所有餐廳)
     @GetMapping("/ShowEat")
-    public String GetShowEatPage(Model model) {
+    public String GetShowEatPage(@RequestParam(name = "page", defaultValue = "0") int page,
+                                 @RequestParam(name = "size", defaultValue = "3") int size,
+                                 @ModelAttribute RestaurantDto restaurantDto,
+                                 Model model) {
+        Pageable pageable = PageRequest.of(page, size);
         List<RestaurantDto> restaurantDtoList = restaurantService.getAllRestaurant();
+        ShowEatPageDto showEatPageDto = restaurantService.getAllRestaurant(pageable);
         model.addAttribute("restaurantDtoList", restaurantDtoList);
+        model.addAttribute("showEatPageDto", showEatPageDto);
         return "ViewEat/ShowEat";
     }
 

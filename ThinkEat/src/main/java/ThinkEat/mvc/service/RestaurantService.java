@@ -8,11 +8,14 @@ import ThinkEat.mvc.dao.TagDao;
 import ThinkEat.mvc.model.dto.EatRepoDto;
 import ThinkEat.mvc.model.dto.PictureDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
+import ThinkEat.mvc.model.dto.ShowEatPageDto;
 import ThinkEat.mvc.model.entity.EatRepo;
 import ThinkEat.mvc.model.entity.Picture;
 import ThinkEat.mvc.model.entity.Restaurant;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,6 +100,13 @@ public class RestaurantService {
                     .toList();
         }
         return null;
+    }
+
+    //查詢所有餐廳(分頁)
+    public ShowEatPageDto getAllRestaurant(Pageable pageable) {
+        Page<Restaurant> restaurantPage = restaurantDao.findAll(pageable);
+        Page<RestaurantDto> restaurantDtoPage = restaurantPage.map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class));
+        return new ShowEatPageDto(restaurantDtoPage);
     }
 
     //尋找單間餐廳的所有食記
