@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"pic_EatRepo"})
+@ToString
 public class PictureDto {
 
     private Integer id;

@@ -124,6 +124,7 @@ public class ShareEatController {
         // 只需將其添加到模型中
         model.addAttribute("eatRepoDto", new EatRepoDto());
 
+
         return "ShareEat/ShareEatRepo";
     }
 
@@ -188,11 +189,11 @@ public class ShareEatController {
         //處理多張圖片
         for (MultipartFile multipartFile : multipartFileList) {
             PictureDto pictureDto = new PictureDto();
-            Integer picId = pictureService.addPicture(pictureDto, multipartFile);
-            pictureDto.setId(picId);
-            eatRepoDto.getPicList().add(pictureService.getPictureById(picId));
-            System.out.println(eatRepoDto.getPicList());
+            Integer picDtoId = pictureService.addPicture(pictureDto, multipartFile);
+            pictureDto.setId(picDtoId);
+            eatRepoDto.getPicIdList().add(picDtoId);
         }
+        System.out.println(eatRepoDto.getPicIdList());
 
         //處理價格
         PriceDto priceDto = priceService.getPriceById(eatRepoDto.getPriceId());

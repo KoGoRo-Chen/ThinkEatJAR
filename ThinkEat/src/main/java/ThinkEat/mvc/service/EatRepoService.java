@@ -50,14 +50,20 @@ public class EatRepoService {
         EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
 
         //處理圖片
-        List<PictureDto> pictureDtoList = eatRepoDto.getPicList();
-        if(pictureDtoList != null){
-            List<Picture>pictureList = pictureDtoList.stream()
-                                                     .map(pictureDto -> modelMapper.map(pictureDto, Picture.class))
-                                                     .toList();
-            System.out.println(pictureList);
-            eatRepo.setPicList(pictureList);
+        List<Integer> picDtoIdList = eatRepoDto.getPicIdList();
+        if(picDtoIdList != null){
+            for(Integer picId : picDtoIdList){
+                Picture picture = pictureDao.findById(picId).get();
+                System.out.println(picture);
+                eatRepo.getPicList().add(picture);
+            }
             System.out.println(eatRepo.getPicList());
+
+//            List<Picture>pictureList = pictureDtoList.stream()
+//                                                     .map(pictureDto -> modelMapper.map(pictureDto, Picture.class))
+//                                                     .toList();
+//            System.out.println(pictureList);
+//            eatRepo.setPicList(pictureList);
         }
 
         //處理餐廳

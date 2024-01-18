@@ -29,7 +29,7 @@ public class Comment {
     @Column
     private String commentContext;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = EatRepo.class)
     @JoinColumn(name = "eatrepo_id")
     private EatRepo comment_EatRepo;
 
