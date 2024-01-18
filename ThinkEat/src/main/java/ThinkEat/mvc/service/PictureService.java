@@ -43,10 +43,10 @@ public class PictureService {
             pictureDto.setFilename(fileName);
 
             // 構建圖片的完整路徑
-            String filePath = "C:\\Users\\NTPU\\Desktop\\IdeaProjects\\ThinkEatJAR\\img\\";
+            String filePath = "C:\\Users\\marge\\OneDrive\\Desktop\\MyClassDemo\\ThinkEatJAR\\img\\";
             /*
             學校電腦圖片資料夾路徑: "C:\\Users\\NTPU\\Desktop\\IdeaProjects\\ThinkEatJAR\\img\\"
-            筆電圖片資料夾路徑:
+            筆電圖片資料夾路徑: "C:\\Users\\marge\\OneDrive\\Desktop\\MyClassDemo\\ThinkEatJAR\\img\\"
             PC圖片資料夾路徑: "C:\\Users\\kogor\\Desktop\\MyJavaProject\\IntelliJ\\ThinkEatJAR\\img\\";
              */
             System.out.println("上傳圖片路徑:" + filePath);
