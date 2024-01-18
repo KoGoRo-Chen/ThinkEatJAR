@@ -52,12 +52,14 @@
             <h3 th:text="${eatRepoDto.title}"></h3>
         </div>
         <section class="d-flex justify-content-center bg-light">
-
-            <div class="eatPicArea mx-2" style="width: 500px; height: 500px;">
-                圖片區
-                <!--圖片區
-                <img alt="" class="Eatpic img-fluid" th:src="@{'data:image/png;base64,' + ${eatRepoDto.eatPicBase64}}"/> -->
+            <!--圖片區 -->
+            <div class="eatPicArea mx-2"
+                 style="width: 500px; height: 500px;">
+                    <img th:each="imagePath : ${imagePaths}"
+                         th:src="${imagePath}">
             </div>
+
+            <!--文章區 -->
             <div class="eatInfoArea mx-2">
                 <table>
                     <tr>

@@ -2,16 +2,11 @@ package ThinkEat.mvc.service;
 
 
 import ThinkEat.mvc.dao.EatRepoDao;
+import ThinkEat.mvc.dao.PictureDao;
 import ThinkEat.mvc.dao.PriceDao;
 import ThinkEat.mvc.dao.TagDao;
-import ThinkEat.mvc.model.dto.CommentDto;
-import ThinkEat.mvc.model.dto.EatRepoDto;
-import ThinkEat.mvc.model.dto.RestaurantDto;
-import ThinkEat.mvc.model.dto.TagDto;
-import ThinkEat.mvc.model.entity.EatRepo;
-import ThinkEat.mvc.model.entity.Price;
-import ThinkEat.mvc.model.entity.Restaurant;
-import ThinkEat.mvc.model.entity.Tag;
+import ThinkEat.mvc.model.dto.*;
+import ThinkEat.mvc.model.entity.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -27,6 +22,7 @@ import java.util.stream.Collectors;
 public class EatRepoService {
 
     private final EatRepoDao eatRepoDao;
+    private final PictureDao pictureDao;
     private final TagDao tagDao;
     private final PriceDao priceDao;
     private final RestaurantService restaurantService;
@@ -34,11 +30,13 @@ public class EatRepoService {
 
     @Autowired
     public EatRepoService(EatRepoDao eatRepoDao,
+                          PictureDao pictureDao,
                           TagDao tagDao,
                           PriceDao priceDao,
                           @Lazy RestaurantService restaurantService,
                           ModelMapper modelMapper) {
         this.eatRepoDao = eatRepoDao;
+        this.pictureDao = pictureDao;
         this.tagDao = tagDao;
         this.priceDao = priceDao;
         this.restaurantService = restaurantService;
@@ -50,6 +48,18 @@ public class EatRepoService {
     public Integer addEatRepo(EatRepoDto eatRepoDto) {
         System.out.println("eatRepoService: " + eatRepoDto);
         EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
+
+        //處理圖片
+        List<PictureDto> pictureDtoList = eatRepoDto.getPicList();
+        if(pictureDtoList != null){
+            List<Picture>pictureList = pictureDtoList.stream()
+                                                     .map(pictureDto -> modelMapper.map(pictureDto, Picture.class))
+                                                     .toList();
+            for(Picture picture : pictureList){
+                eatRepo.getPicList().add(picture);
+            }
+        }
+
         //處理餐廳
         RestaurantDto restaurantDto = eatRepoDto.getRestaurant();
         if (restaurantDto != null) {

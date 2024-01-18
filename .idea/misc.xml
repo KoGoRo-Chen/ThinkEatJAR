@@ -5,7 +5,21 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/ThinkEat/pom.xml" />
+        <option value="$PROJECT_DIR$/../SpringBoot20240103/SpringBootStudentScore/pom.xml" />
+        <option value="$PROJECT_DIR$/../SpringBoot20240103/SpringBootPSI/pom.xml" />
+        <option value="$PROJECT_DIR$/../SpringBoot20240103/SpringBootPortfolio/pom.xml" />
+        <option value="$PROJECT_DIR$/../JavaWeb20231113/GroupBuy/pom.xml" />
+        <option value="$PROJECT_DIR$/../JavaWeb20231113/JavaCryptography/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/../JavaWeb20231113/GroupBuy/pom.xml" />
+        <option value="$PROJECT_DIR$/../JavaWeb20231113/JavaCryptography/pom.xml" />
+        <option value="$PROJECT_DIR$/../SpringBoot20240103/SpringBootPSI/pom.xml" />
+        <option value="$PROJECT_DIR$/../SpringBoot20240103/SpringBootPortfolio/pom.xml" />
+        <option value="$PROJECT_DIR$/../SpringBoot20240103/SpringBootStudentScore/pom.xml" />
+      </set>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />
   </component>

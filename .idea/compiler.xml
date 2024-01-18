@@ -10,9 +10,19 @@
         <module name="ThinkEat" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="GroupBuy" target="1.8" />
+      <module name="JavaCryptography" target="1.8" />
+      <module name="SpringBootPortfolio" target="17" />
+      <module name="SpringBootPSI" target="17" />
+      <module name="SpringBootStudentScore" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="SpringBootPSI" options="-parameters" />
+      <module name="SpringBootPortfolio" options="-parameters" />
+      <module name="SpringBootStudentScore" options="-parameters" />
       <module name="ThinkEat" options="-parameters" />
     </option>
   </component>

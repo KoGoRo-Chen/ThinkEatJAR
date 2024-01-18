@@ -2,6 +2,7 @@ package ThinkEat.mvc.controller;
 
 import ThinkEat.mvc.model.dto.CommentDto;
 import ThinkEat.mvc.model.dto.EatRepoDto;
+import ThinkEat.mvc.model.dto.PictureDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.model.entity.FavList;
 import ThinkEat.mvc.service.*;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,19 +25,22 @@ public class ViewEatController {
     private final EatRepoService eatRepoService;
     private final CommentService commentService;
     private final RestaurantService restaurantService;
+    private final PictureService pictureService;
 
     @Autowired
     public ViewEatController(FavListService favListService, PriceService priceService,
                              TagService tagService,
                              EatRepoService eatRepoService,
                              CommentService commentService,
-                             RestaurantService restaurantService) {
+                             RestaurantService restaurantService,
+                             PictureService pictureService) {
         this.favListService = favListService;
         this.priceService = priceService;
         this.tagService = tagService;
         this.eatRepoService = eatRepoService;
         this.commentService = commentService;
         this.restaurantService = restaurantService;
+        this.pictureService = pictureService;
     }
 
     //顯示ShowEat頁面(顯示所有餐廳)
@@ -72,6 +77,14 @@ public class ViewEatController {
         System.out.println("新增成功" + eatRepoDto);
         model.addAttribute("restaurantId", eatRepoDto.getRestaurant().getId());
         model.addAttribute("eatRepoId", eatRepoDto.getId());
+
+        //取得圖片網址並加入清單中
+        List<PictureDto> pictureDtoList = eatRepoDto.getPicList();
+        List<String> imagePaths = new ArrayList<>();
+        for(PictureDto pictureDto : pictureDtoList){
+            imagePaths.add(pictureDto.getHtmlPath());
+        }
+        model.addAttribute("imagePaths", imagePaths);
 
         //加入收藏清單
         model.addAttribute("allFavList", favListService.findAllFavList());

@@ -1,19 +1,14 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.model.dto.EatRepoDto;
-import ThinkEat.mvc.model.dto.PriceDto;
-import ThinkEat.mvc.model.dto.RestaurantDto;
-import ThinkEat.mvc.model.dto.TagDto;
+import ThinkEat.mvc.model.dto.*;
 import ThinkEat.mvc.model.entity.Price;
 import ThinkEat.mvc.model.entity.Tag;
-import ThinkEat.mvc.service.EatRepoService;
-import ThinkEat.mvc.service.PriceService;
-import ThinkEat.mvc.service.RestaurantService;
-import ThinkEat.mvc.service.TagService;
+import ThinkEat.mvc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -27,18 +22,21 @@ public class ShareEatController {
     private final TagService tagService;
     private final EatRepoService eatRepoService;
     private final RestaurantService restaurantService;
+    private final PictureService pictureService;
 
-    // 使用建構子注入EatDataDao、ResDataDao、ShareEatDao
+    // 建構子注入依賴
     @Autowired
     public ShareEatController(PriceService priceService,
                               TagService tagService,
                               EatRepoService eatRepoService,
-                              RestaurantService restaurantService) {
+                              RestaurantService restaurantService,
+                              PictureService pictureService) {
 
         this.priceService = priceService;
         this.tagService = tagService;
         this.eatRepoService = eatRepoService;
         this.restaurantService = restaurantService;
+        this.pictureService = pictureService;
     }
 
     //顯示餐廳選擇表單
@@ -178,14 +176,23 @@ public class ShareEatController {
     public String addEatRepo(@ModelAttribute("eatRepoDto") EatRepoDto eatRepoDto,
                              @RequestParam("restaurantId") Integer restaurantId,
                              @RequestParam("tagIds") List<Integer> tagIds,
-                             RedirectAttributes redirectAttributes, Model model) {
+                             @RequestPart("picList") List<MultipartFile> multipartFileList,
+                             RedirectAttributes redirectAttributes,
+                             Model model) {
 
         // 根據 restaurantId 獲取相應的 RestaurantDto 對象，然後將其設置到 eatRepoDto 中
         RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
         eatRepoDto.setRestaurant(restaurantDto);
         System.out.println("接收到restaurantDto:" + restaurantDto);
 
-        // 處理價格
+        //處理多張圖片
+        for (MultipartFile multipartFile : multipartFileList) {
+            PictureDto pictureDto = new PictureDto();
+            Integer picId = pictureService.addPicture(pictureDto, multipartFile);
+            eatRepoDto.getPicList().add(pictureService.getPictureById(picId));
+        }
+
+        //CO處理價格
         PriceDto priceDto = priceService.getPriceById(eatRepoDto.getPriceId());
         eatRepoDto.setPrice(priceDto);
 

@@ -16,21 +16,29 @@
 
 <!-- Main區塊 -->
 <main>
-    <div>
-        <div th:text="${restaurantDto}"></div>
-        <div th:text="${prices}"></div>
-        <div th:text="${tags}"></div>
-    </div>
+<!--    <div>-->
+<!--        <div th:text="${restaurantDto}"></div>-->
+<!--        <div th:text="${prices}"></div>-->
+<!--        <div th:text="${tags}"></div>-->
+<!--    </div>-->
+
+    <!-- 食記內容撰寫區 -->
     <form th:object="${eatRepoDto}" method="post" th:action="@{/ThinkEat/ShareEat/AddEatRepo}"
           enctype="multipart/form-data">
         <fieldset>
+            <!-- 食記圖片上傳區 -->
+            <div>
+                <span>上傳圖片：</span>
+                    <input type="file" id="progressbarTWInput" name="picList"
+                           th:field="*{picList}"
+                           accept="image/**" multiple>
+                    <img id="preview_progressbarTW_img" src="#" />
+            </div>
             <!-- 餐廳名 -->
             標題：<input type="text" id="eatRepoTitle" name="eatRepoTitle" th:field="*{title}"/>
             <p/>
             <!-- 餐廳ID -->
             <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}" type="hidden"/>
-            <!-- 上傳圖片
-            上傳圖片：<input type="file" id="eatPic" name="eatPic" th:field="*{eatPic}" accept="image/jpeg, image/png, image/jpg" />-->
             <p/>
             <!-- 店名 -->
             餐廳名稱：
@@ -80,45 +88,27 @@
             <input type="submit" value="發表文章"/>
 
             <!-- 一鍵清除所有內容(javascript) -->
-            <button type="button" onclick="clearForm()">清空</button>
+            <button type="reset">清空內容</button>
         </fieldset>
     </form>
 </main>
 
 </body>
 <script>
-    // 清空input
-    function clearForm() {
-        document.getElementById("eatRepoTitle").value = "";
-        document.getElementById("eatPic").value = "";
-        document.getElementById("date").value = "";
 
-        // 清空複選框
-        var checkboxes = document.getElementsByName("tagIds");
-        checkboxes.forEach(function (checkbox) {
-            checkbox.checked = false;
-        });
+    $("#progressbarTWInput").change(function(){
+      readURL(this);
+    });
+
+    function readURL(input){
+      if(input.files && input.files[0]){
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          $("#preview_progressbarTW_img").attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
     }
+
 </script>
 </html>
-
-<!--
-<button type="button" onclick="openModal('Add Tag', 'tag')">新增 Tag</button>
--->
-
-<!--
-<button type="button" onclick="openModal('Add Price', 'price')">新增 Price</button>
--->
-
-<!-- 模態框
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2 id="modalTitle"></h2>
-        <form id="modalForm">
-            <label for="modalInput">名稱：</label>
-            <input type="text" id="modalInput" name="modalInput" required>
-            <button type="button" onclick="addNewItem()">新增</button>
-        </form>
-    </div>
-</div> -->
