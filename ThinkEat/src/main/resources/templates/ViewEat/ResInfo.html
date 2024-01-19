@@ -87,6 +87,12 @@ a {
             <div class="resinfo">
                 <p th:text="'地址：' + ${restaurantDto.address}"></p>
             </div>
+            <div>
+                <form method="post" th:action="@{/ThinkEat/ViewEat/ResInfo/DeleteRestaurant}">
+                    <input type="hidden" id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}">
+                    <input type="submit" value="刪除這家餐廳">
+                </form>
+            </div>
         </div> <!-- 餐廳縮圖區結束 -->
 
             <!-- View AlleatRepo Section -->

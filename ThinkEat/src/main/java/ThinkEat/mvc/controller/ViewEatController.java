@@ -80,6 +80,20 @@ public class ViewEatController {
         return "ViewEat/ResInfo";
     }
 
+    //刪除餐廳
+    @PostMapping("/ResInfo/DeleteRestaurant")
+    public String DeleteRestaurant(@RequestParam("restaurantId") Integer restaurantId,
+                                   Model model) {
+        // 根據 restaurantId 從數據庫中檢索相應的 餐廳
+        RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
+
+        //RestaurantService執行刪除
+        restaurantService.deleteRestaurant(restaurantId);
+
+        // 返回 ShowEat 頁面
+        return "redirect:/ThinkEat/ViewEat/ShowEat";
+    }
+
     //顯示ViewEat/EatRepo/{eatRepoId}頁面
     @GetMapping("/EatRepo/{eatRepoId}")
     public String GetViewEatPage(@PathVariable("eatRepoId") Integer eatRepoId, Model model) {

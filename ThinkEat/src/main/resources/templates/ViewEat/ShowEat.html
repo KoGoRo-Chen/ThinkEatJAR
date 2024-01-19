@@ -36,14 +36,22 @@
                 <!-- 接收所有餐廳資訊，生成縮圖 -->
                 <div class="pagination d-flex flex-wrap">
                     <th:block th:each="restaurantDto : ${restaurantDtoList}">
-                        <figure>
+                        <figure th:if="${restaurantDto.resPicList != null and not #lists.isEmpty(restaurantDto.resPicList)}">
                             <img th:src="${restaurantDto.resPicList.get(0).htmlPath}"
                                  style="height: 180px; width: 180px; background-color: red;">
-                            <figcaption>
+                            <div>
                                 <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
                                    th:text="${restaurantDto.name}"></a>
-                            </figcaption>
+                            </div>
                         </figure>
+                        <figure th:unless="${restaurantDto.resPicList != null and not #lists.isEmpty(restaurantDto.resPicList)}">
+                            <img style="height: 180px; width: 180px; background-color: red;">
+                            <div>
+                                <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
+                                   th:text="${restaurantDto.name}"></a>
+                            </div>
+                        </figure>
+
                     </th:block>
                 </div><!-- 餐廳縮圖區結束 -->
                 <!-- 分頁頁籤 -->
