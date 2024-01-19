@@ -63,13 +63,16 @@ public class EatRepo {
     private List<Tag> eatRepo_TagList = new ArrayList<>();
 
     //一篇文章可以擁有多個留言
-    @OneToMany(mappedBy = "comment_EatRepo", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "comment_EatRepo", cascade = CascadeType.REMOVE)
     private List<Comment> cmtList = new ArrayList<>();
 
     //一篇文章可以擁有多張圖片
-    @OneToMany(mappedBy = "pic_EatRepo", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "pic_EatRepo", cascade = CascadeType.REMOVE)
     private List<Picture> picList = new ArrayList<>();
 
+    public void removeTagList() {
+
+    }
 
 }
 //@Column(nullable = false)

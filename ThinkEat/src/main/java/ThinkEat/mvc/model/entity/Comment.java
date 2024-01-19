@@ -29,11 +29,11 @@ public class Comment {
     @Column
     private String commentContext;
 
-    @ManyToOne(targetEntity = EatRepo.class)
+    @ManyToOne(targetEntity = EatRepo.class, cascade = CascadeType.DETACH)
     @JoinColumn(name = "eatrepo_id")
     private EatRepo comment_EatRepo;
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User comment_User;
 

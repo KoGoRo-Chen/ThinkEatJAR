@@ -28,11 +28,11 @@ public class Restaurant {
     @Column
     private String address;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     private List<EatRepo> eatRepoList = new ArrayList<>();
 
     //一篇餐廳可以擁有多張圖片
-    @OneToMany(mappedBy = "pic_Restaurant", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "pic_Restaurant", cascade = CascadeType.REMOVE)
     private List<Picture> resPicList = new ArrayList<>();
 
     public Restaurant() {

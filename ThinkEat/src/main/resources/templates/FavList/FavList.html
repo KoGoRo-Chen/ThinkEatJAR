@@ -36,9 +36,9 @@
                         <fieldset>
                             請輸入清單名稱：
                             <!-- 輸入清單名字 -->
-                            <input id="favListName"
-                                   name="favListName"
-                                   th:field="*{favListName}">
+                            <input id="name"
+                                   name="name"
+                                   th:field="*{name}">
                             </P>
                             <!--送出-->
                             <input type="submit" th:value="建立清單">
@@ -67,9 +67,9 @@
                         <fieldset>
                             請輸入新的清單名稱：
                             <!-- 輸入清單名字 -->
-                            <input id="favListName"
-                                   name="favListName"
-                                   th:field="*{favListName}">
+                            <input id="name"
+                                   name="name"
+                                   th:field="*{name}">
                             </P>
                             <!--送出-->
                             <input type="submit" th:value="建立清單">
@@ -89,7 +89,7 @@
             <nav class="sidebar mx-2"
                  th:each="favListDto : ${favListDtoList}">
                 <a th:href="@{/ThinkEat/FavList/{id}(id=${favListDto.id})}"
-                   th:text="${favListDto.favListName}"
+                   th:text="${favListDto.name}"
                    class="d-block py-3">
                 </a>
             </nav>

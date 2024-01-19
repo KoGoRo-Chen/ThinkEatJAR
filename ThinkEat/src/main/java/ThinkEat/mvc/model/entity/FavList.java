@@ -26,12 +26,12 @@ public class FavList {
     private String name;
 
     //一個用戶可建立多筆清單
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User favList_User;
 
     //每個清單可以收藏多篇文章，可重複
-    @ManyToMany(targetEntity = EatRepo.class)
+    @ManyToMany(targetEntity = EatRepo.class, cascade = CascadeType.DETACH)
     @JoinTable(
             name = "favlist_eatrepo",
             joinColumns = {@JoinColumn(name = "favlist_id", referencedColumnName = "id")},

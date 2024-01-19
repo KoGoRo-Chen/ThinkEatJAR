@@ -147,7 +147,7 @@
                     添加收藏：<select id="favListId" name="favListId">
                     <option th:each="favList : ${allFavList}"
                             th:value="${favList.id}"
-                            th:text="${favList.favListName}">
+                            th:text="${favList.name}">
                     </option>
                 </select>
 

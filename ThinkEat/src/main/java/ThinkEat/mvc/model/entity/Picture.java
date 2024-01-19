@@ -26,11 +26,11 @@ public class Picture {
     @Column
     private String htmlPath;
 
-    @ManyToOne(targetEntity = EatRepo.class)
+    @ManyToOne(targetEntity = EatRepo.class, cascade = CascadeType.DETACH)
     @JoinColumn(name = "eatrepo_id")
     private EatRepo pic_EatRepo;
 
-    @ManyToOne(targetEntity = Restaurant.class)
+    @ManyToOne(targetEntity = Restaurant.class, cascade = CascadeType.DETACH)
     @JoinColumn(name = "restaurant_id")
     private Restaurant pic_Restaurant;
 

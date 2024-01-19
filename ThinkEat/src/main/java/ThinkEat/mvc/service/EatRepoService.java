@@ -107,8 +107,11 @@ public class EatRepoService {
         if (eatRepoOpt.isPresent()) {
             EatRepo eatRepo = eatRepoOpt.get();
 
-            // 手动解除与 Tag 的关联关系
-            eatRepo.getEatRepo_TagList().clear(); // 假设有一个 getTagList 方法用于获取关联的 Tag 列表
+            // 手动删除关联实体
+            eatRepo.getFavListList().clear();
+            eatRepo.getEatRepo_TagList().clear();
+            eatRepo.getCmtList().clear();
+            eatRepo.getPicList().clear();
 
             eatRepoDao.delete(eatRepo);
         }

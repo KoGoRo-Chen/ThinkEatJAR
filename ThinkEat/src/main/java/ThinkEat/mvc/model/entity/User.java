@@ -30,20 +30,20 @@ public class User {
     private String username;
 
     //一個用戶可發表多篇文章
-    @OneToMany(mappedBy = "eatRepo_User")
+    @OneToMany(mappedBy = "eatRepo_User", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<EatRepo> eatRepoList = new ArrayList<>();
 
     //一個用戶可發表多篇留言
-    @OneToMany(mappedBy = "comment_User")
+    @OneToMany(mappedBy = "comment_User", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Comment> commentList = new ArrayList<>();
 
     //多個用戶可以擁有相同的權限等級，但每個用戶僅能擁有一個權限
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "authority_id")
     private Authority authority;
 
     //一個用戶可建立多筆清單
-    @OneToMany(mappedBy = "favList_User")
+    @OneToMany(mappedBy = "favList_User", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<FavList> favLists = new ArrayList<>();
 
 }
