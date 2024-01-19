@@ -49,7 +49,7 @@ public class FavListService {
             FavList favListToUpdate = favListOpt.get();
 
             // 更新標題
-            favListToUpdate.setFavListName(favListDto.getFavListName());
+            favListToUpdate.setName(favListDto.getFavListName());
 
             //儲存更新
             favListDao.save(favListToUpdate);

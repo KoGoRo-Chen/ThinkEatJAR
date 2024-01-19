@@ -100,30 +100,16 @@ public class EatRepoService {
         }
     }
 
-    //以ID刪除文章
+    // 以ID刪除單篇食記
     @Transactional
     public void delete(Integer eatRepoId) {
         Optional<EatRepo> eatRepoOpt = eatRepoDao.findById(eatRepoId);
         if (eatRepoOpt.isPresent()) {
             EatRepo eatRepo = eatRepoOpt.get();
-//
-//            // 先刪除與中介表相關的資料（eatrepo_tag）
-//            for (Tag tag : eatRepo.getEatRepo_TagList()) {
-//                // 找到相應的中介表資料
-//
-//            }
-//            eatRepo.getEatRepo_TagList().clear();
-//
-//            // 再刪除與其他表相關的資料（例如 picture）
-//            if (eatRepo.getPicList() != null) {
-//                eatRepo.getPicList().clear();
-//            }
-//
-//            if (eatRepo.getCmtList() != null) {
-//                eatRepo.getCmtList().clear();
-//            }
 
-            // 最後刪除文章
+            // 手动解除与 Tag 的关联关系
+            eatRepo.getEatRepo_TagList().clear(); // 假设有一个 getTagList 方法用于获取关联的 Tag 列表
+
             eatRepoDao.delete(eatRepo);
         }
     }

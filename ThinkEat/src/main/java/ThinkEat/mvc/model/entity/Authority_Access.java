@@ -9,14 +9,14 @@ import lombok.Data;
 public class Authority_Access {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_ac_ref_id")
+    @Column(name = "id")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "authority_for_ref")
-    private Authority authority_for_ref;
+    @JoinColumn(name = "authority_id")
+    private Authority authority_id;
 
     @ManyToOne
-    @JoinColumn(name = "access_for_ref")
-    private Access access_for_ref;
+    @JoinColumn(name = "access_id")
+    private Access access_id;
 }

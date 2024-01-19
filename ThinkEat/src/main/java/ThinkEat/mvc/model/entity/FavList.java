@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "favList")
+@Table(name = "favlist")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,15 +16,14 @@ import java.util.List;
 public class FavList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "favlist_id")
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "listId")
     private Integer listId;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column
-    private String favListName;
+    private String name;
 
     //一個用戶可建立多筆清單
     @ManyToOne
@@ -35,8 +34,8 @@ public class FavList {
     @ManyToMany(targetEntity = EatRepo.class)
     @JoinTable(
             name = "favlist_eatrepo",
-            joinColumns = {@JoinColumn(name = "favList_id_ref", referencedColumnName = "favlist_id")},
-            inverseJoinColumns = @JoinColumn(name = "eatrepo_id_ref", referencedColumnName = "eatrepo_id")
+            joinColumns = {@JoinColumn(name = "favlist_id", referencedColumnName = "id")},
+            inverseJoinColumns = @JoinColumn(name = "eatrepo_id", referencedColumnName = "id")
     )
     private List<EatRepo> favList_EatRepoList = new ArrayList<>();
 

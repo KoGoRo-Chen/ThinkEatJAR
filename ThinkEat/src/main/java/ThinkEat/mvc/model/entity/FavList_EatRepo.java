@@ -15,14 +15,14 @@ import lombok.Setter;
 public class FavList_EatRepo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "fl_er_ref_id")
+    @Column(name = "id")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "favlist_for_ref")
-    private FavList favlist_for_ref;
+    @JoinColumn(name = "favlist_id")
+    private FavList favlist_id;
 
     @ManyToOne
-    @JoinColumn(name = "eatrepo_for_ref")
-    private EatRepo eatRepo_for_ref;
+    @JoinColumn(name = "eatrepo_id")
+    private EatRepo eatrepo_id;
 }

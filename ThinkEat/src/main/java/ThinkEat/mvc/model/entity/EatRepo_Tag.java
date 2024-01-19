@@ -15,15 +15,15 @@ import lombok.Setter;
 public class EatRepo_Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "er_tag_ref_id")
+    @Column(name = "id")
     private Integer id;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "eatRepoForRef")
-    private EatRepo eatRepo_for_ref;
+    @JoinColumn(name = "eatrepo_id")
+    private EatRepo eatrepo_id;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "tagForRef")
-    private Tag tag_for_ref;
+    @JoinColumn(name = "tag_id")
+    private Tag tag_id;
 
 }

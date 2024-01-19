@@ -14,15 +14,17 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(exclude = {"authorityList"})
 public class Access {
-    @ManyToMany(mappedBy = "accessList")
-    List<Authority> authorityList = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "access_id")
+    @Column(name = "id")
     private Integer id;
+
     @Column(nullable = false)
     private String accessName;
+
     @Column
     private String accessFunction;
 
+    @ManyToMany(mappedBy = "accessList")
+    List<Authority> authorityList = new ArrayList<>();
 }

@@ -18,7 +18,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "id")
     private Integer id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -33,7 +33,7 @@ public class Comment {
     @JoinColumn(name = "eatrepo_id")
     private EatRepo comment_EatRepo;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User comment_User;
 

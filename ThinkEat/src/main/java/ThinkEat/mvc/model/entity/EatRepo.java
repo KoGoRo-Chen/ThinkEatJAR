@@ -20,7 +20,7 @@ public class EatRepo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "eatrepo_id")
+    @Column(name = "id")
     private Integer id;
 
     @Column
@@ -57,8 +57,8 @@ public class EatRepo {
     @ManyToMany(targetEntity = Tag.class, cascade = CascadeType.DETACH)
     @JoinTable(
             name = "eatrepo_tag",
-            joinColumns = {@JoinColumn(name = "eatrepo_for_ref", referencedColumnName = "eatrepo_id")},
-            inverseJoinColumns = @JoinColumn(name = "tag_for_ref", referencedColumnName = "tag_id")
+            joinColumns = {@JoinColumn(name = "eatrepo_id", referencedColumnName = "id")},
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
     )
     private List<Tag> eatRepo_TagList = new ArrayList<>();
 

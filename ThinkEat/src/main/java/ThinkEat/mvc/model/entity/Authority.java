@@ -16,7 +16,7 @@ import java.util.List;
 public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "authority_id")
+    @Column(name = "id")
     private Integer id;
 
     @Column(nullable = false)
@@ -30,8 +30,8 @@ public class Authority {
     @ManyToMany(targetEntity = ThinkEat.mvc.model.entity.Access.class)
     @JoinTable(
             name = "authority_access",
-            joinColumns = {@JoinColumn(name = "authority_for_ref", referencedColumnName = "authority_id")},
-            inverseJoinColumns = @JoinColumn(name = "access_for_ref", referencedColumnName = "access_id")
+            joinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")},
+            inverseJoinColumns = @JoinColumn(name = "access_id", referencedColumnName = "id")
     )
     private List<Access> accessList = new ArrayList<>();
 

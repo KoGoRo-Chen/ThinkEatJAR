@@ -17,7 +17,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "id")
     private Integer id;
 
     @Column
@@ -27,7 +27,7 @@ public class User {
     private String password;
 
     @Column
-    private String userName;
+    private String username;
 
     //一個用戶可發表多篇文章
     @OneToMany(mappedBy = "eatRepo_User")

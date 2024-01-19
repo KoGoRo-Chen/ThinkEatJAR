@@ -19,7 +19,7 @@ public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "restaurant_id")
+    @Column(name = "id")
     private Integer id;
 
     @Column
