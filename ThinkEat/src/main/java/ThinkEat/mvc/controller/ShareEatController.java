@@ -165,7 +165,6 @@ public class ShareEatController {
             pictureDto.setId(picDtoId);
             eatRepoDto.getPicList().add(pictureDto);
         }
-        System.out.println(eatRepoDto.getPicIdList());
 
         //處理價格
         PriceDto priceDto = priceService.getPriceById(eatRepoDto.getPriceId());

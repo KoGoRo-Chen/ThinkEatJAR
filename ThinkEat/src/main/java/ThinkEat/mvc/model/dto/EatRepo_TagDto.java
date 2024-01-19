@@ -13,8 +13,8 @@ public class EatRepo_TagDto {
 
     private Integer id;
 
-    private EatRepoDto eatRepo_for_ref;
+    private EatRepoDto eatrepo_id;
 
-    private TagDto tag_for_ref;
+    private TagDto tag_id;
 
 }

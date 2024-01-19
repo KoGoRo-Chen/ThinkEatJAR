@@ -12,7 +12,7 @@ public class Authority_AccessDto {
 
     private Integer id;
 
-    private AuthorityDto authority_for_ref;
+    private AuthorityDto authority_id;
 
-    private AccessDto access_for_ref;
+    private AccessDto access_id;
 }
