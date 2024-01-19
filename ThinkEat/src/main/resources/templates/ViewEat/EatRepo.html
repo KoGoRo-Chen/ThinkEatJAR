@@ -190,7 +190,10 @@
                         <td>留言人</td>
                         <td>留言內容</td>
                         <td>
-                            其他功能
+                            編輯留言
+                        </td>
+                        <td>
+                            刪除留言
                         </td>
                     </tr>
                     </thead>
@@ -200,7 +203,12 @@
                         <td th:text="${commentDto.commentContext}"></td>
                         <td>
                             <input type="button" method="post" th:value="'修改'">
-                            <input type="button" method="post" th:value="'刪除'">
+                        </td>
+                        <td>
+                            <form method="post" th:action="@{/ThinkEat/ViewEat/EatRepo/DeleteComment}">
+                                <input type="hidden" id="commentId" name="commentId" th:value="${commentDto.id}">
+                                <input type="submit" value="刪除">
+                            </form>
                         </td>
                     </tr>
                     </tbody>

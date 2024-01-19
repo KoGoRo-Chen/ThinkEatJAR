@@ -67,8 +67,8 @@ public class CommentService {
     public void deleteCommentById(Integer commentId) {
         Optional<Comment> commentOpt = commentDao.findById(commentId);
         if (commentOpt.isPresent()) {
-            Comment commentToUpdate = commentOpt.get();
-            commentDao.delete(commentToUpdate);
+            Comment commentToDelete = commentOpt.get();
+            commentDao.delete(commentToDelete);
         }
     }
 

@@ -1,5 +1,6 @@
 package ThinkEat.mvc.controller;
 
+import ThinkEat.mvc.model.dto.CommentDto;
 import ThinkEat.mvc.model.dto.FavListDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.service.*;
@@ -165,6 +166,21 @@ public class FavListController {
 
         return "FavList/GachaResult";
     }
+
+    //刪除收藏清單
+    @PostMapping("/DeleteFavList")
+    public String DeleteFavList(@RequestParam("favListId") Integer favListId,
+                                RedirectAttributes redirectAttributes) {
+        //找到留言
+        FavListDto favListDto = favListService.getFavListById(favListId);
+
+        //執行刪除
+        favListService.deleteFavListById(favListId);
+
+        // 返回清單頁面
+        return "redirect:/ThinkEat/FavList/";
+    }
+
 
 
 }

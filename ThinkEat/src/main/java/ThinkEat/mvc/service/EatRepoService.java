@@ -24,6 +24,7 @@ public class EatRepoService {
     private final PriceDao priceDao;
     private final EatRepo_TagDao eatRepo_TagDao;
     private final RestaurantService restaurantService;
+    private final CommentDao commentDao;
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -32,6 +33,7 @@ public class EatRepoService {
                           TagDao tagDao,
                           PriceDao priceDao, EatRepo_TagDao eatRepoTagDao,
                           @Lazy RestaurantService restaurantService,
+                          CommentDao commentDao,
                           ModelMapper modelMapper) {
         this.eatRepoDao = eatRepoDao;
         this.pictureDao = pictureDao;
@@ -39,6 +41,7 @@ public class EatRepoService {
         this.priceDao = priceDao;
         eatRepo_TagDao = eatRepoTagDao;
         this.restaurantService = restaurantService;
+        this.commentDao = commentDao;
         this.modelMapper = modelMapper;
     }
 
@@ -110,8 +113,18 @@ public class EatRepoService {
             // 手动删除关联实体
             eatRepo.getFavListList().clear();
             eatRepo.getEatRepo_TagList().clear();
-            eatRepo.getCmtList().clear();
-            eatRepo.getPicList().clear();
+
+            //刪除關聯留言
+            List<Comment> commentListToDelete = eatRepo.getCmtList();
+            for (Comment commentToDelete : commentListToDelete) {
+                commentDao.delete(commentToDelete);
+            }
+
+            //刪除關聯圖片
+            List<Picture> pictureListToDelete = eatRepo.getPicList();
+            for (Picture pictureToDelete : pictureListToDelete) {
+                pictureDao.delete(pictureToDelete);
+            }
 
             eatRepoDao.delete(eatRepo);
         }

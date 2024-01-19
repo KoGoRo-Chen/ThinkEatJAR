@@ -121,10 +121,10 @@
                                 修改這張清單
                             </button>
                         <!-- 刪除 -->
-                            <button type="button" class="mx-1"
-                                th:onclick="'window.location.href=\'/ThinkEat/FavList/CreateFavList'">
-                            刪除清單
-                        </button>
+                            <form method="post" th:action="@{/ThinkEat/FavList/DeleteFavList}">
+                                <input type="text" id="favListId" name="favListId" th:value="${favListDtoId}">
+                                <input type="submit" value="刪除清單">
+                            </form>
                         </div>
                         <!-- 功能區結束 -->
                     </section>

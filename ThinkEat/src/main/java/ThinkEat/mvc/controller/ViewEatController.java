@@ -129,5 +129,24 @@ public class ViewEatController {
         return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";
     }
 
+    //刪除留言
+    @PostMapping("/EatRepo/DeleteComment")
+    public String DeleteComment(@RequestParam("commentId") Integer commentId,
+                                Model model,
+                                RedirectAttributes redirectAttributes) {
+        //找到留言
+        CommentDto commentDto = commentService.getCommentById(commentId);
+
+        //找到所屬食記ID並重導回食記瀏覽頁面
+        Integer eatRepoId = commentDto.getComment_EatRepo().getId();
+        redirectAttributes.addAttribute("eatRepoId", eatRepoId);
+
+        //執行刪除
+        commentService.deleteCommentById(commentId);
+
+        // 返回 ViewEat 頁面
+        return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";
+    }
+
 
 }
