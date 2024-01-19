@@ -16,7 +16,7 @@ public class FavListDto {
 
     private Integer listId;
 
-    private String favListName;
+    private String name;
 
     private UserDto favList_User;
 

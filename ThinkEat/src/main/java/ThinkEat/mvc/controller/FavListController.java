@@ -55,7 +55,7 @@ public class FavListController {
 
         if (favListService.getFavListById(favListDtoId) == null) {
             FavListDto favListDto = new FavListDto();
-            favListDto.setFavListName("預設清單");
+            favListDto.setName("預設清單");
             newId = favListService.addFavList(favListDto);
             redirectAttributes.addAttribute("newId", newId);
             return "redirect:/ThinkEat/FavList/{newId}";
@@ -83,7 +83,7 @@ public class FavListController {
             model.addAttribute("count", count);
             model.addAttribute("totalRestaurants", totalRestaurants);
             model.addAttribute("restaurantDtoList", restaurantDtoList);
-            model.addAttribute("favListDtoName", favListService.getFavListById(favListDtoId).getFavListName());
+            model.addAttribute("favListDtoName", favListService.getFavListById(favListDtoId).getName());
             model.addAttribute("favListDtoId", favListDtoId);
 
             return "FavList/FavList";

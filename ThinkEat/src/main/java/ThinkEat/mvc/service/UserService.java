@@ -34,7 +34,7 @@ public class UserService {
     @Transactional
     public Integer addUser(UserDto userDto,
                            FavListDto favListDto) {
-        favListDto.setFavListName("我的清單");
+        favListDto.setName("我的清單");
         Integer favListId = favListService.addFavList(favListDto);
         userDto.getFavLists().add(favListDto);
         User user = modelMapper.map(userDto, User.class);

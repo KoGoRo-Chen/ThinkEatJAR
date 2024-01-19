@@ -38,7 +38,6 @@ public class EatRepoDto {
 
     private List<CommentDto> cmtList = new ArrayList<>();
 
-    private List<Integer> picIdList = new ArrayList<>();
     private List<PictureDto> picList = new ArrayList<>();
 
 
