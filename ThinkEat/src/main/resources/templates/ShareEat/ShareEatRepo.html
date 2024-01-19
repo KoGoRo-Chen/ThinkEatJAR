@@ -193,7 +193,7 @@
         var reader = new FileReader();
         reader.onload = function (e) {
             var img = $("<div class='image-container'></div>")
-                .append($("<img width='300' height='200'>").attr('src', e.target.result));
+                .append($("<img width='40%' height='40%'>").attr('src', e.target.result));
             $("#preview_progressbarTW_imgs").append(img);
         };
         reader.readAsDataURL(input.files[i]);
