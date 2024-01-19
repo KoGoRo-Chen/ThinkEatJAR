@@ -1,10 +1,7 @@
 package ThinkEat.mvc.service;
 
 
-import ThinkEat.mvc.dao.EatRepoDao;
-import ThinkEat.mvc.dao.PictureDao;
-import ThinkEat.mvc.dao.PriceDao;
-import ThinkEat.mvc.dao.TagDao;
+import ThinkEat.mvc.dao.*;
 import ThinkEat.mvc.model.dto.*;
 import ThinkEat.mvc.model.entity.*;
 import org.modelmapper.ModelMapper;
@@ -25,6 +22,7 @@ public class EatRepoService {
     private final PictureDao pictureDao;
     private final TagDao tagDao;
     private final PriceDao priceDao;
+    private final EatRepo_TagDao eatRepo_TagDao;
     private final RestaurantService restaurantService;
     private final ModelMapper modelMapper;
 
@@ -32,13 +30,14 @@ public class EatRepoService {
     public EatRepoService(EatRepoDao eatRepoDao,
                           PictureDao pictureDao,
                           TagDao tagDao,
-                          PriceDao priceDao,
+                          PriceDao priceDao, EatRepo_TagDao eatRepoTagDao,
                           @Lazy RestaurantService restaurantService,
                           ModelMapper modelMapper) {
         this.eatRepoDao = eatRepoDao;
         this.pictureDao = pictureDao;
         this.tagDao = tagDao;
         this.priceDao = priceDao;
+        eatRepo_TagDao = eatRepoTagDao;
         this.restaurantService = restaurantService;
         this.modelMapper = modelMapper;
     }
@@ -106,7 +105,26 @@ public class EatRepoService {
     public void delete(Integer eatRepoId) {
         Optional<EatRepo> eatRepoOpt = eatRepoDao.findById(eatRepoId);
         if (eatRepoOpt.isPresent()) {
-            eatRepoDao.delete(eatRepoOpt.get());
+            EatRepo eatRepo = eatRepoOpt.get();
+//
+//            // 先刪除與中介表相關的資料（eatrepo_tag）
+//            for (Tag tag : eatRepo.getEatRepo_TagList()) {
+//                // 找到相應的中介表資料
+//
+//            }
+//            eatRepo.getEatRepo_TagList().clear();
+//
+//            // 再刪除與其他表相關的資料（例如 picture）
+//            if (eatRepo.getPicList() != null) {
+//                eatRepo.getPicList().clear();
+//            }
+//
+//            if (eatRepo.getCmtList() != null) {
+//                eatRepo.getCmtList().clear();
+//            }
+
+            // 最後刪除文章
+            eatRepoDao.delete(eatRepo);
         }
     }
 

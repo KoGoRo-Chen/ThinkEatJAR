@@ -26,7 +26,7 @@ public class Tag {
     private String name;
 
     //每個tag都可以被加入每篇文章，可重複
-    @ManyToMany(mappedBy = "eatRepo_TagList")
+    @ManyToMany(mappedBy = "eatRepo_TagList", cascade = CascadeType.REMOVE)
     private List<EatRepo> tag_EatRepoList = new ArrayList<>();
 
     public Tag(Integer id, String name) {
