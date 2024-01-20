@@ -42,25 +42,7 @@ public class ThinkEatController {
 
         //挑出所有餐廳
         List<RestaurantDto> restaurantDtoList = restaurantService.getAllRestaurant();
-
-//        //取得挑出的餐廳的所有圖片
-//        List<String> htmlPathList = new ArrayList<>();
-//        for (RestaurantDto restaurantDto : restaurantDtoList){
-//            Optional<PictureDto> pictureDto = restaurantDto.getResPicList().stream().findFirst();
-//            if(pictureDto.isPresent()){
-//                htmlPathList.add(pictureDto.get().getHtmlPath());
-//            }
-//        }
-//
-//        //取得挑出的餐廳的所有店名
-//        List<String> restaurantNameList = new ArrayList<>();
-//        for (RestaurantDto restaurantDto : restaurantDtoList){
-//            restaurantNameList.add(restaurantDto.getName());
-//        }
-
         model.addAttribute("restaurantDtoList", restaurantDtoList);
-//        model.addAttribute("htmlPathList", htmlPathList);
-//        model.addAttribute("restaurantNameList", restaurantNameList);
 
         return "Index";
     }

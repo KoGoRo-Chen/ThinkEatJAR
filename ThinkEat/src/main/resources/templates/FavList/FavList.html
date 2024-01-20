@@ -112,24 +112,27 @@
                     <section class="d-flex justify-content-between mt-2">
                         <!-- 標題 -->
                         <h3 th:text="${favListDtoName}"></h3>
-                        <div>
+                        <div class="d-flex">
                             <!-- 修改清單 互動視窗 -->
-                            <button type="button" class="mx-1"
+                            <button type="button"
+                                    class="mx-2 btn btn-warning"
                                     data-bs-toggle="modal"
                                     data-bs-target="#editFavListModal"
                                     onclick="clearModalContent()">
                                 修改這張清單
                             </button>
                         <!-- 刪除 -->
-                            <form method="post" th:action="@{/ThinkEat/FavList/DeleteFavList}">
-                                <input type="text" id="favListId" name="favListId" th:value="${favListDtoId}">
-                                <input type="submit" value="刪除清單">
+                            <form method="post" th:action="@{/ThinkEat/FavList/DeleteFavList}" class="mx-1">
+                                <input type="hidden" id="favListId" name="favListId" th:value="${favListDtoId}">
+                                <input type="submit" value="刪除清單"
+                                       style="width: 112px; height: 41.59px; "
+                                       class="btn btn-warning">
                             </form>
                         </div>
                         <!-- 功能區結束 -->
                     </section>
                     <!-- 抽選功能區 -->
-                    <section class="d-flex justify-content-between mt-1">
+                    <section class="d-flex justify-content-between my-3">
                         <form method="post"
                               th:action="@{/ThinkEat/FavList/{favListDtoId}/Gacha/{count}(favListDtoId=${favListDtoId}, count=${count})}">
                             <span th:text="'本清單中共有 ' + ${totalRestaurants} + ' 家餐廳' "></span>

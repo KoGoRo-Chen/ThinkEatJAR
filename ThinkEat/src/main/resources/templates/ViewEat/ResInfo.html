@@ -63,26 +63,23 @@ a {
 <main>
     <div class="container-fluid d-flex flex-column">
         <!-- 餐廳縮圖區 + 店名 + 地址、價位 +標籤 -->
-        <!--圖片區-->
-        <div id="carouselExampleControls" class="carousel slide"
-             data-bs-ride="carousel" data-bs-interval="false">
-            <div class="carousel-inner">
-                <div class="carousel-item active"
-                     th:each="imagePath : ${restaurantImagePathList}">
-                    <img th:src="${imagePath}" class="d-block w-100 eatRepoPic" alt="...">
+        <!--  圖片播放區 套用bootstrap輪播功能 -->
+        <div class="row my-2">
+            <div id="carouselExampleCaptions" class="carousel col-12"
+                 data-bs-ride="carousel">
+                <div class="carousel-inner pickUpArea col-8">
+                    <!-- 使用Thymeleaf的迭代器來生成輪播項目 -->
+                    <div th:each="restaurantImagePath, iterStat : ${restaurantImagePathList}" class="carousel-item"
+                         th:classappend="${iterStat.first} ? 'active'">
+                        <th:block th:if="${not #lists.isEmpty(restaurantImagePath)}">
+                            <img th:src="${restaurantImagePath}"
+                                 class="d-block mx-auto img"
+                                 width="1000px"
+                                 th:alt="${restaurantDto.name}">
+                        </th:block>
+                    </div>
                 </div>
-                <button th:if="${#lists.size(restaurantImagePathList) > 1}" class="carousel-control-prev" type="button"
-                        data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button th:if="${#lists.size(restaurantImagePathList) > 1}" class="carousel-control-next" type="button"
-                        data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        <div class="infoArea" style="background-image: ">
+                <div class="infoArea" style="">
             <div th:text="'餐廳名稱：' + ${restaurantDto.name}"></div>
             <div class="resinfo">
                 <p th:text="'地址：' + ${restaurantDto.address}"></p>
@@ -97,11 +94,17 @@ a {
 
             <!-- View AlleatRepo Section -->
         <div class="ViewAlleatRepo">
-            <fieldset>
-                <legend>
+            <fieldset class="">
+                <legend class="d-flex justify-content-between">
                     <span>食記一覽</span>
+                    <form method="post" th:action="@{/ThinkEat/ShareEat/ChooseRestaurant}" class="">
+                        <input type="hidden" id="restaurantId" name="restaurantId" th:value="${restaurantDto.Id}">
+                        <input type="submit" value="發表文章"
+                               style="width: 112px; height: 41.59px; "
+                               class="btn btn-warning">
+                    </form>
                 </legend>
-                <table>
+                <table class="">
                     <thead>
                     <tr>
                         <th class="bg-warning">發文者</th>

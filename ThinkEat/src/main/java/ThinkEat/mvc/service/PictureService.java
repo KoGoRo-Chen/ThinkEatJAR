@@ -13,16 +13,17 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+
+import static java.awt.Image.SCALE_SMOOTH;
 
 @Service
 public class PictureService {
@@ -41,9 +42,18 @@ public class PictureService {
     public Integer addPicture(PictureDto pictureDto,
                               MultipartFile multipartFile) {
         try {
+
             // 取得圖片名
             String fileName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
             pictureDto.setFilename(fileName);
+
+            //取得副檔名
+            String originalFilename = multipartFile.getOriginalFilename();
+            String formatName = null;
+            if (originalFilename != null && originalFilename.contains(".")) {
+                formatName = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+            }
+            System.out.println("副檔名為" + formatName);
 
             // 構建圖片的完整路徑
             String filePath = "C:\\Users\\kogor\\Desktop\\MyJavaProject\\IntelliJ\\ThinkEatJAR\\img\\";
@@ -56,19 +66,27 @@ public class PictureService {
 
             // 創建 File 對象
             File targetFile = new File(filePath, fileName);
+
             // 檢查目錄是否存在，不存在則創建
             if (!targetFile.getParentFile().exists()) {
                 targetFile.getParentFile().mkdirs();
             }
 
-            // 將 MultipartFile 寫入到目標文件前
-            // 檢查文件是否已存在
-            if (targetFile.exists()) {
-                throw new FileAlreadyExistsException("文件已存在");
+            // 將 MultipartFile 中的檔案讀取為 bytes
+            byte[] bytes = multipartFile.getBytes();
+
+            // 將 bytes 轉換為 BufferedImage
+            BufferedImage originalImage = ImageIO.read(new ByteArrayInputStream(bytes));
+
+            // 比較圖片的高度和寬度，並進行相應處理
+            if (originalImage.getHeight() > originalImage.getWidth()) {
+                // 將高的圖片轉換為768*1024大小
+                BufferedImage croppedImage = resizeTallImage(originalImage);
+                ImageIO.write(croppedImage, formatName, targetFile);
             } else {
-                multipartFile.transferTo(targetFile);
-                // 調整圖片大小
-                resizeImage(targetFile, 1024, 768);
+                // 將寬的圖片轉換為1024*768大小
+                BufferedImage croppedImage = resizeWideImage(originalImage);
+                ImageIO.write(croppedImage, formatName, targetFile);
             }
 
             // 設定圖片路徑
@@ -82,26 +100,49 @@ public class PictureService {
         }
     }
 
-    private void resizeImage(File inputFile, int newWidth, int newHeight) throws IOException {
-        BufferedImage inputImage = ImageIO.read(inputFile);
+    // 將高的圖片縮放成768*1024
+    private BufferedImage resizeTallImage(BufferedImage originalImage) {
+        // 計算按比例縮放後的寬度
+        int desiredWidth = (int) (originalImage.getWidth() * (1024.0 / originalImage.getHeight()));
 
-        // 創建縮放後的圖片
-        BufferedImage outputImage = new BufferedImage(newWidth, newHeight, inputImage.getType());
-        Graphics2D g2d = outputImage.createGraphics();
-
-        // 計算裁剪的起點，使得中心部分被保留
-        int x = (inputImage.getWidth() - newWidth) / 2;
-        int y = (inputImage.getHeight() - newHeight) / 2;
-
-        // 裁剪並縮放
-        g2d.drawImage(inputImage.getSubimage(x, y, newWidth, newHeight),
-                0, 0, newWidth, newHeight, null);
+        // 縮放圖片到指定大小
+        Image scaledImage = originalImage.getScaledInstance(desiredWidth, 1024, Image.SCALE_SMOOTH);
+        BufferedImage resultImage = new BufferedImage(desiredWidth, 1024, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = resultImage.createGraphics();
+        g2d.drawImage(scaledImage, 0, 0, null);
         g2d.dispose();
 
-        // 覆蓋原始檔案
-        ImageIO.write(outputImage, "jpg", inputFile);
+        // 計算裁剪區域
+        int x = Math.max(0, (desiredWidth - 768) / 2);
+        int y = 0;
+        int newWidth = Math.min(desiredWidth, 768);
+
+        // 使用 subimage 進行裁剪
+        BufferedImage croppedTallImage = resultImage.getSubimage(x, y, newWidth, 1024);
+        return croppedTallImage;
     }
 
+    // 將寬的圖片縮放成1024*768
+    private BufferedImage resizeWideImage(BufferedImage originalImage) {
+        // 計算按比例縮放後的高度
+        int desiredHeight = (int) (originalImage.getHeight() * (1024.0 / originalImage.getWidth()));
+
+        // 縮放圖片到指定大小
+        Image scaledImage = originalImage.getScaledInstance(1024, desiredHeight, Image.SCALE_SMOOTH);
+        BufferedImage resultImage = new BufferedImage(1024, desiredHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = resultImage.createGraphics();
+        g2d.drawImage(scaledImage, 0, 0, null);
+        g2d.dispose();
+
+        // 計算裁剪區域
+        int x = 0;
+        int y = Math.max(0, (desiredHeight - 768) / 2);
+        int newHeight = Math.min(desiredHeight, 768);
+
+        // 使用 subimage 進行裁剪
+        BufferedImage croppedWideImage = resultImage.getSubimage(x, y, 1024, newHeight);
+        return croppedWideImage;
+    }
 
     // 以ID修改圖片
     public void updatePictureById(Integer pictureId, PictureDto pictureDto) {
