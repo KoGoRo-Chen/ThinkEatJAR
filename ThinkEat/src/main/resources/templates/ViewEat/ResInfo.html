@@ -130,22 +130,22 @@
                                         d-flex flex-column
                                         border border-warning rounded-2
                                         justify-content-evenly" style="height: 25%;">
-                            <div class="row col-12 mx-1">
+                            <div class="row col-12 mx-1 fs-5">
                                 <div class="col-2">地址：</div>
                                 <div class="col-10" th:text="${restaurantDto.address}"></div>
                             </div>
 
-                            <div class="row col-12 mx-1">
+                            <div class="row col-12 mx-1 fs-5">
                                 <div class="col-2">價位：</div>
                                 <div class="col-10" th:text="${averagePrice}"></div>
                             </div>
 
-                            <div class="row col-12 mx-1">
+                            <div class="row col-12 mx-1 fs-5">
                                 <div class="col-2">標籤：</div>
                                 <div th:each="tagName : ${topFiveTagNameList}" class="col-2" th:text="${tagName}"></div>
                             </div>
 
-                            <div class="row col-12 mx-1">
+                            <div class="row col-12 mx-1 fs-5">
                                 <div class="col-2">目前共有：</div>
                                 <div class="col-1" th:text="${eatRepoListCount} + '人'"></div>
                                 <div class="col-8">發表這間餐廳的食記</div>
