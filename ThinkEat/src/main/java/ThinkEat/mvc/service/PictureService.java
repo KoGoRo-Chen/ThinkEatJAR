@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -64,6 +67,8 @@ public class PictureService {
                 throw new FileAlreadyExistsException("文件已存在");
             } else {
                 multipartFile.transferTo(targetFile);
+                // 調整圖片大小
+                resizeImage(targetFile, 1024, 768);
             }
 
             // 設定圖片路徑
@@ -76,6 +81,27 @@ public class PictureService {
             throw new RuntimeException(e);
         }
     }
+
+    private void resizeImage(File inputFile, int newWidth, int newHeight) throws IOException {
+        BufferedImage inputImage = ImageIO.read(inputFile);
+
+        // 創建縮放後的圖片
+        BufferedImage outputImage = new BufferedImage(newWidth, newHeight, inputImage.getType());
+        Graphics2D g2d = outputImage.createGraphics();
+
+        // 計算裁剪的起點，使得中心部分被保留
+        int x = (inputImage.getWidth() - newWidth) / 2;
+        int y = (inputImage.getHeight() - newHeight) / 2;
+
+        // 裁剪並縮放
+        g2d.drawImage(inputImage.getSubimage(x, y, newWidth, newHeight),
+                0, 0, newWidth, newHeight, null);
+        g2d.dispose();
+
+        // 覆蓋原始檔案
+        ImageIO.write(outputImage, "jpg", inputFile);
+    }
+
 
     // 以ID修改圖片
     public void updatePictureById(Integer pictureId, PictureDto pictureDto) {
