@@ -105,7 +105,7 @@
                                          th:classappend="${iterStat.first} ? 'active'">
                                         <th:block th:if="${not #lists.isEmpty(restaurantImagePath)}">
                                             <img th:src="${restaurantImagePath}"
-                                                 class="d-block mx-auto img"
+                                                 class="d-block mx-auto img-fluid"
                                                  th:alt="${restaurantDto.name}">
                                         </th:block>
                                         <button class="carousel-control-prev" type="button"

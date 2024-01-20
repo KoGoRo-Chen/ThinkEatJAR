@@ -51,195 +51,178 @@
 
     </style>
 </head>
-<body>
+<body style="background-color: rgb(240, 240, 240)">
+
 <!-- Header區塊 -->
 <header>
     <div th:insert="~{Fragment/Header :: header}"></div>
 </header>
 
 <!-- Main區塊 -->
-<main>
-    <div class="container-fluid d-flex flex-column"
-         style="min-height: 100vh; background-color: rgb(240, 240, 240)">
-        <div class="returnToResView">
-            <input type="button"
-                   th:value="'返回 ' + ${eatRepoDto.restaurant.getName()}"
-                   th:onclick="|window.location.href='/ThinkEat/ViewEat/ResInfo/' + ${restaurantId} |">
-        </div>
-        <div class="repoTitleArea">
-            <h3 th:text="${eatRepoDto.title}"></h3>
-        </div>
-        <section class="d-flex justify-content-center bg-light">
-            <div th:each="imagePath : ${imagePaths}">
-                <img th:src="${imagePath}" class="d-block w-50 h-50">
-            </div>
-            <!--圖片區
-            <div id="carouselExampleControls" class="carousel slide"
-                 data-bs-ride="carousel" data-bs-interval="false">
-                <div class="carousel-inner" th:each="imagePath : ${imagePaths}">
-                    <div class="carousel-item active">
-                        <img th:src="${imagePath}" class="d-block w-50 h-50" alt="...">
+<main class="my-3">
+
+    <div class="container-medium d-flex justify-content-evenly-medium">
+        <div class="row col-12">
+            <div class="flexitem col-1" style="width:10%; "></div>
+
+            <!-- 內容區塊 -->
+            <div class="flexitem col-10" style="width:80%; ">
+                <!-- 返回餐廳按鈕 -->
+                <div class="returnToResView mb-2 ">
+                    <input type="button"
+                           class="btn btn-warning"
+                           th:value="'回到餐廳  ' + ${eatRepoDto.restaurant.getName()}"
+                           th:onclick="|window.location.href='/ThinkEat/ViewEat/ResInfo/' + ${restaurantId} |">
+                </div>
+
+                <!-- 標題 + 圖片 -->
+                <div class="bg-light border border-warning border border-2 rounded-2 pt-2 pb-3 px-2"
+                     style="">
+                    <div class="row d-flex justify-content-between">
+                        <!--標題 -->
+                        <div class="col-10">
+                            <h3 th:text="${eatRepoDto.title}"></h3>
+                        </div>
+                        <!-- 刪除文章(後臺做好後拿掉) -->
+                        <div class="col-2">
+                            <form method="post"
+                                  th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Delete/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                                <input type="submit" value="刪除文章">
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- 圖片 -->
+                    <section class="d-flex justify-content-center bg-light">
+                        <div th:each="imagePath : ${imagePaths}">
+                            <img th:src="${imagePath}" class="d-block img-fluid">
+                        </div>
+                    </section>
+
+                    <!--資訊區(用餐日期 標籤 價位 食記 作者) -->
+                    <div class="eatInfoArea mx-2 mt-2 ">
+                        <!--標題  收藏文章+編輯文章 -->
+                        <div class="row d-flex justify-content-between">
+                            <div class="col-2 fs-5 fw-bold">
+                                發文者名稱
+                            </div>
+                            <!--添加收藏 + 編輯-->
+                            <div class="col-10 d-flex justify-content-end">
+                                <!--添加收藏 -->
+                                <form method="post"
+                                      class="me-5"
+                                      th:action="@{/ThinkEat/FavList/AddFavList/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                                    添加收藏：
+                                    <select id="favListId" name="favListId">
+                                        <option th:each="favList : ${allFavList}"
+                                                th:value="${favList.id}"
+                                                th:text="${favList.name}">
+                                        </option>
+                                    </select>
+                                    <input type="submit" value="添加收藏">
+                                    <!-- 在頁面中顯示通知 -->
+                                    <div id="notification" th:if="${message}" class="notification fade-in">
+                                        <p th:text="${message}"></p>
+                                    </div>
+                                </form>
+                                <!--編輯文章 -->
+                                <form method="get"
+                                      class=""
+                                      th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                                    <input type="submit" value="編輯文章">
+                                </form>
+                            </div>
+                        </div>
+                        <!-- 食記內文 -->
+                        <div class="row my-1 py-3 ">
+                            <div class="fs-6 mx-2" th:text="${eatRepoDto.article}"></div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <!-- 用餐日期 -->
+                            <div class="col-4">
+                                用餐日期：<span class="fw-light"
+                                               th:text="${#dates.format(eatRepoDto.date, 'yyyy-MM-dd E')}"></span>
+                            </div>
+                            <!-- 價位 -->
+                            <div class="col-4">
+                                價位：<span class="fw-light" th:text="${eatRepoDto.price.getName()}"></span>
+                            </div>
+                        </div>
+                        <!-- 標籤 -->
+                        <div class="row col-12 mt-3">
+                            <div class="col-2 fw-light">標籤：</div>
+                            <div th:each="tag : ${eatRepoDto.eatRepo_TagList}" class="col-2 fw-lighter"
+                                 th:text="${tag.name}"></div>
+                        </div>
                     </div>
                 </div>
-                    <button th:if="${#lists.size(imagePaths) > 1}" class="carousel-control-prev" type="button"
-                            data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button th:if="${#lists.size(imagePaths) > 1}" class="carousel-control-next" type="button"
-                            data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
 
-            </div>-->
 
-            <!--文章區 -->
-            <div class="eatInfoArea mx-2">
-                <table>
-                    <tr>
-                        <td>文章Id：</td>
-                        <td th:text="${eatRepoDto.id}"></td>
-                    </tr>
-                    <tr>
-                        <td>餐廳名稱：</td>
-                        <td th:text="${eatRepoDto.restaurant.getName()}"></td>
-                    </tr>
-                    <tr>
-                        <td>地址：</td>
-                        <td th:text="${eatRepoDto.restaurant.getAddress()}"></td>
-                    </tr>
-                    <tr>
-                        <td>用餐日期：</td>
-                        <td>
-                            <span th:text="${#dates.format(eatRepoDto.date, 'yyyy-MM-dd E')}"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>價位：</td>
-                        <td th:text="${eatRepoDto.price.getName()}"></td>
-                    </tr>
-                    <tr>
-                        <td>標籤：</td>
-                        <td>
-                            <span th:each="tag : ${eatRepoDto.eatRepo_TagList}"
-                                  th:text="${tag.name}">、</span>
-                        </td>
-                    </tr>
-                </table>
-                <!-- 編輯文章和刪除文章的按鈕 -->
-                <div class="d-flex">
-                    <!-- 編輯文章 -->
-                    <form method="get"
-                          th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
-                        <input type="submit" value="編輯文章">
-                    </form>
-                    <!-- 刪除文章 -->
-                    <form method="post"
-                          th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Delete/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
-                        <input type="submit" value="刪除文章">
-                    </form>
-                </div>
-
-                <!--添加收藏-->
-                <form method="post"
-                      th:action="@{/ThinkEat/FavList/AddFavList/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
-                    添加收藏：<select id="favListId" name="favListId">
-                    <option th:each="favList : ${allFavList}"
-                            th:value="${favList.id}"
-                            th:text="${favList.name}">
-                    </option>
-                </select>
-
-                    <input type="submit" value="添加收藏">
-                </form>
-                <!-- 在頁面中顯示通知 -->
-                <div id="notification" th:if="${message}" class="notification fade-in">
-                    <p th:text="${message}"></p>
-                </div>
-            </div>
-        </section>
-        </p>
-        <!--  食記區  -->
-        <section class="eatRepoArea">
-            <div>
-                <table>
-                    <tr>
-                        <td>使用者ID：</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>使用者名稱：</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>食記:</td>
-                        <td th:text="${eatRepoDto.article}"></td>
-                    </tr>
-                </table>
-            </div>
-        </section>
-        </p>
-        <!-- 留言區 -->
-        <section class="cmtArea ">
-            <!-- 所有留言一覽區 -->
-            <div class="row">
-                <table>
-                    <thead>
-                    <tr>
-                        <td>留言人</td>
-                        <td>留言內容</td>
-                        <td>
-                            編輯留言
-                        </td>
-                        <td>
-                            刪除留言
-                        </td>
-                    </tr>
-                    </thead>
-                    <tbody th:each="commentDto : ${commentDtoList}">
-                    <tr>
-                        <td>placeholder</td>
-                        <td th:text="${commentDto.commentContext}"></td>
-                        <td>
-                            <input type="button" method="post" th:value="'修改'">
-                        </td>
-                        <td>
-                            <form method="post" th:action="@{/ThinkEat/ViewEat/EatRepo/DeleteComment}">
-                                <input type="hidden" id="commentId" name="commentId" th:value="${commentDto.id}">
-                                <input type="submit" value="刪除">
+                <!-- 留言區 -->
+                <section class="cmtArea d-flex flex-column my-2">
+                    <!-- 所有留言一覽區 -->
+                    <div class="border border-dark border-2 rounded-2 bg-light py-1 my-1"
+                         th:each="commentDto : ${commentDtoList}">
+                        <div class="row d-flex justify-content-between">
+                            <!-- 用戶名稱 -->
+                            <div class="col-3 ms-2 mt-1 fw-bold">用戶名稱</div>
+                            <!-- 刪除留言 -->
+                            <form method="post"
+                                  class="col-1 me-3"
+                                  th:action="@{/ThinkEat/ViewEat/EatRepo/DeleteComment}">
+                                <input type="hidden" id="commentId" name="commentId"
+                                       th:value="${commentDto.id}">
+                                <input type="submit" class="me-2" value="刪除留言">
                             </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            </p>
-            <!-- 發表留言 -->
-            <div class="row">
-                <form th:action="@{/ThinkEat/ViewEat/EatRepo/PostComment}"
-                      th:object="${commentDto}"
-                      method="post">
-                    <fieldset>
-                        <legend>發表留言</legend>
-                        <!-- 食記ID -->
-                        <input id="eatRepoId" name="eatRepoId"
-                               th:value="${eatRepoDto.id}"
-                               type="hidden"/>
-                        <textarea id="commentContext" name="commentContext"
-                                  th:field="*{commentContext}"
-                                  rows="5" cols="80"></textarea>
-                        <P />
-                        <input type="submit" value="發表留言">
-                        <button type="reset">清空</button>
-                    </fieldset>
-                </form>
+                        </div>
+                        <!-- 留言內容 -->
+                        <div class="row my-1 py-2 ms-2">
+                            <div class="fs-5" th:text="${commentDto.commentContext}"></div>
+                        </div>
+                        <!-- 編輯留言 -->
+                        <div class="row d-flex justify-content-end">
+                            <form method="post"
+                                  class="col-1 me-3"
+                                  th:action="@{/ThinkEat/ViewEat/EatRepo/EditComment}">
+                                <input type="hidden" id="commentId" name="commentId"
+                                       th:value="${commentDto.id}">
+                                <input type="submit" class="me-2" value="編輯留言">
+                            </form>
+                        </div>
+                    </div>
+                    <!-- 發表留言 -->
+                    <div class="">
+                        <form th:action="@{/ThinkEat/ViewEat/EatRepo/PostComment}"
+                              th:object="${commentDto}"
+                              method="post">
+                            <fieldset>
+                                <legend>發表留言</legend>
+                                <!-- 食記ID -->
+                                <input id="eatRepoId" name="eatRepoId"
+                                       th:value="${eatRepoDto.id}"
+                                       type="hidden"/>
+                                <textarea id="commentContext" name="commentContext"
 
+                                          th:field="*{commentContext}"
+                                          rows="5" cols="93"></textarea>
+                                <P/>
+                                <input type="submit" value="發表留言">
+                                <button type="reset">清空</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </section>
             </div>
-        </section>
 
+            <div class="flexitem col-1" style="width:10%;"></div>
+
+        </div>
     </div>
+
+
 </main>
+
 
 <!-- 在頁面底部添加以下 JavaScript 代碼 -->
 <script>
