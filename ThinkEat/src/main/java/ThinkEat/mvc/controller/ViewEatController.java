@@ -13,6 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("ViewEat/")
@@ -60,11 +63,19 @@ public class ViewEatController {
     @GetMapping("/ResInfo/{restaurantId}")
     public String getResPage(@PathVariable("restaurantId") Integer restaurantId,
                              Model model) {
-        // 根據 restaurantId 從數據庫中檢索相應的 餐廳
+        // 尋找餐廳餐廳
         RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
-        List<EatRepoDto> eatRepoDto = restaurantService.getAllEatRepoByRestaurantId(restaurantId);
+        model.addAttribute("restaurantDto", restaurantDto);
 
-        // 取得屬於這間餐廳的所有食記的照片
+        // 尋找這間餐廳的所有食記
+        List<EatRepoDto> eatRepoDtoList = restaurantService.getAllEatRepoByRestaurantId(restaurantId);
+        model.addAttribute("eatRepoDto", eatRepoDtoList);
+
+        Integer eatRepoListCount = eatRepoDtoList.size();
+        model.addAttribute("eatRepoListCount", eatRepoListCount);
+
+
+        // 取得屬於這間餐廳的所有食記的照片的網址
         List<PictureDto> pictureDtoList = restaurantService.getAllPictureByRestaurantId(restaurantId);
         List<String> restaurantImagePathList = new ArrayList<>();
         for (PictureDto pictureDto : pictureDtoList) {
@@ -72,9 +83,53 @@ public class ViewEatController {
         }
         model.addAttribute("restaurantImagePathList", restaurantImagePathList);
 
-        // 將檢索到的 餐廳 及 擁有的食記 添加到模型中
-        model.addAttribute("restaurantDto", restaurantDto);
-        model.addAttribute("eatRepoDto", eatRepoDto);
+        //處理價位
+        List<Integer> allPriceIdList = new ArrayList<>();
+        for (EatRepoDto eatRepoDto : eatRepoDtoList) {
+            Integer priceId = eatRepoDto.getPrice().getId();
+            allPriceIdList.add(priceId);
+        }
+        System.out.println("目前收集到的priceId有：" + allPriceIdList);
+
+        double averagePriceId = allPriceIdList.stream()
+                .mapToDouble(Integer::doubleValue) // 將Integer轉換成double
+                .average()                          // 計算平均值
+                .orElse(0.0);                       // 如果沒有元素，預設為0.0
+
+
+        // 將double轉換為Integer
+        Integer roundedAveragePriceId = Integer.valueOf((int) Math.round(averagePriceId));
+        System.out.println("收集到的priceId的平均值為：" + roundedAveragePriceId);
+        String averagePrice = priceService.getPriceById(roundedAveragePriceId).getName();
+        model.addAttribute("averagePrice", averagePrice);
+
+        //處理標籤
+        List<TagDto> allTagDtoList = new ArrayList<>();
+        for (EatRepoDto eatRepoDto : eatRepoDtoList) {
+            for (TagDto tagDto : eatRepoDto.getEatRepo_TagList()) {
+                allTagDtoList.add(tagDto);
+            }
+        }
+
+        // 取得所有標籤名稱的List
+        List<String> allTagNames = allTagDtoList.stream()
+                .map(TagDto::getName)
+                .collect(Collectors.toList());
+        System.out.println("所有標籤名稱：" + allTagNames);
+
+        // 使用 Map 來計算每個標籤的出現次數
+        Map<String, Long> tagFrequencyMap = allTagNames.stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        // 排序 Map，取出現次數最多的五個標籤的 name 屬性
+        List<String> topFiveTagNameList = tagFrequencyMap.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(5)
+                .map(Map.Entry::getKey)  // 取得 name 屬性
+                .collect(Collectors.toList());
+
+        System.out.println("出現次數前五多的標籤：" + topFiveTagNameList);
+        model.addAttribute("topFiveTagNameList", topFiveTagNameList);
 
         // 返回 ViewEat 頁面
         return "ViewEat/ResInfo";
