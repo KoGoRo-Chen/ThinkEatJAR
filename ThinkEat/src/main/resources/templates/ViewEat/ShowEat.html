@@ -21,6 +21,7 @@
 
 <!-- Main區塊 -->
 <main>
+
     <div class="container-fluid d-flex mx-0 px-0" style="min-height: 100vh; ">
         <section class="col-10 d-flex justify-content-center align-items-center Intro" style="background-color: rgb(240, 240, 240);">
             <div class="bg-light d-flex flex-column justify-content-between" style="width: 90%; height: 95%">
@@ -46,18 +47,21 @@
 
                     </th:block>
                 </div>
-                <!-- 在模板中添加调试信息 -->
-                <div th:text="${maxPage}"></div>
-                <div th:text="${curPage}"></div>
-
                 <!-- 分頁頁籤 -->
                 <div class="row bg-light mt-5 align-self-center" >
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
+                            <!-- 第一頁 -->
+                            <li class="page-item" th:if="${curPage > 0}">
+                                <a class="page-link" th:href="@{/ThinkEat/ViewEat/ShowEat/(page=0)}">
+                                    第一頁
+                                </a>
+                            </li>
 
                             <!-- 上一頁 -->
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
+                            <li class="page-item" th:if="${curPage > 0}">
+                                <a class="page-link" th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${curPage - 1})}"
+                                   aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -69,12 +73,19 @@
                             </li>
 
                             <!-- 下一頁 -->
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
+                            <li class="page-item" th:if="${curPage < maxPage - 1}">
+                                <a class="page-link" th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${curPage + 1})}"
+                                   aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
 
+                            <!-- 最後一頁一頁 -->
+                            <li class="page-item" th:if="${curPage < maxPage - 1}">
+                                <a class="page-link" th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${maxPage}-1)}">
+                                    最後一頁
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                 </div> <!-- 分頁頁籤結束 -->
@@ -82,16 +93,19 @@
             </div> <!-- 大div區結束 -->
         </section>
     </div>
+
 </main>
+
+<!-- JavaScript代码 -->
+<script th:inline="javascript">
+    function handlePageChange(newPage, maxPage) {
+        if (newPage < 0 || newPage >= maxPage) {
+            alert("已经在第一页或最后一页！");
+            return false; // 阻止链接跳转
+        }
+        return true; // 允许链接跳转
+    }
+</script>
+
 </body>
 </html>
-            <!-- 第一排
-
-
-            <div class="row d-flex m-2 mt-3 justify-content-evenly flex-wrap">
-                <div class="col-1  bg-warning text-center " style="width: 200px; height: 200px">Placeholder</div>
-                <div class="col-1  bg-warning text-center " style="width: 200px; height: 200px">Placeholder</div>
-                <div class="col-1  bg-warning text-center " style="width: 200px; height: 200px">Placeholder</div>
-                <div class="col-1  bg-warning text-center" style="width: 200px; height: 200px">Placeholder</div>
-            </div>
-            -->
