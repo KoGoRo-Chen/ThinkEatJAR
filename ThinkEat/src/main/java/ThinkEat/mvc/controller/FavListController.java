@@ -3,8 +3,11 @@ package ThinkEat.mvc.controller;
 import ThinkEat.mvc.model.dto.CommentDto;
 import ThinkEat.mvc.model.dto.FavListDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
+import ThinkEat.mvc.model.dto.ShowEatPageDto;
 import ThinkEat.mvc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,6 +73,9 @@ public class FavListController {
     //顯示收藏清單頁面(預設序號1)
     @GetMapping("/{favListDtoId}")
     public String getFavListPageById(@PathVariable("favListDtoId") Integer favListDtoId,
+                                     @RequestParam(name = "page", defaultValue = "0") int page,
+                                     @RequestParam(name = "size", defaultValue = "12") int size,
+                                     @ModelAttribute RestaurantDto restaurantDto,
                                      Model model) {
         if (favListDtoId > 0) {
             //載入所有清單(用於側邊欄)
@@ -77,10 +83,20 @@ public class FavListController {
             model.addAttribute("favListDtoList", favListDtoList);
 
             //載入清單中的所有餐廳
-            List<RestaurantDto> restaurantDtoList = favListService.findAllRestaurantsInFavList(favListDtoId);
+            Pageable pageable = PageRequest.of(page, size);
+            ShowEatPageDto showEatPageDto = favListService.getAllRestaurantInFavList(pageable, favListDtoId);
+            model.addAttribute("showEatPageDto", showEatPageDto);
+            Integer maxPage = showEatPageDto.getTotalPage();
+            model.addAttribute("maxPage", maxPage);
+
+            Integer curPage = showEatPageDto.getCurrentPage();
+            model.addAttribute("curPage", curPage);
+
             //獲得清單中餐廳的總數
+            List<RestaurantDto> restaurantDtoList = favListService.findAllRestaurantsInFavList(favListDtoId);
             Integer totalRestaurants = restaurantDtoList.size();
             Integer count = 0;
+
             model.addAttribute("count", count);
             model.addAttribute("totalRestaurants", totalRestaurants);
             model.addAttribute("restaurantDtoList", restaurantDtoList);

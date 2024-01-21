@@ -147,46 +147,77 @@
                         </form>
                     </section>
 
-                    <!-- 清單顯示區 -->
-                    <th:block th:each="restaurantDto : ${restaurantDtoList}">
-                        <div class="d-flex flex-wrap">
-                            <img th:src="${restaurantDto.resPicList.get(0).htmlPath}"
-                                 style="height: 180px; width: 180px; background-color: red;">
-                            <figcaption class="d-flex flex-column mt-2">
-                                <div>
+                    <!-- 接收所有餐廳資訊，生成縮圖 -->
+                    <div class="pagination d-flex flex-wrap justify-content-center mt-4">
+                        <th:block th:each="restaurantDto : ${showEatPageDto.restaurantDtoList}">
+                            <figure th:if="${restaurantDto.resPicList != null and not #lists.isEmpty(restaurantDto.resPicList)}"
+                                    class="m-2">
+                                <img th:src="${restaurantDto.resPicList.get(0).htmlPath}"
+                                     class="img-thumbnail"
+                                     style="height: 180px; width: 180px; background-color: red;">
+                                <div class="d-flex justify-content-center my-1">
                                     <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
                                        th:text="${restaurantDto.name}"></a>
-                                <!-- 從清單中移除文章 -->
-                                <form method="post"
-                                      th:action="@{/ThinkEat/FavList/RemoveRestaurant/{restaurantId}(restaurantId=${restaurantDto.id}, favListId=${favListDtoId})}">
-                                    <input type="submit" th:value="移除這間餐廳">
-                                </form>
                                 </div>
-                            </figcaption>
-                        </div>
-                    </th:block>
-                </div><!-- 餐廳縮圖區結束 -->
+                            </figure>
+                            <figure th:unless="${restaurantDto.resPicList != null and not #lists.isEmpty(restaurantDto.resPicList)}"
+                                    class="m-2">
+                                <img style="height: 180px; width: 180px; background-color: darkgray;"
+                                     class="img-thumbnail">
+                                <div class="d-flex justify-content-center">
+                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
+                                       th:text="${restaurantDto.name}"></a>
+                                </div>
+                            </figure>
+                        </th:block>
+                    </div>
 
-                <!-- 分頁頁籤 -->
-                <div class="row bg-light mt-5 align-self-center">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div> <!-- 分頁頁籤結束 -->
+                    <!-- 分頁頁籤 -->
+                    <div class="d-flex justify-content-center">
+                        <div class="bg-light mt-5 align-self-center">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <!-- 第一頁 -->
+                                    <li class="page-item" th:if="${curPage > 0}">
+                                        <a class="page-link" th:href="@{/ThinkEat/ViewEat/ShowEat/(page=0)}">
+                                            第一頁
+                                        </a>
+                                    </li>
+
+                                    <!-- 上一頁 -->
+                                    <li class="page-item" th:if="${curPage > 0}">
+                                        <a class="page-link"
+                                           th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${curPage - 1})}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- 以頁碼切換 -->
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, maxPage -1)}">
+                                        <a class="page-link" th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${i})}"
+                                           th:text="${i} + 1"></a>
+                                    </li>
+
+                                    <!-- 下一頁 -->
+                                    <li class="page-item" th:if="${curPage < maxPage - 1}">
+                                        <a class="page-link"
+                                           th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${curPage + 1})}"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- 最後一頁一頁 -->
+                                    <li class="page-item" th:if="${curPage < maxPage - 1}">
+                                        <a class="page-link"
+                                           th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${maxPage}-1)}">
+                                            最後一頁
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div> <!-- 分頁頁籤結束 -->
 
             </div> <!-- 大div區結束 -->
         </section>

@@ -2,14 +2,19 @@ package ThinkEat.mvc.service;
 
 
 import ThinkEat.mvc.dao.FavListDao;
+import ThinkEat.mvc.dao.RestaurantDao;
 import ThinkEat.mvc.model.dto.EatRepoDto;
 import ThinkEat.mvc.model.dto.FavListDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
+import ThinkEat.mvc.model.dto.ShowEatPageDto;
 import ThinkEat.mvc.model.entity.EatRepo;
 import ThinkEat.mvc.model.entity.FavList;
 import ThinkEat.mvc.model.entity.Restaurant;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,13 +25,19 @@ import java.util.stream.Collectors;
 public class FavListService {
 
     private final FavListDao favListDao;
+    private final RestaurantDao restaurantDao;
     private final RestaurantService restaurantService;
     private final EatRepoService eatRepoService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public FavListService(FavListDao favListDao, RestaurantService restaurantService, EatRepoService eatRepoService, ModelMapper modelMapper) {
+    public FavListService(FavListDao favListDao,
+                          RestaurantDao restaurantDao,
+                          RestaurantService restaurantService,
+                          EatRepoService eatRepoService,
+                          ModelMapper modelMapper) {
         this.favListDao = favListDao;
+        this.restaurantDao = restaurantDao;
         this.restaurantService = restaurantService;
         this.eatRepoService = eatRepoService;
         this.modelMapper = modelMapper;
@@ -143,6 +154,42 @@ public class FavListService {
 
         return restaurantList;
     }
+
+    //查詢清單裡的所有餐廳(分頁)
+    public ShowEatPageDto getAllRestaurantInFavList(Pageable pageable,
+                                                    Integer favListId) {
+
+        Set<Restaurant> uniqueRestaurants = new HashSet<>();
+
+        // 根據 favListId 找出 FavList
+        Optional<FavList> favListOpt = favListDao.findById(favListId);
+
+        if (favListOpt.isPresent()) {
+            FavList favList = favListOpt.get();
+
+            // 取得 FavList 內的所有食記
+            List<EatRepo> eatRepoListInFavList = favList.getFavList_EatRepoList();
+
+            // 遍歷每一個食記，取得對應的餐廳
+            for (EatRepo eatRepo : eatRepoListInFavList) {
+                Restaurant restaurant = eatRepo.getRestaurant();
+                // 將餐廳加入 Set
+                uniqueRestaurants.add(restaurant);
+            }
+        }
+
+        // 轉換成分頁對象
+        List<RestaurantDto> restaurantDtoList = uniqueRestaurants.stream()
+                .map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class))
+                .collect(Collectors.toList());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), restaurantDtoList.size());
+
+        Page<RestaurantDto> restaurantDtoPage = new PageImpl<>(restaurantDtoList.subList(start, end), pageable, restaurantDtoList.size());
+        return new ShowEatPageDto(restaurantDtoPage);
+    }
+
 
     // 將餐廳從清單中移除
     public List<RestaurantDto> RemoveRestaurantFromFavList(Integer favListId, Integer restaurantId) {
