@@ -46,16 +46,21 @@ public class ViewEatController {
     }
 
     //顯示ShowEat頁面(顯示所有餐廳)
-    @GetMapping("/ShowEat")
+    @GetMapping("/ShowEat/")
     public String GetShowEatPage(@RequestParam(name = "page", defaultValue = "0") int page,
-                                 @RequestParam(name = "size", defaultValue = "3") int size,
+                                 @RequestParam(name = "size", defaultValue = "12") int size,
                                  @ModelAttribute RestaurantDto restaurantDto,
                                  Model model) {
         Pageable pageable = PageRequest.of(page, size);
-        List<RestaurantDto> restaurantDtoList = restaurantService.getAllRestaurant();
         ShowEatPageDto showEatPageDto = restaurantService.getAllRestaurant(pageable);
-        model.addAttribute("restaurantDtoList", restaurantDtoList);
         model.addAttribute("showEatPageDto", showEatPageDto);
+
+        Integer maxPage = showEatPageDto.getTotalPage();
+        model.addAttribute("maxPage", maxPage);
+
+        Integer curPage = showEatPageDto.getCurrentPage();
+        model.addAttribute("curPage", curPage);
+
         return "ViewEat/ShowEat";
     }
 

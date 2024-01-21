@@ -143,15 +143,3 @@ public class RestaurantService {
 
 
 }
-/*
-//新增
-@Transactional
-public Restaurant addRestaurant(RestaurantDto newRestaurantDto) {
-    RestaurantDto newRestaurantDto = new RestaurantDto();
-    newRestaurantDto.setName(name);
-    newRestaurantDto.setAddress(address);
-    Restaurant newrestaurant = modelMapper.map(newRestaurantDto, Restaurant.class);
-    System.out.println("restaurantService: " + newRestaurantDto);
-    return restaurantDao.save(newrestaurant);
-}
- */
