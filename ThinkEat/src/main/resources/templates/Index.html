@@ -37,7 +37,7 @@
                         <a th:href="@{/ThinkEat/ViewEat/ResInfo/{Id}(Id = ${restaurantDto.id})}">
                             <th:block th:if="${not #lists.isEmpty(restaurantDto.resPicList)}">
                                 <img th:src="${restaurantDto.resPicList[0]?.htmlPath}"
-                                     class="d-block mx-auto img"
+                                     class="d-block mx-auto img-fluid"
                                      width="1024px"
                                      th:alt="${restaurantDto.name}">
                             </th:block>
