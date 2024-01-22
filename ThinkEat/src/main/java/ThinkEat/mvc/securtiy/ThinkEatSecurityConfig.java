@@ -3,9 +3,11 @@ package ThinkEat.mvc.securtiy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity
 public class ThinkEatSecurityConfig {
 
     @Bean
@@ -21,7 +23,6 @@ public class ThinkEatSecurityConfig {
                 form
                         .loginPage("/ThinkEat/Login")
                         .loginProcessingUrl("/ThinkEat/authenticateUser")
-                        .defaultSuccessUrl("/ThinkEat/Index")
                         .permitAll()
         )
         .logout(logout -> logout.permitAll()

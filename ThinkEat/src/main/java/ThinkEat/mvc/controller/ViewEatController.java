@@ -91,7 +91,7 @@ public class ViewEatController {
         //處理價位
         List<Integer> allPriceIdList = new ArrayList<>();
         for (EatRepoDto eatRepoDto : eatRepoDtoList) {
-            Integer priceId = eatRepoDto.getPrice().getId();
+            Integer priceId = eatRepoDto.getPriceId();
             allPriceIdList.add(priceId);
         }
         System.out.println("目前收集到的priceId有：" + allPriceIdList);
