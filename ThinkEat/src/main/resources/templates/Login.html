@@ -26,7 +26,7 @@
             <div class="card border-info">
 
                 <div class="card-header bg-info">
-                    Sign In
+                    登入
                 </div>
 
                 <div class="card-body ">
@@ -42,13 +42,13 @@
                                         <!-- Check for login error -->
                                         <div th:if="${param.error}">
                                             <div class="alert alert-danger col-xs-offset-1 col-xs-10">
-                                                Invalid username and password.
+                                                帳號或密碼不存在
                                             </div>
                                         </div>
                                         <!-- Check for logout -->
                                         <div th:if="${param.logout}">
                                             <div class="alert alert-success col-xs-offset-1 col-xs-10">
-                                                You have been logged out.
+                                                你已經被登出
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +68,7 @@
                             <!-- Login/Submit Button -->
                             <div style="margin-top: 10px" class="form-group">
                                 <div class="col-sm-6 controls">
-                                    <button type="submit" class="btn btn-success">Login</button>
+                                    <button type="submit" class="btn btn-success">登入</button>
                                 </div>
                             </div>
                         </form>
