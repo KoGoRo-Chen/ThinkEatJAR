@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 //網頁路徑：http://localhost:8080/ThinkEat/mvc/Account
 public class AccountController {
 
-    @GetMapping("/Login")
-    public String getLoginPage(){
-        return "Account/Login";
+    @GetMapping("/AccountCenter")
+    public String getAccountCenterPage() {
+
+        return "Account/AccountCenter";
     }
 
-    @GetMapping("/AccessDenied")
-    public String getAccessDeniedPage(){
-        return "Account/AccessDenied";
-    }
 
 }

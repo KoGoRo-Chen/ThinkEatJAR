@@ -46,6 +46,18 @@ public class ThinkEatController {
 
         return "Index";
     }
+
+    @GetMapping("/Login")
+    public String getLoginPage() {
+
+        return "Login";
+    }
+
+    @GetMapping("/AccessDenied")
+    public String getAccessDeniedPage() {
+
+        return "AccessDenied";
+    }
 }
 
 
