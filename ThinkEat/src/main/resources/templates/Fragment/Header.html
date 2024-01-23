@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 <head>
     <meta charset="UTF-8" />
     <title>頁首</title>
@@ -36,9 +36,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/ThinkEat/UserSignIn}">
+                        <a class="nav-link active" th:href="@{/ThinkEat/SignIn}">
                             加入會員
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/ThinkEat/logout}"
+                           th:if="${#authorization.expression('isAuthenticated()')}">登出</a>
                     </li>
                 </ul>
             </div>

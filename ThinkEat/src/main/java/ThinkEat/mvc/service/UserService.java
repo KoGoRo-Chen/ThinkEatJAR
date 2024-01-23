@@ -4,6 +4,7 @@ import ThinkEat.mvc.dao.AuthorityDao;
 import ThinkEat.mvc.dao.FavListDao;
 import ThinkEat.mvc.dao.UserDao;
 import ThinkEat.mvc.dao.UserServiceDao;
+import ThinkEat.mvc.model.dto.AuthorityDto;
 import ThinkEat.mvc.model.dto.FavListDto;
 import ThinkEat.mvc.model.dto.UserDto;
 import ThinkEat.mvc.model.entity.FavList;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,27 +27,30 @@ public class UserService implements UserDetailsService {
 
     private final UserDao userDao;
     private final UserServiceDao userServiceDao;
-    private final AuthorityDao authorityDao;
+    private final AuthorityService authorityService;
     private final RestaurantService restaurantService;
     private final EatRepoService eatRepoService;
     private final FavListService favListService;
     private final ModelMapper modelMapper;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public UserService(UserDao userDao,
                        UserServiceDao userServiceDao,
-                       AuthorityDao authorityDao,
+                       AuthorityService authorityService,
                        RestaurantService restaurantService,
                        EatRepoService eatRepoService,
                        FavListService favListService,
-                       ModelMapper modelMapper) {
+                       ModelMapper modelMapper,
+                       BCryptPasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.userServiceDao = userServiceDao;
-        this.authorityDao = authorityDao;
+        this.authorityService = authorityService;
         this.restaurantService = restaurantService;
         this.eatRepoService = eatRepoService;
         this.favListService = favListService;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User findUserByUsername(String username) throws UsernameNotFoundException {
@@ -66,11 +71,18 @@ public class UserService implements UserDetailsService {
 
     //新增會員
     @Transactional
-    public Integer addUser(UserDto userDto,
-                           FavListDto favListDto) {
+    public Integer addUser(UserDto userDto) {
+        FavListDto favListDto = new FavListDto();
         favListDto.setName("我的清單");
         Integer favListId = favListService.addFavList(favListDto);
         userDto.getFavLists().add(favListDto);
+
+        userDto.setUserName(userDto.getUserName());
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userDto.setNickName(userDto.getNickName());
+        AuthorityDto authorityDto = authorityService.getAuthorityById(1);
+        userDto.getAuthorities().add(authorityDto);
+
         User user = modelMapper.map(userDto, User.class);
         userDao.save(user);
         return user.getId();
@@ -100,7 +112,7 @@ public class UserService implements UserDetailsService {
         if (userOpt.isPresent()) {
             User userToUpdate = userOpt.get();
             //驗證會員密碼
-            if (userToUpdate.getPassword() == curPassword) {
+            if (userToUpdate.getPassword().equals(curPassword)) {
                 userToUpdate.setPassword(newPassword);
                 userDao.save(userToUpdate);
                 return userToUpdate.getId();

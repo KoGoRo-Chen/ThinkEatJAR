@@ -3,14 +3,15 @@ package ThinkEat.mvc.controller;
 import ThinkEat.mvc.model.dto.PictureDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.model.dto.UserDto;
+import ThinkEat.mvc.model.entity.User;
 import ThinkEat.mvc.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,19 +26,31 @@ public class ThinkEatController {
     private final PriceService priceService;
     private final TagService tagService;
     private final PictureService pictureService;
+    private final UserService userService;
 
     @Autowired
     public ThinkEatController(EatRepoService eatRepoService,
                               RestaurantService restaurantService,
                               PriceService priceService,
                               TagService tagService,
-                              PictureService pictureService) {
+                              PictureService pictureService,
+                              UserService userService) {
         this.eatRepoService = eatRepoService;
         this.restaurantService = restaurantService;
         this.priceService = priceService;
         this.tagService = tagService;
         this.pictureService = pictureService;
+        this.userService = userService;
     }
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+
+        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
+
 
     //顯示首頁
     @GetMapping("/Index")
@@ -66,15 +79,33 @@ public class ThinkEatController {
     //顯示註冊會員頁面
     @GetMapping("/SignIn")
     public String getSignInPage(Model model) {
-        UserDto userDto = new UserDto();
-        model.addAttribute("userDto", userDto);
+        UserDto newUserDto = new UserDto();
+        model.addAttribute("userDto", newUserDto);
         return "SignIn";
     }
 
     //註冊會員
     @PostMapping("/submitRegistration")
     public String submitRegistration(@ModelAttribute("userDto") UserDto userDto,
+                                     HttpSession session,
                                      Model model) {
+        User existing = userService.findUserByUsername(userDto.getUserName());
+        if (existing != null) {
+            model.addAttribute("userDto", new UserDto());
+            model.addAttribute("registrationError", "User name already exists.");
+            return "SignIn";
+        }
+
+        userDto.setUserName(userDto.getUserName());
+        System.out.println("會員帳號為: " + userDto.getUserName());
+        userDto.setPassword(userDto.getPassword());
+        System.out.println("密碼為: " + userDto.getPassword());
+        userDto.setNickName(userDto.getNickName());
+        System.out.println("暱稱為: " + userDto.getNickName());
+
+        Integer userId = userService.addUser(userDto);
+        userDto.setId(userId);
+        session.setAttribute("user", userDto);
 
         return "Index";
     }

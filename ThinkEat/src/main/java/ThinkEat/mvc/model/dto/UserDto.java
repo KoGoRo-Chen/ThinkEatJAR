@@ -30,7 +30,7 @@ public class UserDto {
 
     private List<CommentDto> commentList = new ArrayList<>();
 
-    private List<AuthorityDto> authorities;
+    private List<AuthorityDto> authorities = new ArrayList<>();
 
     private List<FavListDto> favLists = new ArrayList<>();
 }
