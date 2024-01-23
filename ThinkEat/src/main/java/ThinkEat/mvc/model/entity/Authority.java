@@ -31,7 +31,7 @@ public class Authority implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return "Role_" + name;
+        return "ROLE_" + name;
     }
 
     public Integer getId() {

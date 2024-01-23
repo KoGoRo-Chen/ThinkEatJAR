@@ -21,7 +21,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (Authority authority : user.getAuthorities()) {
-            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority.getName());
+            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority.getAuthority());
             authorities.add(simpleGrantedAuthority);
         }
         return authorities;

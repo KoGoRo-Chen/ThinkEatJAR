@@ -24,7 +24,7 @@ public class ThinkEatSecurityConfig {
 
         httpSecurity.authorizeHttpRequests(
                         configurer -> configurer
-                                .requestMatchers("/Account/*").authenticated()
+                                .requestMatchers("/Account/*").hasRole("standard_user")
                                 .requestMatchers("/ShareEat/*").authenticated()
                                 .anyRequest().permitAll()
         )
