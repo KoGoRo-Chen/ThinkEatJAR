@@ -1,11 +1,17 @@
 package ThinkEat.mvc.securtiy;
 
+import ThinkEat.mvc.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -29,24 +35,22 @@ public class ThinkEatSecurityConfig {
                         .permitAll()
         )
         .logout(logout -> logout.permitAll()
-        )
-        .exceptionHandling(configurer ->
-                configurer.accessDeniedPage("/ThinkEat/AccessDenied")
         );
 
         return httpSecurity.build();
     }
 
     @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
 
-        UserDetails john = User.builder()
-                .username("john")
-                .password("{noop}test123")
-                .roles("Standard_User")
-                .build();
+        return new BCryptPasswordEncoder();
+    }
 
-
-        return new InMemoryUserDetailsManager(john);
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(UserService userService) {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userService);
+        authenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
+        return authenticationProvider;
     }
 }

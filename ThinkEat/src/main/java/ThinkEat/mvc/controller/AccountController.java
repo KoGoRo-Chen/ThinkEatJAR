@@ -16,13 +16,6 @@ public class AccountController {
         return "Account/AccountCenter";
     }
 
-    //顯示註冊會員頁面
-    @GetMapping("/SignIn")
-    public String getSignInPage() {
-
-        return "Account/SignIn";
-    }
-
     //顯示更改密碼頁面
     @GetMapping("/ChangePassword")
     public String getPasswordPage() {

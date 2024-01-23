@@ -24,6 +24,8 @@ public class UserDto {
 
     private Integer favListCount;
 
+    private boolean enabled;
+
     private List<EatRepo> eatRepoList = new ArrayList<>();
 
     private List<CommentDto> commentList = new ArrayList<>();

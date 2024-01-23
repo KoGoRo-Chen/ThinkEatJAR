@@ -2,18 +2,18 @@ package ThinkEat.mvc.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "authority")
-@Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = {"userList"})
-public class Authority {
+public class Authority implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -29,5 +29,24 @@ public class Authority {
     @ManyToMany(mappedBy = "authorities", cascade = CascadeType.DETACH)
     private List<User> userList = new ArrayList<>();
 
+    @Override
+    public String getAuthority() {
+        return "Role_" + name;
+    }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
 }

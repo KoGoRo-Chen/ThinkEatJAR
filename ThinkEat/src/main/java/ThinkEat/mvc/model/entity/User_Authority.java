@@ -20,7 +20,7 @@ public class User_Authority {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
-    private EatRepo user_id;
+    private User user_id;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "authority_id")

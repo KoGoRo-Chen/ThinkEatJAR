@@ -1,34 +1,68 @@
 package ThinkEat.mvc.service;
 
+import ThinkEat.mvc.dao.AuthorityDao;
 import ThinkEat.mvc.dao.FavListDao;
 import ThinkEat.mvc.dao.UserDao;
+import ThinkEat.mvc.dao.UserServiceDao;
 import ThinkEat.mvc.model.dto.FavListDto;
 import ThinkEat.mvc.model.dto.UserDto;
 import ThinkEat.mvc.model.entity.FavList;
 import ThinkEat.mvc.model.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class UserService {
+@Service
+public class UserService implements UserDetailsService {
 
     private final UserDao userDao;
+    private final UserServiceDao userServiceDao;
+    private final AuthorityDao authorityDao;
     private final RestaurantService restaurantService;
     private final EatRepoService eatRepoService;
     private final FavListService favListService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public UserService(UserDao userDao, RestaurantService restaurantService, EatRepoService eatRepoService, FavListService favListService, ModelMapper modelMapper) {
+    public UserService(UserDao userDao,
+                       UserServiceDao userServiceDao,
+                       AuthorityDao authorityDao,
+                       RestaurantService restaurantService,
+                       EatRepoService eatRepoService,
+                       FavListService favListService,
+                       ModelMapper modelMapper) {
         this.userDao = userDao;
+        this.userServiceDao = userServiceDao;
+        this.authorityDao = authorityDao;
         this.restaurantService = restaurantService;
         this.eatRepoService = eatRepoService;
         this.favListService = favListService;
         this.modelMapper = modelMapper;
     }
+
+    public User findUserByUsername(String username) throws UsernameNotFoundException {
+        return userServiceDao.findByUserName(username);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userDao.getUserByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("找不到使用者，使用者名稱：" + user.getUsername());
+        }
+
+        return new ThinkEat.mvc.model.entity.UserDetails(user);
+    }
+
 
     //新增會員
     @Transactional
@@ -117,5 +151,6 @@ public class UserService {
         }
         return null;
     }
+
 
 }

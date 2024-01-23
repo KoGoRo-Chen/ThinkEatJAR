@@ -32,6 +32,12 @@ public class User {
     @Column
     private Integer favListCount;
 
+    @Column(columnDefinition = "TINYINT(1)")
+    private boolean enabled;
+
+    @Column(columnDefinition = "TINYINT(1)")
+    private boolean tokenExpired;
+
     //一個用戶可發表多篇文章
     @OneToMany(mappedBy = "eatRepo_User", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<EatRepo> eatRepoList = new ArrayList<>();
@@ -45,12 +51,11 @@ public class User {
     private List<FavList> favLists = new ArrayList<>();
 
     //一個用戶可以擁有多個權限
-    @ManyToMany(targetEntity = Authority.class, cascade = CascadeType.DETACH)
+    @ManyToMany(targetEntity = Authority.class, cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id")
     )
-
     private List<Authority> authorities;
 }

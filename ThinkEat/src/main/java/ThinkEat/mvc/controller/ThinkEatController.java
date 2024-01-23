@@ -2,11 +2,14 @@ package ThinkEat.mvc.controller;
 
 import ThinkEat.mvc.model.dto.PictureDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
+import ThinkEat.mvc.model.dto.UserDto;
 import ThinkEat.mvc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -58,6 +61,22 @@ public class ThinkEatController {
     public String getAccessDeniedPage() {
 
         return "AccessDenied";
+    }
+
+    //顯示註冊會員頁面
+    @GetMapping("/SignIn")
+    public String getSignInPage(Model model) {
+        UserDto userDto = new UserDto();
+        model.addAttribute("userDto", userDto);
+        return "SignIn";
+    }
+
+    //註冊會員
+    @PostMapping("/submitRegistration")
+    public String submitRegistration(@ModelAttribute("userDto") UserDto userDto,
+                                     Model model) {
+
+        return "Index";
     }
 }
 
