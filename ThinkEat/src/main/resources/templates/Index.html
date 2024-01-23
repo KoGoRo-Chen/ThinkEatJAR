@@ -29,7 +29,8 @@
         <!--  圖片播放區 套用bootstrap輪播功能 -->
         <div class="row my-2">
             <div id="carouselExampleCaptions" class="carousel col-12"
-                 data-bs-ride="carousel">
+                 data-bs-ride="carousel"
+                 style="width=1024px; height=768px; background-color: darkgray;">
                 <div class="carousel-inner pickUpArea col-8">
                     <!-- 使用Thymeleaf的迭代器來生成輪播項目 -->
                     <div th:each="restaurantDto, iterStat : ${restaurantDtoList}" class="carousel-item"
@@ -39,7 +40,8 @@
                                 <img th:src="${restaurantDto.resPicList[0]?.htmlPath}"
                                      class="d-block mx-auto img-fluid"
                                      width="1024px"
-                                     th:alt="${restaurantDto.name}">
+                                     th:alt="${restaurantDto.name}"
+                                >
                             </th:block>
                             <div class="carousel-caption d-none d-md-block">
                                 <h4 th:text="${restaurantDto.name}"></h4>

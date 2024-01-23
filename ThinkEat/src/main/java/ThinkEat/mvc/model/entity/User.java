@@ -21,13 +21,16 @@ public class User {
     private Integer id;
 
     @Column
-    private String nickName;
+    private String username;
 
     @Column
     private String password;
 
     @Column
-    private String username;
+    private String nickName;
+
+    @Column
+    private Integer favListCount;
 
     //一個用戶可發表多篇文章
     @OneToMany(mappedBy = "eatRepo_User", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -37,14 +40,17 @@ public class User {
     @OneToMany(mappedBy = "comment_User", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Comment> commentList = new ArrayList<>();
 
-    //多個用戶可以擁有相同的權限等級，但每個用戶僅能擁有一個權限
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "authority_id")
-    private Authority authority;
-
     //一個用戶可建立多筆清單
     @OneToMany(mappedBy = "favList_User", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<FavList> favLists = new ArrayList<>();
 
+    //一個用戶可以擁有多個權限
+    @ManyToMany(targetEntity = Authority.class, cascade = CascadeType.DETACH)
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id")
+    )
+
+    private List<Authority> authorities;
 }
-//@Column(nullable = false)

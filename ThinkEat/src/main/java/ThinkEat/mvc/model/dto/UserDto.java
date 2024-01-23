@@ -1,5 +1,6 @@
 package ThinkEat.mvc.model.dto;
 
+import ThinkEat.mvc.model.entity.Authority;
 import ThinkEat.mvc.model.entity.EatRepo;
 import lombok.*;
 
@@ -21,11 +22,13 @@ public class UserDto {
 
     private String userName;
 
+    private Integer favListCount;
+
     private List<EatRepo> eatRepoList = new ArrayList<>();
 
     private List<CommentDto> commentList = new ArrayList<>();
 
-    private AuthorityDto authority;
+    private List<AuthorityDto> authorities;
 
     private List<FavListDto> favLists = new ArrayList<>();
 }

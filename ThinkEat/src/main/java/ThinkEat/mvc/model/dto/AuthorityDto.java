@@ -1,5 +1,6 @@
 package ThinkEat.mvc.model.dto;
 
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -15,11 +16,9 @@ public class AuthorityDto {
 
     private Integer id;
 
-    private String authorityName;
+    private String name;
+
+    private String description;
 
     private List<UserDto> userList = new ArrayList<>();
-
-    private List<AccessDto> accessList = new ArrayList<>();
-
-
 }

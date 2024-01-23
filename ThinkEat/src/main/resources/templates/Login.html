@@ -20,8 +20,8 @@
 
         <div class="flexitem col-1" style="width:10%; "></div>
 
-        <div id="loginbox" style="margin-top: 50px;"
-             class="col-10 col-md-offset-2 col-sm-6 col-sm-offset-2">
+        <div id="loginbox" style=""
+             class="col-10">
 
             <div class="card border-info">
 
@@ -55,27 +55,39 @@
                                 </div>
                             </div>
 
-                            <!-- User name -->
+                            <!-- username -->
                             <div style="margin-bottom: 25px" class="input-group">
                                 <input type="text" name="username" placeholder="username" class="form-control">
                             </div>
 
-                            <!-- Password -->
+                            <!-- 密碼 -->
                             <div style="margin-bottom: 25px" class="input-group">
                                 <input type="password" name="password" placeholder="password" class="form-control">
                             </div>
 
-                            <!-- Login/Submit Button -->
+                            <!-- 登入按鈕-->
                             <div style="margin-top: 10px" class="form-group">
                                 <div class="col-sm-6 controls">
                                     <button type="submit" class="btn btn-success">登入</button>
                                 </div>
                             </div>
+
+                            <!-- 註冊會員按鈕 -->
+                            <div style="margin-top: 10px" class="form-group">
+                                <div class="col-sm-6 controls">
+                                    <button type="button" class="btn btn-primary"
+                                            th:onclick="|window.location.href='/ThinkEat/Account/SignIn|">
+                                        會員註冊
+                                    </button>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="flexitem col-1" style="width:10%; "></div>
     </div>
 </div>

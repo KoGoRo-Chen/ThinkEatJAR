@@ -20,20 +20,14 @@ public class Authority {
     private Integer id;
 
     @Column(nullable = false)
-    private String authorityName;
+    private String name;
 
-    //一個權限可分配給多個用戶(user)
-    @OneToMany(mappedBy = "authority")
+    @Column(nullable = false)
+    private String description;
+
+    //每個權限可分配給多個用戶(user)
+    @ManyToMany(mappedBy = "authorities", cascade = CascadeType.DETACH)
     private List<User> userList = new ArrayList<>();
-
-    //每個權限都擁有多個功能(access)
-    @ManyToMany(targetEntity = ThinkEat.mvc.model.entity.Access.class)
-    @JoinTable(
-            name = "authority_access",
-            joinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "access_id", referencedColumnName = "id")
-    )
-    private List<Access> accessList = new ArrayList<>();
 
 
 }
