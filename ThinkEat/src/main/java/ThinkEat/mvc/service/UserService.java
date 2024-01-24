@@ -97,7 +97,7 @@ public class UserService implements UserDetailsService {
         if (userOpt.isPresent()) {
             User userToUpdate = userOpt.get();
             // 更新會員暱稱
-            userToUpdate.setNickName(newNickName);
+            userToUpdate.setNickname(newNickName);
             userDao.save(userToUpdate);
             return userToUpdate.getId();
         }

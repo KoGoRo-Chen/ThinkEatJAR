@@ -27,7 +27,7 @@ public class User {
     private String password;
 
     @Column
-    private String nickName;
+    private String nickname;
 
     @Column
     private Integer favListCount;
