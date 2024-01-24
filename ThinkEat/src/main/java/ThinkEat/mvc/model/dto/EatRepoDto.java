@@ -30,6 +30,7 @@ public class EatRepoDto {
     private RestaurantDto restaurant;
 
     private Integer priceId;
+
     private PriceDto price;
 
     private List<FavListDto> favListList = new ArrayList<>();

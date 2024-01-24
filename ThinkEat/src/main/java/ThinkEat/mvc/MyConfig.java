@@ -26,10 +26,6 @@ public class MyConfig implements WebMvcConfigurer {
             }
         });
 
-        modelMapper.typeMap(Restaurant.class, RestaurantDto.class)
-                .addMapping(src -> src.getEatRepoList(), RestaurantDto::setEatRepoList)
-                .addMapping(src -> src.getResPicList(), RestaurantDto::setResPicList);
-
         return modelMapper;
     }
 
