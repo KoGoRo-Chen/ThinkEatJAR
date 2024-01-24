@@ -60,7 +60,6 @@ public class ThinkEatController {
         List<RestaurantDto> restaurantDtoList = restaurantService.getAllRestaurant();
         model.addAttribute("restaurantDtoList", restaurantDtoList);
 
-
         return "Index";
     }
 

@@ -1,7 +1,9 @@
 package ThinkEat.mvc;
 
 import ThinkEat.mvc.model.dto.EatRepoDto;
+import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.model.entity.EatRepo;
+import ThinkEat.mvc.model.entity.Restaurant;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,11 @@ public class MyConfig implements WebMvcConfigurer {
                 map().getPrice().setId(source.getPriceId());
             }
         });
+
+        modelMapper.typeMap(Restaurant.class, RestaurantDto.class)
+                .addMapping(src -> src.getEatRepoList(), RestaurantDto::setEatRepoList)
+                .addMapping(src -> src.getResPicList(), RestaurantDto::setResPicList);
+
         return modelMapper;
     }
 

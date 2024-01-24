@@ -28,19 +28,12 @@ import java.util.stream.Collectors;
 @Service
 public class RestaurantService {
 
-    private final EatRepoService eatRepoService;
-    private final EatRepoDao eatRepoDao;
-    private final TagDao tagDataDao;
-    private final PriceDao priceDao;
     private final RestaurantDao restaurantDao;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public RestaurantService(EatRepoService eatRepoService, EatRepoDao eatRepoDao, TagDao tagDataDao, PriceDao priceDao, RestaurantDao restaurantDao, ModelMapper modelMapper) {
-        this.eatRepoService = eatRepoService;
-        this.eatRepoDao = eatRepoDao;
-        this.tagDataDao = tagDataDao;
-        this.priceDao = priceDao;
+    public RestaurantService(RestaurantDao restaurantDao,
+                             ModelMapper modelMapper) {
         this.restaurantDao = restaurantDao;
         this.modelMapper = modelMapper;
     }

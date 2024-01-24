@@ -23,7 +23,6 @@ public class EatRepoService {
     private final TagDao tagDao;
     private final PriceDao priceDao;
     private final EatRepo_TagDao eatRepo_TagDao;
-    private final RestaurantService restaurantService;
     private final CommentDao commentDao;
     private final ModelMapper modelMapper;
 
@@ -31,16 +30,15 @@ public class EatRepoService {
     public EatRepoService(EatRepoDao eatRepoDao,
                           PictureDao pictureDao,
                           TagDao tagDao,
-                          PriceDao priceDao, EatRepo_TagDao eatRepoTagDao,
-                          @Lazy RestaurantService restaurantService,
+                          PriceDao priceDao,
+                          EatRepo_TagDao eatRepoTagDao,
                           CommentDao commentDao,
                           ModelMapper modelMapper) {
         this.eatRepoDao = eatRepoDao;
         this.pictureDao = pictureDao;
         this.tagDao = tagDao;
         this.priceDao = priceDao;
-        eatRepo_TagDao = eatRepoTagDao;
-        this.restaurantService = restaurantService;
+        this.eatRepo_TagDao = eatRepoTagDao;
         this.commentDao = commentDao;
         this.modelMapper = modelMapper;
     }
@@ -71,9 +69,8 @@ public class EatRepoService {
         if (eatRepoOpt.isPresent()) {
             EatRepo eatRepoToUpdate = eatRepoOpt.get();
 
-            // 更新標題和日期
+            // 更新標題
             eatRepoToUpdate.setTitle(eatRepoDto.getTitle());
-            eatRepoToUpdate.setDate(eatRepoDto.getDate());
 
             // 更新價錢
             Price priceToUpdate = priceDao.findById(eatRepoDto.getPriceId()).orElse(null);
