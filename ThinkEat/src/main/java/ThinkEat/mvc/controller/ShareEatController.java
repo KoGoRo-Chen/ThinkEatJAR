@@ -3,8 +3,13 @@ package ThinkEat.mvc.controller;
 import ThinkEat.mvc.model.dto.*;
 import ThinkEat.mvc.model.entity.Price;
 import ThinkEat.mvc.model.entity.Tag;
+import ThinkEat.mvc.model.entity.User;
+import ThinkEat.mvc.model.entity.UserDetails;
 import ThinkEat.mvc.service.*;
+import jakarta.servlet.http.HttpSession;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +28,8 @@ public class ShareEatController {
     private final EatRepoService eatRepoService;
     private final RestaurantService restaurantService;
     private final PictureService pictureService;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
 
     // 建構子注入依賴
     @Autowired
@@ -30,13 +37,17 @@ public class ShareEatController {
                               TagService tagService,
                               EatRepoService eatRepoService,
                               RestaurantService restaurantService,
-                              PictureService pictureService) {
+                              PictureService pictureService,
+                              UserService userService,
+                              ModelMapper modelMapper) {
 
         this.priceService = priceService;
         this.tagService = tagService;
         this.eatRepoService = eatRepoService;
         this.restaurantService = restaurantService;
         this.pictureService = pictureService;
+        this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     //顯示餐廳選擇表單
@@ -147,9 +158,11 @@ public class ShareEatController {
                              @RequestParam("eatRepoId") Integer eatRepoId,
                              @RequestParam("tagIds") List<Integer> tagIds,
                              @RequestPart("multipartFileList") List<MultipartFile> multipartFileList,
+
                              RedirectAttributes redirectAttributes,
                              Model model) {
         System.out.println(eatRepoDto);
+
 
         // 根據 restaurantId 獲取相應的 RestaurantDto 對象，然後將其設置到 eatRepoDto 中
         RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);

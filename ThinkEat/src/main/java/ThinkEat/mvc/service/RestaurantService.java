@@ -65,10 +65,12 @@ public class RestaurantService {
     @Transactional
     public void updateRestaurant(Integer restaurantId, RestaurantDto restaurantDto) {
         Optional<Restaurant> resOpt = restaurantDao.findById(restaurantId);
-        resOpt.ifPresent(restaurantToUpdate -> {
-            modelMapper.map(restaurantDto, restaurantToUpdate);
-            restaurantDao.save(restaurantToUpdate);
-        });
+        if (resOpt.isPresent()) {
+            Restaurant restaurant = resOpt.get();
+            restaurant.setName(restaurantDto.getName());
+            restaurantDao.save(restaurant);
+        }
+        ;
     }
 
     //刪除

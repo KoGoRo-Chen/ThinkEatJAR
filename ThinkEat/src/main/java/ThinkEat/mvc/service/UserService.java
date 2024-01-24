@@ -53,8 +53,14 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User findUserByUsername(String username) throws UsernameNotFoundException {
-        return userServiceDao.findByUserName(username);
+    public UserDto findUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userServiceDao.findByUserName(username);
+        if (user == null) {
+            // 返回一個空的UserDto或採取其他適當的處理方式
+            return null;
+        }
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        return userDto;
     }
 
     @Override
@@ -73,7 +79,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public Integer addUser(UserDto userDto) {
         FavListDto favListDto = new FavListDto();
-        favListDto.setName("我的清單");
+        favListDto.setName("我的第一個清單");
         Integer favListId = favListService.addFavList(favListDto);
         userDto.getFavLists().add(favListDto);
         userDto.setFavListCount(1);

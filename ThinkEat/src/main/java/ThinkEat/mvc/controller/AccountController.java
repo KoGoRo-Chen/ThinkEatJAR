@@ -1,7 +1,12 @@
 package ThinkEat.mvc.controller;
 
+import ThinkEat.mvc.model.dto.UserDto;
 import ThinkEat.mvc.model.entity.User;
+import ThinkEat.mvc.model.entity.UserDetails;
+import ThinkEat.mvc.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,17 +19,26 @@ import java.net.http.HttpRequest;
 //網頁路徑：http://localhost:8080/ThinkEat/mvc/Account
 public class AccountController {
 
+    private final UserService userService;
+
+    @Autowired
+    public AccountController(UserService userService) {
+        this.userService = userService;
+    }
+
     //顯示會員中心頁面
     @GetMapping("/AccountCenter")
-    public String getAccountCenterPage(HttpSession session,
+    public String getAccountCenterPage(Authentication authentication,
                                        Model model) {
-        User theUser = (User) session.getAttribute("user");
-        if (theUser == null) {
-            return "redirect:/ThinkEat/Index";
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        UserDto existingUser = userService.findUserByUsername(username);
+        if (existingUser == null) {
+            return "redirect:/ThinkEat/Login";
+        } else {
+            model.addAttribute("user", existingUser);
+            return "Account/AccountCenter";
         }
-        System.out.println(theUser);
-        model.addAttribute("user", theUser);
-        return "Account/AccountCenter";
     }
 
     //顯示更改密碼頁面

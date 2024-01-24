@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 public class RestaurantDto {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;

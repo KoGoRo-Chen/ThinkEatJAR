@@ -89,11 +89,10 @@ public class ThinkEatController {
     public String submitRegistration(@ModelAttribute("userDto") UserDto userDto,
                                      HttpSession session,
                                      Model model) {
-        User existing = userService.findUserByUsername(userDto.getUsername());
-        if (existing != null) {
-            model.addAttribute("userDto", new UserDto());
-            model.addAttribute("registrationError", "User name already exists.");
-            return "SignIn";
+        UserDto existingUser = userService.findUserByUsername(userDto.getUsername());
+        if (existingUser != null) {
+            model.addAttribute("registrationError", "User already exists.");
+            return "redirect:/ThinkEat/LogIn";
         }
 
         Integer userId = userService.addUser(userDto);
