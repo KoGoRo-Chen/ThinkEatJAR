@@ -35,24 +35,24 @@
                     <div class="bg-light" style="width: 90%; height: 95%">
                         <!-- 接收所有餐廳資訊，生成縮圖 -->
                         <div class="pagination d-flex flex-wrap justify-content-center mt-4">
-                            <th:block th:each="restaurantDto : ${showEatPageDto.restaurantDtoList}">
-                                <figure th:if="${restaurantDto.resPicList != null and not #lists.isEmpty(restaurantDto.resPicList)}"
+                            <th:block th:each="restaurant : ${showEatPageDto.restaurantList}">
+                                <figure th:if="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
                                         class="m-2">
-                                    <img th:src="${restaurantDto.resPicList.get(0).htmlPath}"
+                                    <img th:src="${restaurant.resPicList.get(0).htmlPath}"
                                          class="img-thumbnail"
                                          style="height: 180px; width: 180px; background-color: red;">
                                     <div class="d-flex justify-content-center my-1">
-                                        <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
-                                           th:text="${restaurantDto.name}"></a>
+                                        <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                           th:text="${restaurant.name}"></a>
                                     </div>
                                 </figure>
-                                <figure th:unless="${restaurantDto.resPicList != null and not #lists.isEmpty(restaurantDto.resPicList)}"
+                                <figure th:unless="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
                                         class="m-2">
                                     <img style="height: 180px; width: 180px; background-color: darkgray;"
                                          class="img-thumbnail">
                                     <div class="d-flex justify-content-center">
-                                        <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
-                                           th:text="${restaurantDto.name}"></a>
+                                        <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                           th:text="${restaurant.name}"></a>
                                     </div>
                                 </figure>
                             </th:block>

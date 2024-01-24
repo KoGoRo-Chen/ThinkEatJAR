@@ -2,7 +2,7 @@
 <html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'食記：' + ${eatRepoDto.title} + ' 餐廳：' + ${eatRepoDto.restaurant.getName()} "></title>
+    <title th:text="'食記：' + ${eatRepo.title} + ' 餐廳：' + ${eatRepo.restaurant.getName()} "></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -71,7 +71,7 @@
                 <div class="returnToResView mb-2 ">
                     <input type="button"
                            class="btn btn-warning"
-                           th:value="'回到餐廳  ' + ${eatRepoDto.restaurant.getName()}"
+                           th:value="'回到餐廳  ' + ${eatRepo.restaurant.getName()}"
                            th:onclick="|window.location.href='/ThinkEat/ViewEat/ResInfo/' + ${restaurantId} |">
                 </div>
 
@@ -81,12 +81,12 @@
                     <div class="row d-flex justify-content-between">
                         <!--標題 -->
                         <div class="col-10">
-                            <h3 th:text="${eatRepoDto.title}"></h3>
+                            <h3 th:text="${eatRepo.title}"></h3>
                         </div>
                         <!-- 刪除文章(後臺做好後拿掉) -->
                         <div class="col-2">
                             <form method="post"
-                                  th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Delete/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                                  th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Delete/{eatRepoId}(eatRepoId=${eatRepo.id})}">
                                 <input type="submit" value="刪除文章">
                             </form>
                         </div>
@@ -101,16 +101,16 @@
 
                     <!--資訊區(用餐日期 標籤 價位 食記 作者) -->
                     <div class="eatInfoArea mx-2 mt-2 ">
-                        <!--標題  收藏文章+編輯文章 -->
+                        <!--發文者暱稱 -->
                         <div class="row d-flex justify-content-between">
-                            <div class="col-2 fs-5 fw-bold" th:text="${eatRepoDto.eatRepo_User}">
+                            <div class="col-2 fs-5 fw-bold" th:text="${eatRepo.eatRepo_User.getNickname()}">
                             </div>
                             <!--添加收藏 + 編輯-->
                             <div class="col-10 d-flex justify-content-end">
                                 <!--添加收藏 -->
                                 <form method="post"
                                       class="me-5"
-                                      th:action="@{/ThinkEat/FavList/AddFavList/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                                      th:action="@{/ThinkEat/FavList/AddFavList/{eatRepoId}(eatRepoId=${eatRepo.id})}">
                                     添加收藏：
                                     <select id="favListId" name="favListId">
                                         <option th:each="favList : ${allFavList}"
@@ -127,31 +127,31 @@
                                 <!--編輯文章 -->
                                 <form method="get"
                                       class=""
-                                      th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepoDto.id})}">
+                                      th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepo.id})}">
                                     <input type="submit" value="編輯文章">
                                 </form>
                             </div>
                         </div>
                         <!-- 食記內文 -->
                         <div class="row my-1 py-3 ">
-                            <div class="fs-6 mx-2" th:text="${eatRepoDto.article}"></div>
+                            <div class="fs-6 mx-2" th:text="${eatRepo.article}"></div>
                         </div>
 
                         <div class="row mt-2">
                             <!-- 用餐日期 -->
                             <div class="col-4">
                                 用餐日期：<span class="fw-light"
-                                               th:text="${#dates.format(eatRepoDto.date, 'yyyy-MM-dd E')}"></span>
+                                               th:text="${#dates.format(eatRepo.date, 'yyyy-MM-dd E')}"></span>
                             </div>
                             <!-- 價位 -->
                             <div class="col-4">
-                                價位：<span class="fw-light" th:text="${eatRepoDto.price.getName()}"></span>
+                                價位：<span class="fw-light" th:text="${eatRepo.price.getName()}"></span>
                             </div>
                         </div>
                         <!-- 標籤 -->
                         <div class="row col-12 mt-3">
                             <div class="col-2 fw-light">標籤：</div>
-                            <div th:each="tag : ${eatRepoDto.eatRepo_TagList}" class="col-2 fw-lighter"
+                            <div th:each="tag : ${eatRepo.eatRepo_TagList}" class="col-2 fw-lighter"
                                  th:text="${tag.name}"></div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                 <section class="cmtArea d-flex flex-column my-2">
                     <!-- 所有留言一覽區 -->
                     <div class="border border-dark border-2 rounded-2 bg-light py-1 my-1"
-                         th:each="commentDto : ${commentDtoList}">
+                         th:each="comment : ${commentList}">
                         <div class="row d-flex justify-content-between">
                             <!-- 用戶名稱 -->
                             <div class="col-3 ms-2 mt-1 fw-bold">用戶名稱</div>
@@ -171,13 +171,13 @@
                                   class="col-1 me-3"
                                   th:action="@{/ThinkEat/ViewEat/EatRepo/DeleteComment}">
                                 <input type="hidden" id="commentId" name="commentId"
-                                       th:value="${commentDto.id}">
+                                       th:value="${comment.id}">
                                 <input type="submit" class="me-2" value="刪除留言">
                             </form>
                         </div>
                         <!-- 留言內容 -->
                         <div class="row my-1 py-2 ms-2">
-                            <div class="fs-5" th:text="${commentDto.commentContext}"></div>
+                            <div class="fs-5" th:text="${comment.commentContext}"></div>
                         </div>
                         <!-- 編輯留言 -->
                         <div class="row d-flex justify-content-end">
@@ -185,7 +185,7 @@
                                   class="col-1 me-3"
                                   th:action="@{/ThinkEat/ViewEat/EatRepo/EditComment}">
                                 <input type="hidden" id="commentId" name="commentId"
-                                       th:value="${commentDto.id}">
+                                       th:value="${comment.id}">
                                 <input type="submit" class="me-2" value="編輯留言">
                             </form>
                         </div>
@@ -193,13 +193,13 @@
                     <!-- 發表留言 -->
                     <div class="">
                         <form th:action="@{/ThinkEat/ViewEat/EatRepo/PostComment}"
-                              th:object="${commentDto}"
+                              th:object="${comment}"
                               method="post">
                             <fieldset>
                                 <legend>發表留言</legend>
                                 <!-- 食記ID -->
                                 <input id="eatRepoId" name="eatRepoId"
-                                       th:value="${eatRepoDto.id}"
+                                       th:value="${eatRepo.id}"
                                        type="hidden"/>
                                 <textarea id="commentContext" name="commentContext"
 

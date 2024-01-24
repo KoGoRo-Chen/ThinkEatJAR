@@ -37,25 +37,22 @@ public class CommentService {
 
     //新增留言
     @Transactional
-    public Integer addComment(CommentDto commentDto) {
+    public Integer addComment(Comment comment) {
         Date curDate = new Date();
-        commentDto.setDate(curDate);
-        Comment comment = modelMapper.map(commentDto, Comment.class);
+        comment.setDate(curDate);
         commentDao.save(comment);
         return comment.getId();
     }
 
     //更新留言
     @Transactional
-    public Integer updateCommentById(Integer commentId, CommentDto commentDto) {
+    public Integer updateCommentById(Integer commentId, String context) {
         Optional<Comment> commentOpt = commentDao.findById(commentId);
         if (commentOpt.isPresent()) {
             Comment commentToUpdate = commentOpt.get();
 
             // 更新標題和日期
-            commentToUpdate.setCommentContext(commentDto.getCommentContext());
-            commentToUpdate.setDate(commentDto.getDate());
-
+            commentToUpdate.setCommentContext(context);
             commentDao.save(commentToUpdate);
             return commentToUpdate.getId();
         }
@@ -73,22 +70,19 @@ public class CommentService {
     }
 
     //以ID尋找留言
-    public CommentDto getCommentById(Integer commentId) {
+    public Comment getCommentById(Integer commentId) {
         Optional<Comment> commentOpt = commentDao.findById(commentId);
         if (commentOpt.isPresent()) {
             Comment comment = commentOpt.get();
-            CommentDto commentDto = modelMapper.map(comment, CommentDto.class);
-            return commentDto;
+            return comment;
         }
         return null;
     }
 
     //尋找所有食紀
-    public List<CommentDto> findAllComment() {
+    public List<Comment> findAllComment() {
         List<Comment> commentList = commentDao.findAll();
-        return commentList.stream()
-                .map(comment -> modelMapper.map(comment, CommentDto.class))
-                .toList();
+        return commentList;
     }
 
 }

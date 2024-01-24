@@ -32,7 +32,7 @@ public class AccountController {
                                        Model model) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
-        UserDto existingUser = userService.findUserByUsername(username);
+        User existingUser = userService.findUserByUsername(username);
         if (existingUser == null) {
             return "redirect:/ThinkEat/Login";
         } else {

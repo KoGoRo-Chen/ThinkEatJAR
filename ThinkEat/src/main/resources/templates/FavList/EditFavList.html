@@ -26,7 +26,7 @@
         <aside class="mh-100" style="background-color: rgb(254, 241, 154); width: 15%">
             <div class="sidebar_header  text-center pt-2 fs-5">清單一覽</div>
             <nav class="sidebar mx-2"
-                 th:each="favListDto : ${favListDtoList}">
+                 th:each="favList : ${favListList}">
                 <a th:href="@{/ThinkEat/FavList/{id}(id=${favListDto.id})}"
                    th:text="${favListDto.favListName}"
                    class="d-block py-3">

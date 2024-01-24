@@ -27,7 +27,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:object="${restaurantDto}" method="post" th:action="@{/ThinkEat/ShareEat/CreateRestaurant}"
+                    <form th:object="${restaurant}" method="post" th:action="@{/ThinkEat/ShareEat/CreateRestaurant}"
                           enctype="multipart/form-data">
                         <fieldset>
                             <!-- 餐廳名 -->
@@ -53,17 +53,17 @@
     </div>
 
 
-    <form th:object="${restaurantDto}" method="post" th:action="@{/ThinkEat/ShareEat/ChooseRestaurant}"
+    <form th:object="${restaurant}" method="post" th:action="@{/ThinkEat/ShareEat/ChooseRestaurant}"
           enctype="multipart/form-data">
         <fieldset>
             <!-- 餐廳名 -->
-            餐廳名稱：<input type="text" id="name" name="name" th:field="${restaurantDto.name}"/>
+            餐廳名稱：<input type="text" id="name" name="name" th:field="${restaurant.name}"/>
             <p/>
             <!-- 餐廳ID -->
-            <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}" type="hidden"/>
+            <input id="restaurantId" name="restaurantId" th:value="${restaurant.id}" type="hidden"/>
             <p/>
             <!-- 地址(googlemap) -->
-            餐廳地址：<input type="text" id="address" name="address" th:field="${restaurantDto.address}"/>
+            餐廳地址：<input type="text" id="address" name="address" th:field="${restaurant.address}"/>
             <p/>
             <!-- 前往食記發表 -->
             <input type="submit" value="前往食記發表"/>
@@ -92,24 +92,24 @@
             <th>選擇這家餐廳</th>
         </tr>
         </thead>
-        <tbody th:if="${not #lists.isEmpty(restaurantDtoList)}"
-               th:each="restaurantDto : ${restaurantDtoList}">
+        <tbody th:if="${not #lists.isEmpty(restaurantList)}"
+               th:each="restaurant : ${restaurantList}">
         <tr>
             <!--餐廳名稱-->
-            <td th:text="${restaurantDto.name}"></td>
+            <td th:text="${restaurant.name}"></td>
             <!--餐廳地址-->
-            <td th:text="${restaurantDto.address}"></td>
+            <td th:text="${restaurant.address}"></td>
             <!--連結-->
             <td>
-                <form th:object="${restaurantDto}"
+                <form th:object="${restaurant}"
                       method="get"
-                      th:action="@{/ThinkEat/ShareEat/Restaurant/{restaurantId}(restaurantId=${restaurantDto.id})}">
+                      th:action="@{/ThinkEat/ShareEat/Restaurant/{restaurantId}(restaurantId=${restaurant.id})}">
                     <input type="submit" value="選擇這家餐廳">
                 </form>
             </td>
         </tr>
         </tbody>
-        <tbody th:if="${#lists.isEmpty(restaurantDtoList)}">
+        <tbody th:if="${#lists.isEmpty(restaurantList)}">
         <tr>
             <td colspan="3">No restaurants available</td>
         </tr>

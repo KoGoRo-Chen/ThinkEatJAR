@@ -15,7 +15,7 @@
 </header>
 
 <!-- Main區塊 -->
-<form th:object="${userDto}" method="post" th:action="@{/ThinkEat/submitRegistration}">
+<form th:object="${user}" method="post" th:action="@{/ThinkEat/submitRegistration}">
     <fieldset>
         帳號: <input type="text" id="username" name="username" placeholder="請輸入帳號" th:field="*{username}"
                      required/>

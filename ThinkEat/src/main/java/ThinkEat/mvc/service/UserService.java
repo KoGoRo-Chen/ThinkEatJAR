@@ -7,6 +7,7 @@ import ThinkEat.mvc.dao.UserServiceDao;
 import ThinkEat.mvc.model.dto.AuthorityDto;
 import ThinkEat.mvc.model.dto.FavListDto;
 import ThinkEat.mvc.model.dto.UserDto;
+import ThinkEat.mvc.model.entity.Authority;
 import ThinkEat.mvc.model.entity.FavList;
 import ThinkEat.mvc.model.entity.User;
 import org.modelmapper.ModelMapper;
@@ -28,39 +29,29 @@ public class UserService implements UserDetailsService {
     private final UserDao userDao;
     private final UserServiceDao userServiceDao;
     private final AuthorityService authorityService;
-    private final RestaurantService restaurantService;
-    private final EatRepoService eatRepoService;
     private final FavListService favListService;
-    private final ModelMapper modelMapper;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public UserService(UserDao userDao,
                        UserServiceDao userServiceDao,
                        AuthorityService authorityService,
-                       RestaurantService restaurantService,
-                       EatRepoService eatRepoService,
                        FavListService favListService,
-                       ModelMapper modelMapper,
                        BCryptPasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.userServiceDao = userServiceDao;
         this.authorityService = authorityService;
-        this.restaurantService = restaurantService;
-        this.eatRepoService = eatRepoService;
         this.favListService = favListService;
-        this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserDto findUserByUsername(String username) throws UsernameNotFoundException {
+    public User findUserByUsername(String username) throws UsernameNotFoundException {
         User user = userServiceDao.findByUserName(username);
         if (user == null) {
             // 返回一個空的UserDto或採取其他適當的處理方式
             return null;
         }
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-        return userDto;
+        return user;
     }
 
     @Override
@@ -77,21 +68,20 @@ public class UserService implements UserDetailsService {
 
     //新增會員
     @Transactional
-    public Integer addUser(UserDto userDto) {
-        FavListDto favListDto = new FavListDto();
-        favListDto.setName("我的第一個清單");
-        Integer favListId = favListService.addFavList(favListDto);
-        userDto.getFavLists().add(favListDto);
-        userDto.setFavListCount(1);
+    public Integer addUser(User user) {
+        FavList favList = new FavList();
+        favList.setName("我的第一個清單");
+        Integer favListId = favListService.addFavList(favList);
+        user.getFavLists().add(favList);
+        user.setFavListCount(1);
 
-        userDto.setUsername(userDto.getUsername());
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userDto.setNickname(userDto.getNickname());
-        AuthorityDto authorityDto = authorityService.getAuthorityById(1);
-        userDto.getAuthorities().add(authorityDto);
-        userDto.setEnabled(true);
+        String password = passwordEncoder.encode(user.getPassword());
+        user.setPassword(password);
 
-        User user = modelMapper.map(userDto, User.class);
+        Authority authority = authorityService.getAuthorityById(1);
+        user.getAuthorities().add(authority);
+        user.setEnabled(true);
+
         userDao.save(user);
         return user.getId();
     }
@@ -141,33 +131,29 @@ public class UserService implements UserDetailsService {
     }
 
     //以ID尋找會員
-    public UserDto getUserById(Integer userId) {
+    public User getUserById(Integer userId) {
         Optional<User> userOpt = userDao.findById(userId);
         //確認會員是否存在
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            UserDto userDto = modelMapper.map(user, UserDto.class);
-            return userDto;
+            return user;
         }
         return null;
     }
 
     //尋找所有清單
-    public List<UserDto> findAllUser() {
+    public List<User> findAllUser() {
         List<User> userList = userDao.findAll();
-        return userList.stream()
-                .map(user -> modelMapper.map(user, UserDto.class))
-                .toList();
+        return userList;
     }
 
     //以UserId尋找清單
-    public List<FavListDto> findAllFavListByUserId(Integer userId) {
+    public List<FavList> findAllFavListByUserId(Integer userId) {
         Optional<User> userOpt = userDao.findById(userId);
         //確認會員是否存在
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            UserDto userDto = modelMapper.map(user, UserDto.class);
-            return userDto.getFavLists();
+            return user.getFavLists();
         }
         return null;
     }

@@ -26,16 +26,17 @@ public class PriceService {
 
     // 新增價位資料
     @Transactional
-    public Price addPrice(PriceDto priceDto) {
-        Price price = modelMapper.map(priceDto, Price.class);
-        return priceDao.save(price);
+    public Integer addPrice(Price price) {
+        priceDao.save(price);
+        return price.getId();
     }
 
     // 以ID修改價位
-    public void updatePriceById(Integer priceId, PriceDto priceDto) {
+    public void updatePriceById(Integer priceId, String name) {
         Optional<Price> priceOpt = priceDao.findById(priceId);
         if (priceOpt.isPresent()) {
-            Price updatedPrice = modelMapper.map(priceDto, Price.class);
+            Price updatedPrice = priceOpt.get();
+            updatedPrice.setName(name);
             priceDao.save(updatedPrice);
         }
 
@@ -51,22 +52,19 @@ public class PriceService {
     }
 
     // 以ID尋找單個價位
-    public PriceDto getPriceById(Integer priceId) {
+    public Price getPriceById(Integer priceId) {
         Optional<Price> priceOpt = priceDao.findById(priceId);
         if (priceOpt.isPresent()) {
             Price price = priceOpt.get();
-            PriceDto priceDto = modelMapper.map(price, PriceDto.class);
-            return priceDto;
+            return price;
         }
         return null;
     }
 
     // 尋找所有價位
-    public List<PriceDto> findAllPrice() {
+    public List<Price> findAllPrice() {
         List<Price> priceList = priceDao.findAll();
-        return priceList.stream()
-                .map(price -> modelMapper.map(price, PriceDto.class))
-                .toList();
+        return priceList;
     }
 
 }

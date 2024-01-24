@@ -3,6 +3,7 @@ package ThinkEat.mvc.controller;
 import ThinkEat.mvc.model.dto.PictureDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.model.dto.UserDto;
+import ThinkEat.mvc.model.entity.Restaurant;
 import ThinkEat.mvc.model.entity.User;
 import ThinkEat.mvc.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -57,8 +58,8 @@ public class ThinkEatController {
     public String GetIndexPage(Model model) {
 
         //挑出所有餐廳
-        List<RestaurantDto> restaurantDtoList = restaurantService.getAllRestaurant();
-        model.addAttribute("restaurantDtoList", restaurantDtoList);
+        List<Restaurant> restaurantList = restaurantService.getAllRestaurant();
+        model.addAttribute("restaurantList", restaurantList);
 
         return "Index";
     }
@@ -78,25 +79,23 @@ public class ThinkEatController {
     //顯示註冊會員頁面
     @GetMapping("/SignIn")
     public String getSignInPage(Model model) {
-        UserDto newUserDto = new UserDto();
-        model.addAttribute("userDto", newUserDto);
+        User newUser = new User();
+        model.addAttribute("user", newUser);
         return "SignIn";
     }
 
     //註冊會員
     @PostMapping("/submitRegistration")
-    public String submitRegistration(@ModelAttribute("userDto") UserDto userDto,
-                                     HttpSession session,
+    public String submitRegistration(@ModelAttribute("user") User user,
                                      Model model) {
-        UserDto existingUser = userService.findUserByUsername(userDto.getUsername());
+        User existingUser = userService.findUserByUsername(user.getUsername());
         if (existingUser != null) {
             model.addAttribute("registrationError", "User already exists.");
             return "redirect:/ThinkEat/LogIn";
         }
 
-        Integer userId = userService.addUser(userDto);
-        userDto.setId(userId);
-        session.setAttribute("user", userDto);
+        Integer userId = userService.addUser(user);
+        user.setId(userId);
 
         return "Index";
     }

@@ -29,7 +29,6 @@ public class AuthorityService {
     private final RestaurantService restaurantService;
     private final EatRepoService eatRepoService;
     private final FavListService favListService;
-    private final ModelMapper modelMapper;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
@@ -46,28 +45,23 @@ public class AuthorityService {
         this.restaurantService = restaurantService;
         this.eatRepoService = eatRepoService;
         this.favListService = favListService;
-        this.modelMapper = modelMapper;
     }
 
     //以ID尋找會員
-    public AuthorityDto getAuthorityById(Integer authId) {
+    public Authority getAuthorityById(Integer authId) {
         Optional<Authority> authorityOpt = authorityDao.findById(authId);
         //確認會員是否存在
         if (authorityOpt.isPresent()) {
             Authority authority = authorityOpt.get();
-            System.out.println(authority);
-            AuthorityDto authorityDto = modelMapper.map(authority, AuthorityDto.class);
-            return authorityDto;
+            return authority;
         }
         return null;
     }
 
     //尋找所有清單
-    public List<AuthorityDto> findAllAuthority() {
+    public List<Authority> findAllAuthority() {
         List<Authority> authorityList = authorityDao.findAll();
-        return authorityList.stream()
-                .map(authority -> modelMapper.map(authority, AuthorityDto.class))
-                .toList();
+        return authorityList;
     }
 
 

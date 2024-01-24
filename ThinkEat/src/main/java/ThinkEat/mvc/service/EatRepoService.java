@@ -43,20 +43,30 @@ public class EatRepoService {
         this.modelMapper = modelMapper;
     }
 
-    //新增只有餐廳資料的空白文章
-    @Transactional
-    public Integer addEatRepoOnlyHaveRestaurant(EatRepoDto eatRepoDto) {
-        System.out.println("eatRepoService: " + eatRepoDto);
-        EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
+//    //新增只有餐廳資料的空白文章
+//    @Transactional
+//    public Integer addEatRepoOnlyHaveRestaurant(EatRepoDto eatRepoDto) {
+//        System.out.println("eatRepoService: " + eatRepoDto);
+//        EatRepo eatRepo = modelMapper.map(eatRepoDto, EatRepo.class);
+//
+//        //處理餐廳
+//        RestaurantDto restaurantDto = eatRepoDto.getRestaurant();
+//        if (restaurantDto != null) {
+//            Restaurant restaurant = modelMapper.map(restaurantDto, Restaurant.class);
+//            eatRepo.setRestaurant(restaurant);
+//        } else {
+//            eatRepo.setRestaurant(null);
+//        }
+//
+//        //儲存食記並返回ID
+//        eatRepoDao.save(eatRepo);
+//        return eatRepo.getId();
+//    }
 
-        //處理餐廳
-        RestaurantDto restaurantDto = eatRepoDto.getRestaurant();
-        if (restaurantDto != null) {
-            Restaurant restaurant = modelMapper.map(restaurantDto, Restaurant.class);
-            eatRepo.setRestaurant(restaurant);
-        } else {
-            eatRepo.setRestaurant(null);
-        }
+    //新增文章
+    @Transactional
+    public Integer addEatRepo(EatRepo eatRepo) {
+        System.out.println("eatRepoService: " + eatRepo);
 
         //儲存食記並返回ID
         eatRepoDao.save(eatRepo);
@@ -64,37 +74,37 @@ public class EatRepoService {
     }
 
     @Transactional
-    public void updateEatRepoByEatRepoId(Integer eatRepoId, EatRepoDto eatRepoDto) {
+    public void updateEatRepoByEatRepoId(Integer eatRepoId, EatRepo eatRepo) {
         Optional<EatRepo> eatRepoOpt = eatRepoDao.findById(eatRepoId);
         if (eatRepoOpt.isPresent()) {
             EatRepo eatRepoToUpdate = eatRepoOpt.get();
 
             // 更新標題
-            eatRepoToUpdate.setTitle(eatRepoDto.getTitle());
+            eatRepoToUpdate.setTitle(eatRepo.getTitle());
 
             // 更新價錢
-            Price priceToUpdate = priceDao.findById(eatRepoDto.getPriceId()).orElse(null);
+            Price priceToUpdate = priceDao.findById(eatRepo.getPrice().getId()).orElse(null);
             eatRepoToUpdate.setPrice(priceToUpdate);
 
             //更新圖片
-            List<Picture> pictureList = eatRepoDto.getPicList().stream()
+            List<Picture> pictureList = eatRepo.getPicList().stream()
                                                                .map(pictureDto -> modelMapper.map(pictureDto, Picture.class))
                                                                .collect(Collectors.toList());
             eatRepoToUpdate.setPicList(pictureList);
 
             // 更新標籤
-            List<TagDto> tagDtoList = eatRepoDto.getEatRepo_TagList();
-            if (tagDtoList != null && !tagDtoList.isEmpty()) {
-                List<Tag> tagList = tagDtoList.stream()
+            List<Tag> tagList = eatRepo.getEatRepo_TagList();
+            if (tagList != null && !tagList.isEmpty()) {
+                List<Tag> newTagList = tagList.stream()
                         .map(tagDto -> modelMapper.map(tagDto, Tag.class))
                         .collect(Collectors.toList());
-                eatRepoToUpdate.setEatRepo_TagList(tagList);
+                eatRepoToUpdate.setEatRepo_TagList(newTagList);
             } else {
                 eatRepoToUpdate.setEatRepo_TagList(Collections.emptyList());
             }
 
             // 更新文章內容
-            eatRepoToUpdate.setArticle(eatRepoDto.getArticle());
+            eatRepoToUpdate.setArticle(eatRepo.getArticle());
 
             eatRepoDao.save(eatRepoToUpdate);
         }
@@ -128,33 +138,30 @@ public class EatRepoService {
     }
 
     //以ID尋找單篇食記
-    public EatRepoDto getEatRepoByEatRepoId(Integer eatRepoId) {
+    public EatRepo getEatRepoByEatRepoId(Integer eatRepoId) {
         Optional<EatRepo> eatRepoOpt = eatRepoDao.findById(eatRepoId);
         if (eatRepoOpt.isPresent()) {
             EatRepo eatRepo = eatRepoOpt.get();
-            EatRepoDto eatRepoDto = modelMapper.map(eatRepo, EatRepoDto.class);
-            return eatRepoDto;
+            return eatRepo;
         }
         return null;
     }
 
     //以ID尋找單篇食記中的所有留言
-    public List<CommentDto> findAllCommentByEatRepoId(Integer eatRepoId) {
-        EatRepoDto eatRepoDto = getEatRepoByEatRepoId(eatRepoId);
-        if (eatRepoDto.getCmtList().isEmpty()) {
+    public List<Comment> findAllCommentByEatRepoId(Integer eatRepoId) {
+        EatRepo eatRepo = getEatRepoByEatRepoId(eatRepoId);
+        if (eatRepo.getCmtList().isEmpty()) {
             return null;
         } else {
-            List<CommentDto> commentListByRestaurantId = eatRepoDto.getCmtList();
-            return commentListByRestaurantId;
+            List<Comment> commentListByEatRepoId = eatRepo.getCmtList();
+            return commentListByEatRepoId;
         }
     }
 
     //尋找所有食紀
-    public List<EatRepoDto> findAllEatRepo() {
+    public List<EatRepo> findAllEatRepo() {
         List<EatRepo> eatRepoList = eatRepoDao.findAll();
-        return eatRepoList.stream()
-                .map(eatRepo -> modelMapper.map(eatRepo, EatRepoDto.class))
-                .toList();
+        return eatRepoList;
     }
 
 

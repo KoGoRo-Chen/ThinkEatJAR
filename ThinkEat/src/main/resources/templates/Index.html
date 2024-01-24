@@ -33,19 +33,19 @@
                  style="width=1024px; height=768px; background-color: darkgray;">
                 <div class="carousel-inner pickUpArea col-8">
                     <!-- 使用Thymeleaf的迭代器來生成輪播項目 -->
-                    <div th:each="restaurantDto, iterStat : ${restaurantDtoList}" class="carousel-item"
+                    <div th:each="restaurant, iterStat : ${restaurantList}" class="carousel-item"
                          th:classappend="${iterStat.first} ? 'active'">
-                        <a th:href="@{/ThinkEat/ViewEat/ResInfo/{Id}(Id = ${restaurantDto.id})}">
-                            <th:block th:if="${not #lists.isEmpty(restaurantDto.resPicList)}">
-                                <img th:src="${restaurantDto.resPicList[0]?.htmlPath}"
+                        <a th:href="@{/ThinkEat/ViewEat/ResInfo/{Id}(Id = ${restaurant.id})}">
+                            <th:block th:if="${not #lists.isEmpty(restaurant.resPicList)}">
+                                <img th:src="${restaurant.resPicList[0]?.htmlPath}"
                                      class="d-block mx-auto img-fluid"
                                      width="1024px"
-                                     th:alt="${restaurantDto.name}"
+                                     th:alt="${restaurant.name}"
                                 >
                             </th:block>
                             <div class="carousel-caption d-none d-md-block">
-                                <h4 th:text="${restaurantDto.name}"></h4>
-                                <p th:text="'地址：' + ${restaurantDto.address}"></p>
+                                <h4 th:text="${restaurant.name}"></h4>
+                                <p th:text="'地址：' + ${restaurant.address}"></p>
                             </div>
                         </a>
                     </div>

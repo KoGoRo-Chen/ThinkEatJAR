@@ -1,7 +1,7 @@
 package ThinkEat.mvc.controller;
 
 import ThinkEat.mvc.model.dto.*;
-import ThinkEat.mvc.model.entity.FavList;
+import ThinkEat.mvc.model.entity.*;
 import ThinkEat.mvc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -68,30 +68,30 @@ public class ViewEatController {
     @GetMapping("/ResInfo/{restaurantId}")
     public String getResPage(@PathVariable("restaurantId") Integer restaurantId,
                              Model model) {
-        // 尋找餐廳餐廳
-        RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
-        model.addAttribute("restaurantDto", restaurantDto);
+        // 尋找餐廳
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        model.addAttribute("restaurant", restaurant);
 
         // 尋找這間餐廳的所有食記
-        List<EatRepoDto> eatRepoDtoList = restaurantService.getAllEatRepoByRestaurantId(restaurantId);
-        model.addAttribute("eatRepoDto", eatRepoDtoList);
+        List<EatRepo> eatRepoList = restaurantService.getAllEatRepoByRestaurantId(restaurantId);
+        model.addAttribute("eatRepoList", eatRepoList);
 
-        Integer eatRepoListCount = eatRepoDtoList.size();
+        Integer eatRepoListCount = eatRepoList.size();
         model.addAttribute("eatRepoListCount", eatRepoListCount);
 
 
         // 取得屬於這間餐廳的所有食記的照片的網址
-        List<PictureDto> pictureDtoList = restaurantService.getAllPictureByRestaurantId(restaurantId);
+        List<Picture> pictureList = restaurantService.getAllPictureByRestaurantId(restaurantId);
         List<String> restaurantImagePathList = new ArrayList<>();
-        for (PictureDto pictureDto : pictureDtoList) {
-            restaurantImagePathList.add(pictureDto.getHtmlPath());
+        for (Picture picture : pictureList) {
+            restaurantImagePathList.add(picture.getHtmlPath());
         }
         model.addAttribute("restaurantImagePathList", restaurantImagePathList);
 
         //處理價位
         List<Integer> allPriceIdList = new ArrayList<>();
-        for (EatRepoDto eatRepoDto : eatRepoDtoList) {
-            Integer priceId = eatRepoDto.getPriceId();
+        for (EatRepo eatRepo : eatRepoList) {
+            Integer priceId = eatRepo.getPrice().getId();
             allPriceIdList.add(priceId);
         }
         System.out.println("目前收集到的priceId有：" + allPriceIdList);
@@ -109,16 +109,16 @@ public class ViewEatController {
         model.addAttribute("averagePrice", averagePrice);
 
         //處理標籤
-        List<TagDto> allTagDtoList = new ArrayList<>();
-        for (EatRepoDto eatRepoDto : eatRepoDtoList) {
-            for (TagDto tagDto : eatRepoDto.getEatRepo_TagList()) {
-                allTagDtoList.add(tagDto);
+        List<Tag> allTagList = new ArrayList<>();
+        for (EatRepo eatRepo : eatRepoList) {
+            for (Tag tag : eatRepo.getEatRepo_TagList()) {
+                allTagList.add(tag);
             }
         }
 
         // 取得所有標籤名稱的List
-        List<String> allTagNames = allTagDtoList.stream()
-                .map(TagDto::getName)
+        List<String> allTagNames = allTagList.stream()
+                .map(Tag::getName)
                 .collect(Collectors.toList());
         System.out.println("所有標籤名稱：" + allTagNames);
 
@@ -145,7 +145,7 @@ public class ViewEatController {
     public String DeleteRestaurant(@RequestParam("restaurantId") Integer restaurantId,
                                    Model model) {
         // 根據 restaurantId 從數據庫中檢索相應的 餐廳
-        RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
 
         //RestaurantService執行刪除
         restaurantService.deleteRestaurant(restaurantId);
@@ -158,18 +158,18 @@ public class ViewEatController {
     @GetMapping("/EatRepo/{eatRepoId}")
     public String GetViewEatPage(@PathVariable("eatRepoId") Integer eatRepoId, Model model) {
         // 根據 eatRepoId 從數據庫中檢索相應的 食記
-        EatRepoDto eatRepoDto = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
-        System.out.println("ViewEat頁面顯示eatRepoDto: " + eatRepoDto);
-        model.addAttribute("eatRepoDto", eatRepoDto);
-        System.out.println("新增成功" + eatRepoDto);
-        model.addAttribute("restaurantId", eatRepoDto.getRestaurant().getId());
-        model.addAttribute("eatRepoId", eatRepoDto.getId());
+        EatRepo eatRepo = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
+        System.out.println("ViewEat頁面顯示eatRepo: " + eatRepo);
+        model.addAttribute("eatRepo", eatRepo);
+        System.out.println("新增成功" + eatRepo);
+        model.addAttribute("restaurantId", eatRepo.getRestaurant().getId());
+        model.addAttribute("eatRepoId", eatRepo.getId());
 
         //取得圖片網址並加入清單中
-        List<PictureDto> pictureDtoList = eatRepoDto.getPicList();
+        List<Picture> pictureList = eatRepo.getPicList();
         List<String> imagePaths = new ArrayList<>();
-        for(PictureDto pictureDto : pictureDtoList){
-            imagePaths.add(pictureDto.getHtmlPath());
+        for (Picture picture : pictureList) {
+            imagePaths.add(picture.getHtmlPath());
         }
         model.addAttribute("imagePaths", imagePaths);
 
@@ -177,9 +177,9 @@ public class ViewEatController {
         model.addAttribute("allFavList", favListService.findAllFavList());
 
         //處理留言
-        List<CommentDto> commentDtoList = eatRepoService.findAllCommentByEatRepoId(eatRepoId);
-        model.addAttribute("commentDtoList", commentDtoList);
-        model.addAttribute("commentDto", new CommentDto());
+        List<Comment> commentList = eatRepoService.findAllCommentByEatRepoId(eatRepoId);
+        model.addAttribute("commentList", commentList);
+        model.addAttribute("comment", new Comment());
 
         // 返回 ViewEat 頁面
         return "ViewEat/EatRepo";
@@ -187,14 +187,13 @@ public class ViewEatController {
 
     //發表留言
     @PostMapping("/EatRepo/PostComment")
-    public String PostComment(@ModelAttribute("commentDto") CommentDto commentDto,
+    public String PostComment(@ModelAttribute("comment") Comment comment,
                               @RequestParam("eatRepoId") Integer eatRepoId,
                               Model model,
                               RedirectAttributes redirectAttributes) {
         //儲存留言
-        commentDto.setComment_EatRepo(eatRepoService.getEatRepoByEatRepoId(eatRepoId));
-        commentService.addComment(commentDto);
-        System.out.println("新增留言成功: " + commentDto);
+        commentService.addComment(comment);
+        System.out.println("新增留言成功: " + comment);
 
         //重導回食記瀏覽頁面
         redirectAttributes.addAttribute("eatRepoId", eatRepoId);
@@ -209,10 +208,10 @@ public class ViewEatController {
                                 Model model,
                                 RedirectAttributes redirectAttributes) {
         //找到留言
-        CommentDto commentDto = commentService.getCommentById(commentId);
+        Comment comment = commentService.getCommentById(commentId);
 
         //找到所屬食記ID並重導回食記瀏覽頁面
-        Integer eatRepoId = commentDto.getComment_EatRepo().getId();
+        Integer eatRepoId = comment.getComment_EatRepo().getId();
         redirectAttributes.addAttribute("eatRepoId", eatRepoId);
 
         //執行刪除

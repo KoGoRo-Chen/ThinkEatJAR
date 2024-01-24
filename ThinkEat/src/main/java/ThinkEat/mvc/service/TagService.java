@@ -25,17 +25,17 @@ public class TagService {
 
     // 新增Tag
     @Transactional
-    public Tag addTag(TagDto tagDto) {
-        Tag tag = modelMapper.map(tagDto, Tag.class);
-        return tagDao.save(tag);
+    public Integer addTag(Tag tag) {
+        tagDao.save(tag);
+        return tag.getId();
     }
 
     // 以ID修改Tag
-    public void updateTagByTagId(Integer tagId, TagDto tagDto) {
+    public void updateTagByTagId(Integer tagId, String name) {
         Optional<Tag> tagOpt = tagDao.findById(tagId);
         if (tagOpt.isPresent()) {
             Tag tagToUpdate = tagOpt.get();
-            modelMapper.map(tagToUpdate, TagDto.class);
+            tagToUpdate.setName(name);
             tagDao.save(tagToUpdate);
         }
     }
@@ -50,21 +50,18 @@ public class TagService {
     }
 
     // 以ID尋找單個Tag
-    public TagDto getTagById(Integer tagId) {
+    public Tag getTagById(Integer tagId) {
         Optional<Tag> tagOpt = tagDao.findById(tagId);
         if (tagOpt.isPresent()) {
             Tag tag = tagOpt.get();
-            TagDto tagDto = modelMapper.map(tag, TagDto.class);
-            return tagDto;
+            return tag;
         }
         return null;
     }
 
     // 尋找所有Tag
-    public List<TagDto> findAllTag() {
+    public List<Tag> findAllTag() {
         List<Tag> tagList = tagDao.findAll();
-        return tagList.stream()
-                .map(tag -> modelMapper.map(tag, TagDto.class))
-                .toList();
+        return tagList;
     }
 }

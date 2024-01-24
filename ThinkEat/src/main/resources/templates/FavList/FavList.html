@@ -31,7 +31,7 @@
                 </div>
                 <div class="modal-body">
                     <form method="Post"
-                          th:object="${favListDto}"
+                          th:object="${favList}"
                           th:action="@{/ThinkEat/FavList/Create}">
                         <fieldset>
                             請輸入清單名稱：
@@ -62,8 +62,8 @@
                 </div>
                 <div class="modal-body">
                     <form method="Post"
-                          th:object="${favListDto}"
-                          th:action="@{/ThinkEat/FavList/Edit/{favListDtoId}(favListDtoId=${favListDtoId})}">
+                          th:object="${favList}"
+                          th:action="@{/ThinkEat/FavList/Edit/{favListId}(favListId=${favListId})}">
                         <fieldset>
                             請輸入新的清單名稱：
                             <!-- 輸入清單名字 -->
@@ -87,9 +87,9 @@
         <aside class="mh-100" style="background-color: rgb(254, 241, 154); width: 15%">
             <div class="sidebar_header  text-center pt-2 fs-5">清單一覽</div>
             <nav class="sidebar mx-2"
-                 th:each="favListDto : ${favListDtoList}">
-                <a th:href="@{/ThinkEat/FavList/{id}(id=${favListDto.id})}"
-                   th:text="${favListDto.name}"
+                 th:each="favList : ${favListList}">
+                <a th:href="@{/ThinkEat/FavList/{id}(id=${favList.id})}"
+                   th:text="${favList.name}"
                    class="d-block py-3">
                 </a>
             </nav>
@@ -111,7 +111,7 @@
                     <!-- 功能區 -->
                     <section class="d-flex justify-content-between mt-2">
                         <!-- 標題 -->
-                        <h3 th:text="${favListDtoName}"></h3>
+                        <h3 th:text="${favListName}"></h3>
                         <div class="d-flex">
                             <!-- 修改清單 互動視窗 -->
                             <button type="button"
@@ -123,7 +123,7 @@
                             </button>
                         <!-- 刪除 -->
                             <form method="post" th:action="@{/ThinkEat/FavList/DeleteFavList}" class="mx-1">
-                                <input type="hidden" id="favListId" name="favListId" th:value="${favListDtoId}">
+                                <input type="hidden" id="favListId" name="favListId" th:value="${favListId}">
                                 <input type="submit" value="刪除清單"
                                        style="width: 112px; height: 41.59px; "
                                        class="btn btn-warning">
@@ -134,7 +134,7 @@
                     <!-- 抽選功能區 -->
                     <section class="d-flex justify-content-between my-3">
                         <form method="post"
-                              th:action="@{/ThinkEat/FavList/{favListDtoId}/Gacha/{count}(favListDtoId=${favListDtoId}, count=${count})}">
+                              th:action="@{/ThinkEat/FavList/{favListId}/Gacha/{count}(favListId=${favListId}, count=${count})}">
                             <span th:text="'本清單中共有 ' + ${totalRestaurants} + ' 家餐廳' "></span>
                             從中抽取：<select id="count" name="count">
                             <option th:each="count : ${#numbers.sequence(1, totalRestaurants)}"
@@ -142,31 +142,31 @@
                                     th:text="${count}">
                             </option>
                         </select>
-                            <input type="hidden" id="favListDtoId" name="favListDtoId" th:value="${favListDtoId}">
+                            <input type="hidden" id="favListId" name="favListId" th:value="${favListId}">
                             <input type="submit" value="抽取">
                         </form>
                     </section>
 
                     <!-- 接收所有餐廳資訊，生成縮圖 -->
                     <div class="pagination d-flex flex-wrap justify-content-center mt-4">
-                        <th:block th:each="restaurantDto : ${showEatPageDto.restaurantDtoList}">
-                            <figure th:if="${restaurantDto.resPicList != null and not #lists.isEmpty(restaurantDto.resPicList)}"
+                        <th:block th:each="restaurant : ${showEatPage.restaurantList}">
+                            <figure th:if="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
                                     class="m-2">
-                                <img th:src="${restaurantDto.resPicList.get(0).htmlPath}"
+                                <img th:src="${restaurant.resPicList.get(0).htmlPath}"
                                      class="img-thumbnail"
                                      style="height: 180px; width: 180px; background-color: red;">
                                 <div class="d-flex justify-content-center my-1">
-                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
-                                       th:text="${restaurantDto.name}"></a>
+                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                       th:text="${restaurant.name}"></a>
                                 </div>
                             </figure>
-                            <figure th:unless="${restaurantDto.resPicList != null and not #lists.isEmpty(restaurantDto.resPicList)}"
+                            <figure th:unless="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
                                     class="m-2">
                                 <img style="height: 180px; width: 180px; background-color: darkgray;"
                                      class="img-thumbnail">
                                 <div class="d-flex justify-content-center">
-                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
-                                       th:text="${restaurantDto.name}"></a>
+                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                       th:text="${restaurant.name}"></a>
                                 </div>
                             </figure>
                         </th:block>

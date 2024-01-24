@@ -39,13 +39,13 @@ public class PictureService {
 
     // 新增圖片
     @Transactional
-    public Integer addPicture(PictureDto pictureDto,
+    public Integer addPicture(Picture picture,
                               MultipartFile multipartFile) {
         try {
 
             // 取得圖片名
             String fileName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
-            pictureDto.setFilename(fileName);
+            picture.setFilename(fileName);
 
             //取得副檔名
             String originalFilename = multipartFile.getOriginalFilename();
@@ -90,9 +90,8 @@ public class PictureService {
             }
 
             // 設定圖片路徑
-            pictureDto.setFilePath(filePath + fileName);
-            pictureDto.setHtmlPath("http://localhost:9990/ThinkEat/image/" + fileName);
-            Picture picture = modelMapper.map(pictureDto, Picture.class);
+            picture.setFilePath(filePath + fileName);
+            picture.setHtmlPath("http://localhost:9990/ThinkEat/image/" + fileName);
             pictureDao.save(picture);
             return picture.getId();
         } catch (IOException e) {
@@ -164,22 +163,19 @@ public class PictureService {
     }
 
     // 以ID尋找單張圖片
-    public PictureDto getPictureById(Integer pictureId) {
+    public Picture getPictureById(Integer pictureId) {
         Optional<Picture> pictureOpt = pictureDao.findById(pictureId);
         if (pictureOpt.isPresent()) {
             Picture picture = pictureOpt.get();
-            PictureDto pictureDto = modelMapper.map(picture, PictureDto.class);
-            return pictureDto;
+            return picture;
         }
         return null;
     }
 
     // 尋找所有圖片
-    public List<PictureDto> findAllPicture() {
+    public List<Picture> findAllPicture() {
         List<Picture> pictureList = pictureDao.findAll();
-        return pictureList.stream()
-                .map(Picture -> modelMapper.map(Picture, PictureDto.class))
-                .toList();
+        return pictureList;
     }
 
 }

@@ -32,14 +32,14 @@
 
                     <!-- 清單顯示區 -->
                     <th:block d-flex justify-content-center
-                              th:each="restaurantDto : ${selectedRestaurants}">
+                              th:each="restaurant : ${selectedRestaurants}">
                         <div>
-                            <img th:src="${restaurantDto.resPicList.get(0).htmlPath}"
+                            <img th:src="${restaurant.resPicList.get(0).htmlPath}"
                                  style="height: 360px; width: 360px; background-color: red;">
                             <figcaption class="d-flex flex-column mt-2">
                                 <div>
-                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurantDto.id})}"
-                                       th:text="${restaurantDto.name}"></a>
+                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                       th:text="${restaurant.name}"></a>
                                 </div>
                             </figcaption>
                         </div>

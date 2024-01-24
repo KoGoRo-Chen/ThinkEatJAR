@@ -29,14 +29,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:object="${priceDto}" method="post"
+                    <form th:object="${price}" method="post"
                           th:action="@{/ThinkEat/ShareEat/CreateNewPrice}">
                         <fieldset>
                             <!-- 新價位 -->
-                            輸入新價格：<input type="text" id="name" name="name" th:field="${priceDto.name}"/>
+                            輸入新價格：<input type="text" id="name" name="name" th:field="${price.name}"/>
                             <p/>
                             <!-- 餐廳ID -->
-                            <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}" type="hidden"/>
+                            <input id="restaurantId" name="restaurantId" th:value="${restaurant.id}" type="hidden"/>
                             <!-- 食記ID -->
                             <input id="eatRepoId" name="eatRepoId" th:value="${eatRepoId}" type="hidden"/>
                             <!-- 儲存資料 -->
@@ -61,14 +61,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:object="${tagDto}" method="post"
+                    <form th:object="${tag}" method="post"
                           th:action="@{/ThinkEat/ShareEat/CreateNewTag}">
                         <fieldset>
                             <!-- 新標籤 -->
-                            輸入新Tag：<input type="text" id="name" name="name" th:field="${tagDto.name}"/>
+                            輸入新Tag：<input type="text" id="name" name="name" th:field="${tag.name}"/>
                             <p/>
                             <!-- 餐廳ID -->
-                            <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}" type="hidden"/>
+                            <input id="restaurantId" name="restaurantId" th:value="${restaurant.id}" type="hidden"/>
                             <!-- 食記ID -->
                             <input id="eatRepoId" name="eatRepoId" th:value="${eatRepoId}" type="hidden"/>
                             <!-- 前往食記發表 -->
@@ -103,15 +103,15 @@
             <!-- 食記ID -->
             <input id="eatRepoId" name="eatRepoId" th:value="${eatRepoId}" type="hidden"/>
             <!-- 餐廳ID -->
-            <input id="restaurantId" name="restaurantId" th:value="${restaurantDto.id}" type="hidden"/>
+            <input id="restaurantId" name="restaurantId" th:value="${restaurant.id}" type="hidden"/>
             <p/>
             <!-- 店名 -->
             餐廳名稱：
-            <span th:text="${restaurantDto.name}"/>
+            <span th:text="${restaurant.name}"/>
             <p/>
             <!-- 地址(googlemap) -->
             餐廳地址：
-            <span th:text="${restaurantDto.address}"/>
+            <span th:text="${restaurant.address}"/>
             <p/>
             <!-- 品嘗日期 -->
             品嘗日期：<input type="date" id="date" name="date" th:field="*{date}"/>

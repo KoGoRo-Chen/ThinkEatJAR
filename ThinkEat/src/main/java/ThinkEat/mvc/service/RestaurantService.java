@@ -29,26 +29,21 @@ import java.util.stream.Collectors;
 public class RestaurantService {
 
     private final RestaurantDao restaurantDao;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public RestaurantService(RestaurantDao restaurantDao,
-                             ModelMapper modelMapper) {
+    public RestaurantService(RestaurantDao restaurantDao) {
         this.restaurantDao = restaurantDao;
-        this.modelMapper = modelMapper;
+
     }
 
     //新增
     @Transactional
-    public Integer addRestaurant(RestaurantDto restaurantDto) {
-        System.out.println("restaurantService: " + restaurantDto);
-
-        // 使用save方法保存實體，同時獲取包含ID的實體
-        Restaurant newRestaurant = modelMapper.map(restaurantDto, Restaurant.class);
-        restaurantDao.save(newRestaurant);
+    public Integer addRestaurant(Restaurant restaurant) {
+        System.out.println("restaurantService: " + restaurant);
+        restaurantDao.save(restaurant);
 
         // 提取保存後的ID
-        Integer restaurantId = newRestaurant.getId();
+        Integer restaurantId = restaurant.getId();
         System.out.println("Saved Restaurant ID: " + restaurantId);
 
         return restaurantId;
@@ -56,12 +51,13 @@ public class RestaurantService {
 
     //修改
     @Transactional
-    public void updateRestaurant(Integer restaurantId, RestaurantDto restaurantDto) {
+    public void updateRestaurant(Integer restaurantId, String name, String address) {
         Optional<Restaurant> resOpt = restaurantDao.findById(restaurantId);
         if (resOpt.isPresent()) {
-            Restaurant restaurant = resOpt.get();
-            restaurant.setName(restaurantDto.getName());
-            restaurantDao.save(restaurant);
+            Restaurant restaurantToUpdate = resOpt.get();
+            restaurantToUpdate.setName(name);
+            restaurantToUpdate.setAddress(address);
+            restaurantDao.save(restaurantToUpdate);
         }
         ;
     }
@@ -76,23 +72,20 @@ public class RestaurantService {
     }
 
     //查詢單間
-    public RestaurantDto getRestaurantById(Integer restaurantId) {
+    public Restaurant getRestaurantById(Integer restaurantId) {
         Optional<Restaurant> resOpt = restaurantDao.findById(restaurantId);
         if (resOpt.isPresent()) {
             Restaurant restaurant = resOpt.get();
-            RestaurantDto restaurantDto = modelMapper.map(restaurant, RestaurantDto.class);
-            return restaurantDto;
+            return restaurant;
         }
         return null;
     }
 
     //查詢所有餐廳
-    public List<RestaurantDto> getAllRestaurant() {
+    public List<Restaurant> getAllRestaurant() {
         List<Restaurant> restaurantList = restaurantDao.findAll();
         if (restaurantList != null) {
-            return restaurantList.stream()
-                    .map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class))
-                    .toList();
+            return restaurantList;
         }
         return null;
     }
@@ -100,38 +93,37 @@ public class RestaurantService {
     //查詢所有餐廳(分頁)
     public ShowEatPageDto getAllRestaurant(Pageable pageable) {
         Page<Restaurant> restaurantPage = restaurantDao.findAll(pageable);
-        Page<RestaurantDto> restaurantDtoPage = restaurantPage.map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class));
-        return new ShowEatPageDto(restaurantDtoPage);
+        return new ShowEatPageDto(restaurantPage);
     }
 
     //尋找單間餐廳的所有食記
-    public List<EatRepoDto> getAllEatRepoByRestaurantId(Integer restaurantId) {
+    public List<EatRepo> getAllEatRepoByRestaurantId(Integer restaurantId) {
         Optional<Restaurant> resOpt = restaurantDao.findById(restaurantId);
         if (resOpt.isPresent()) {
             List<EatRepo> eatRepoList = resOpt.get().getEatRepoList();
-            return eatRepoList.stream()
-                    .map(eatRepo -> modelMapper.map(eatRepo, EatRepoDto.class))
-                    .toList();
+            return eatRepoList;
         }
         return Collections.emptyList();
     }
 
     //尋找單間餐廳的所有食記的所有照片
-    public List<PictureDto> getAllPictureByRestaurantId(Integer restaurantId) {
-        Restaurant restaurant = restaurantDao.findById(restaurantId).get();
-        List<PictureDto> pictureDtoList = restaurant.getResPicList().stream()
-                .map(picture -> modelMapper.map(picture, PictureDto.class))
-                .toList();
-        return pictureDtoList;
+    public List<Picture> getAllPictureByRestaurantId(Integer restaurantId) {
+        Optional<Restaurant> resOpt = restaurantDao.findById(restaurantId);
+        if (resOpt.isPresent()) {
+            List<Picture> pictureList = resOpt.get().getResPicList();
+            return pictureList;
+        }
+        return null;
     }
 
     //尋找單間餐廳的所有食記的第一張照片
-    public PictureDto getFirstPictureByRestaurantId(Integer restaurantId) {
-        Restaurant restaurant = restaurantDao.findById(restaurantId).get();
-        // 檢查是否有照片
-        if (!restaurant.getResPicList().isEmpty()) {
-            PictureDto pictureDto = modelMapper.map(restaurant.getResPicList().get(0), PictureDto.class);
-            return pictureDto;
+    public Picture getFirstPictureByRestaurantId(Integer restaurantId) {
+        Optional<Restaurant> resOpt = restaurantDao.findById(restaurantId);
+        if (resOpt.isPresent()) {
+            Restaurant restaurant = resOpt.get();
+            if (restaurant.getResPicList() != null) {
+                return restaurant.getResPicList().get(0);
+            }
         }
         return null;
     }
