@@ -144,7 +144,41 @@ public class EatRepoService {
         Optional<EatRepo> eatRepoOpt = eatRepoDao.findById(eatRepoId);
         if (eatRepoOpt.isPresent()) {
             EatRepo eatRepo = eatRepoOpt.get();
-            EatRepoDto eatRepoDto = modelMapper.map(eatRepo, EatRepoDto.class);
+            EatRepoDto eatRepoDto = new EatRepoDto();
+
+            //設定ID
+            eatRepoDto.setId(eatRepo.getId());
+            //設定標題
+            eatRepoDto.setTitle(eatRepo.getTitle());
+            //設定用餐日期
+            eatRepoDto.setDate(eatRepo.getDate());
+            //設定文章
+            eatRepoDto.setArticle(eatRepo.getArticle());
+            //設定作者
+            UserDto userDto = modelMapper.map(eatRepo.getEatRepo_User(), UserDto.class);
+            //設定餐廳
+            RestaurantDto restaurantDto = modelMapper.map(eatRepo.getRestaurant(), RestaurantDto.class);
+            eatRepoDto.setRestaurant(restaurantDto);
+            //設定價格及價格ID
+            PriceDto priceDto = modelMapper.map(eatRepo.getPrice(), PriceDto.class);
+            eatRepoDto.setPrice(priceDto);
+            eatRepoDto.setPriceId(priceDto.getId());
+            //設定標籤
+            for (Tag tag : eatRepo.getEatRepo_TagList()) {
+                TagDto tagDto = modelMapper.map(tag, TagDto.class);
+                eatRepoDto.getEatRepo_TagList().add(tagDto);
+            }
+            //設定留言
+            for (Comment comment : eatRepo.getCmtList()) {
+                CommentDto commentDto = modelMapper.map(comment, CommentDto.class);
+                eatRepoDto.getCmtList().add(commentDto);
+            }
+            //設定圖片
+            for (Picture picture : eatRepo.getPicList()) {
+                PictureDto pictureDto = modelMapper.map(picture, PictureDto.class);
+            }
+            System.out.println(eatRepoDto);
+//          EatRepoDto eatRepoDto = modelMapper.map(eatRepo, EatRepoDto.class);
             return eatRepoDto;
         }
         return null;
