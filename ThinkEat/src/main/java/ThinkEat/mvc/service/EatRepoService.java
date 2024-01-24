@@ -58,6 +58,18 @@ public class EatRepoService {
             eatRepo.setRestaurant(null);
         }
 
+        //處理會員
+        UserDto userDto = eatRepoDto.getEatRepo_User();
+        if (userDto != null) {
+            User user = modelMapper.map(userDto, User.class);
+            eatRepo.setEatRepo_User(user);
+        } else {
+            eatRepo.setEatRepo_User(null);
+        }
+
+        //設定日期
+        eatRepo.setDate(eatRepoDto.getDate());
+
         //儲存食記並返回ID
         eatRepoDao.save(eatRepo);
         return eatRepo.getId();

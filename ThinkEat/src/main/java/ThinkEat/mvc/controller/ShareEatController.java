@@ -102,32 +102,45 @@ public class ShareEatController {
     @PostMapping("/ChooseRestaurant")
     public String ChooseRestaurant(@RequestParam("restaurantId") Integer restaurantId,
                                    RedirectAttributes redirectAttributes,
+                                   Authentication authentication,
                                    Model model) {
+
+        //創建一個新食記
+        EatRepoDto eatRepoDto = new EatRepoDto();
+
+        //獲取餐廳資料並存入
         System.out.println("restaurantId: " + restaurantId);
         RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
         model.addAttribute("restaurantDto", restaurantDto);
-
-        //創建一個新食記，存入餐廳資料並取得ID
-        EatRepoDto eatRepoDto = new EatRepoDto();
         eatRepoDto.setRestaurant(restaurantDto);
+
+        //獲取會員資料並存入
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        System.out.println("username為" + username);
+        UserDto existingUser = userService.findUserByUsername(username);
+        System.out.println("user" + existingUser);
+        if (existingUser == null) {
+            return "redirect:/ThinkEat/Login";
+        } else {
+            eatRepoDto.setEatRepo_User(existingUser);
+        }
+
         Integer eatRepoId = eatRepoService.addEatRepoOnlyHaveRestaurant(eatRepoDto);
         System.out.println("建立新的eatRepod，Id為:" + eatRepoId);
         model.addAttribute("eatRepoDto", eatRepoDto);
         model.addAttribute("eatRepoId", eatRepoId);
 
-        //將新增的餐廳 ID 添加到重定向 URL 的查詢字符串中
-        redirectAttributes.addAttribute("restaurantId", restaurantId);
         redirectAttributes.addAttribute("eatRepoId", eatRepoId);
 
-        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{restaurantId}/EatRepoId/{eatRepoId}";
+        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{eatRepoId}";
     }
 
     //顯示食記填寫表單(ShareEat)
-    @GetMapping("/ShareEatRepo/{restaurantId}/EatRepoId/{eatRepoId}")
-    public String GetEatRepoPage(@PathVariable("restaurantId") Integer restaurantId,
-                                 @PathVariable("eatRepoId") Integer eatRepoId,
+    @GetMapping("/ShareEatRepo/{eatRepoId}")
+    public String GetEatRepoPage(@PathVariable("eatRepoId") Integer eatRepoId,
                                  Model model) {
-        RestaurantDto restaurantDto = restaurantService.getRestaurantById(restaurantId);
+        RestaurantDto restaurantDto = eatRepoService.getEatRepoByEatRepoId(eatRepoId).getRestaurant();
         model.addAttribute("restaurantDto", restaurantDto);
 
         //價格
