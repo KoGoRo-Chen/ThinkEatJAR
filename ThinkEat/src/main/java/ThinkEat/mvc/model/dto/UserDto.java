@@ -16,15 +16,17 @@ public class UserDto {
 
     private Integer id;
 
-    private String nickName;
+    private String username;
 
     private String password;
 
-    private String userName;
+    private String nickname;
 
     private Integer favListCount;
 
     private boolean enabled;
+
+    private boolean tokenExpired;
 
     private List<EatRepo> eatRepoList = new ArrayList<>();
 

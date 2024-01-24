@@ -89,19 +89,12 @@ public class ThinkEatController {
     public String submitRegistration(@ModelAttribute("userDto") UserDto userDto,
                                      HttpSession session,
                                      Model model) {
-        User existing = userService.findUserByUsername(userDto.getUserName());
+        User existing = userService.findUserByUsername(userDto.getUsername());
         if (existing != null) {
             model.addAttribute("userDto", new UserDto());
             model.addAttribute("registrationError", "User name already exists.");
             return "SignIn";
         }
-
-        userDto.setUserName(userDto.getUserName());
-        System.out.println("會員帳號為: " + userDto.getUserName());
-        userDto.setPassword(userDto.getPassword());
-        System.out.println("密碼為: " + userDto.getPassword());
-        userDto.setNickName(userDto.getNickName());
-        System.out.println("暱稱為: " + userDto.getNickName());
 
         Integer userId = userService.addUser(userDto);
         userDto.setId(userId);

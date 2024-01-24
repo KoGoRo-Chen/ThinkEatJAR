@@ -76,12 +76,14 @@ public class UserService implements UserDetailsService {
         favListDto.setName("我的清單");
         Integer favListId = favListService.addFavList(favListDto);
         userDto.getFavLists().add(favListDto);
+        userDto.setFavListCount(1);
 
-        userDto.setUserName(userDto.getUserName());
+        userDto.setUsername(userDto.getUsername());
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userDto.setNickName(userDto.getNickName());
+        userDto.setNickname(userDto.getNickname());
         AuthorityDto authorityDto = authorityService.getAuthorityById(1);
         userDto.getAuthorities().add(authorityDto);
+        userDto.setEnabled(true);
 
         User user = modelMapper.map(userDto, User.class);
         userDao.save(user);

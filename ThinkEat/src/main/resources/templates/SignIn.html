@@ -17,11 +17,17 @@
 <!-- Main區塊 -->
 <form th:object="${userDto}" method="post" th:action="@{/ThinkEat/submitRegistration}">
     <fieldset>
-        帳號: <input type="text" id="username" name="username" placeholder="請輸入帳號" value="user123" required /><p />
-        密碼: <input type="password" id="password" name="password" placeholder="請輸入密碼" value="pass123" required /><p />
-        暱稱：<input type="text" id="nickname" name="nickname" placeholder="請輸入您的暱稱" value="user123" required /><p />
+        帳號: <input type="text" id="username" name="username" placeholder="請輸入帳號" th:field="*{username}"
+                     required/>
+        <p/>
+        密碼: <input type="password" id="password" name="password" placeholder="請輸入密碼" th:field="*{password}"
+                     required/>
+        <p/>
+        暱稱：<input type="text" id="nickname" name="nickname" placeholder="請輸入您的暱稱" th:field="*{nickname}"
+                    required/>
+        <p/>
         <button type="submit" class="pure-button pure-button-primary">成為會員</button>
-        <button type="button" class="pure-button pure-button-primary" onclick="" >清除資料</button>
+        <button type="reset" class="pure-button pure-button-primary">清除資料</button>
     </fieldset>
 </form>
 
