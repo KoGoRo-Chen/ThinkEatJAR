@@ -141,6 +141,7 @@ public class ShareEatController {
     @PostMapping("/AddEatRepo")
     public String addEatRepo(@ModelAttribute("eatRepo") EatRepo eatRepo,
                              @RequestParam("restaurantId") Integer restaurantId,
+                             @RequestParam("priceId") Integer priceId,
                              @RequestParam("tagIds") List<Integer> tagIds,
                              @RequestPart("multipartFileList") List<MultipartFile> multipartFileList,
                              HttpSession session,
@@ -159,17 +160,16 @@ public class ShareEatController {
         eatRepo.setRestaurant(restaurant);
         System.out.println("接收到restaurant:" + restaurant);
 
-//        //處理價格
-//        Price price = priceService.getPriceById(eatRepo.getPriceId());
-//        eatRepoDto.setPrice(priceDto);
-//
-//        //處理標籤
-//        List<TagDto> selectedTags = new ArrayList<>();
-//        for (Integer tagId : tagIds) {
-//            TagDto fetchedTag = tagService.getTagById(tagId);
-//            selectedTags.add(fetchedTag);
-//        }
-//        eatRepoDto.setEatRepo_TagList(selectedTags);
+        //處理價格
+        Price price = priceService.getPriceById(priceId);
+        eatRepo.setPrice(price);
+        //處理標籤
+        List<Tag> selectedTags = new ArrayList<>();
+        for (Integer tagId : tagIds) {
+            Tag fetchedTag = tagService.getTagById(tagId);
+            selectedTags.add(fetchedTag);
+        }
+        eatRepo.setEatRepo_TagList(selectedTags);
 
         //先儲存食記
         Integer eatRepoId = eatRepoService.addEatRepo(eatRepo);
@@ -199,32 +199,33 @@ public class ShareEatController {
     // 增加新價格
     @PostMapping("/CreateNewPrice")
     public String CreateNewPrice(@ModelAttribute("price") Price newPrice,
-                                 @RequestParam("eatRepoId") Integer eatRepoId,
-                                 RedirectAttributes redirectAttributes, Model model) {
+                                 @RequestParam("restaurantId") Integer restaurantId,
+                                 RedirectAttributes redirectAttributes,
+                                 Model model) {
         // 使用新價格的名稱設置PriceDto
         newPrice.setName(newPrice.getName());
 
         // 將新價格添加到數據庫
         Integer priceId = priceService.addPrice(newPrice);
 
-        // 重定向到相應的頁面
-        redirectAttributes.addAttribute("eatRepoId", eatRepoId);
-        return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";
+        redirectAttributes.addAttribute("restaurantId", restaurantId);
+
+        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{restaurantId}";
     }
 
     // 增加新TAG
     @PostMapping("/CreateNewTag")
     public String CreateNewTag(@ModelAttribute("tag") Tag newTag,
                                @RequestParam("restaurantId") Integer restaurantId,
-                               @RequestParam("eatRepoId") Integer eatRepoId,
                                RedirectAttributes redirectAttributes, Model model) {
         // 將新標籤添加到數據庫
         Integer tagId = tagService.addTag(newTag);
 
         // 重定向到相應的頁面
+
         redirectAttributes.addAttribute("restaurantId", restaurantId);
-        redirectAttributes.addAttribute("eatRepoId", eatRepoId);
-        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{restaurantId}/EatRepoId/{eatRepoId}";
+
+        return "redirect:/ThinkEat/ShareEat/ShareEatRepo/{restaurantId}";
     }
 
 
