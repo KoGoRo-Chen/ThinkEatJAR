@@ -7,29 +7,140 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
+    <style>
+
+    </style>
 </head>
-<body>
-<!-- Header區塊 -->
+<body style="">
+
 <header>
     <div th:insert="~{Fragment/Header :: header}"></div>
 </header>
 
-<!-- Main區塊 -->
-<form th:object="${user}" method="post" th:action="@{/ThinkEat/submitRegistration}">
-    <fieldset>
-        帳號: <input type="text" id="username" name="username" placeholder="請輸入帳號" th:field="*{username}"
-                     required/>
-        <p/>
-        密碼: <input type="password" id="password" name="password" placeholder="請輸入密碼" th:field="*{password}"
-                     required/>
-        <p/>
-        暱稱：<input type="text" id="nickname" name="nickname" placeholder="請輸入您的暱稱" th:field="*{nickname}"
-                    required/>
-        <p/>
-        <button type="submit" class="pure-button pure-button-primary">成為會員</button>
-        <button type="reset" class="pure-button pure-button-primary">清除資料</button>
-    </fieldset>
-</form>
 
+<div class="container-fluid d-flex justify-content-center">
+
+    <div class="row col-12 mt-5">
+
+        <div class="flexitem col-5" style="width:40%; "></div>
+
+        <div id="loginbox" style="width:fit-content"
+             class="col-2 mt-5">
+
+            <div class="card border-dark">
+
+                <div class="card-header bg-warning fs-5">
+                    會員註冊
+                </div>
+
+                <div class="card-body ">
+                    <div class="card-text">
+                        <!-- Login Form -->
+                        <form th:object="${user}" th:action="@{/ThinkEat/submitRegistration}"
+                              method="post" class="form-horizontal" onsubmit="return validateForm();">
+                            <!-- Place for messages: error, alert etc ... -->
+                            <div class="form-group">
+                                <div>
+                                    <div>
+                                        <!-- Check for login error -->
+                                        <div th:if="${registrationError}">
+                                            <div class="alert alert-danger">
+                                                <span th:text="${registrationError}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="my-4">
+                                    <!-- 帳號 -->
+                                    帳號：<input type="text" id="username" name="username" placeholder="請輸入帳號"
+                                                th:field="*{username}"
+                                                required/>
+                                    <!-- 錯誤訊息 -->
+                                    <div th:if="${#fields.hasErrors('username')}" class="text-danger">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('username')}"
+                                                th:text="'帳號錯誤：' + ${err}"/>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="my-4">
+                                    <!-- 密碼 -->
+                                    密碼：<input type="password" id="password" name="password" placeholder="請輸入密碼"
+                                                th:field="*{password}"
+                                                required/>
+                                    <!-- 錯誤訊息 -->
+                                    <div th:if="${#fields.hasErrors('password')}" class="text-danger">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('password')}"
+                                                th:text="'密碼錯誤：' + ${err}"/>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="my-4">
+                                    <!-- 暱稱 -->
+                                    暱稱：<input type="text" id="nickname" name="nickname" placeholder="請輸入您的暱稱"
+                                                th:field="*{nickname}"
+                                                required/>
+                                    <!-- 錯誤訊息 -->
+                                    <div th:if="${#fields.hasErrors('nickname')}" class="text-danger">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('nickname')}"
+                                                th:text="'暱稱錯誤：' + ${err}"/>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 登入按鈕-->
+                            <div class="d-flex mt-3">
+                                <div class=" controls mx-2">
+                                    <button type="submit" class="btn btn-success">成為會員</button>
+                                </div>
+
+                                <!-- 清空資料按鈕 -->
+                                <div class="clear mx-2">
+                                    <button type="button" class="btn btn-danger" onclick="resetForm()">清除資料</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flexitem col-5" style="width:40%; "></div>
+        >
+    </div>
+</div>
+<script>
+    function resetForm() {
+         document.getElementById("username").value = "";  // 清空帳號
+         document.getElementById("password").value = "";  // 清空密碼
+         document.getElementById("nickname").value = "";  // 清空暱稱
+     }
+
+    function validateForm() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+
+        // 使用正則表達式檢查是否只包含英數字
+        var regex = /^[a-zA-Z0-9]+$/;
+
+        if (!regex.test(username)) {
+            alert("帳號只能包含英數字");
+            return false; // 阻止表單提交
+        }
+
+        if (!regex.test(password)) {
+            alert("密碼只能包含英數字");
+            return false; // 阻止表單提交
+        }
+
+        return true; // 允許表單提交
+    }
+
+</script>
 </body>
 </html>

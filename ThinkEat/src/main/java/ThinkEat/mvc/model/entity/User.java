@@ -14,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString(exclude = {"eatRepoList", "commentList", "favLists"})
 public class User {
 
@@ -66,4 +65,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id")
     )
     private List<Authority> authorities;
+
+    public User() {
+        this.authorities = new ArrayList<>();
+    }
+
+
 }

@@ -7,21 +7,27 @@ import ThinkEat.mvc.model.entity.Restaurant;
 import ThinkEat.mvc.model.entity.User;
 import ThinkEat.mvc.service.*;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 
 @Controller
 @RequestMapping("/")
 public class ThinkEatController {
+
+    private Logger logger = Logger.getLogger(getClass().getName());
+
     private final EatRepoService eatRepoService;
     private final RestaurantService restaurantService;
     private final PriceService priceService;
@@ -43,6 +49,7 @@ public class ThinkEatController {
         this.pictureService = pictureService;
         this.userService = userService;
     }
+
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
@@ -86,16 +93,31 @@ public class ThinkEatController {
 
     //註冊會員
     @PostMapping("/submitRegistration")
-    public String submitRegistration(@ModelAttribute("user") User user,
+    public String submitRegistration(@Valid @ModelAttribute("user") User user,
+                                     BindingResult theBindingResult,
+                                     HttpSession session,
                                      Model model) {
+
+        String userName = user.getUsername();
+        logger.info("Processing registration form for: " + userName);
+
+        // 表單驗證
+        if (theBindingResult.hasErrors()) {
+            return "register/registration-form";
+        }
+
+        //檢查用戶是否存在
         User existingUser = userService.findUserByUsername(user.getUsername());
         if (existingUser != null) {
-            model.addAttribute("registrationError", "User already exists.");
-            return "redirect:/ThinkEat/LogIn";
+            model.addAttribute("registrationError", "這個帳號已經有人使用過了");
+            logger.warning("這個帳號已經有人使用過了");
+            return "SignIn";
         }
 
         Integer userId = userService.addUser(user);
-        user.setId(userId);
+
+        logger.info("Successfully created user: " + userName);
+        session.setAttribute("user", user);
 
         return "Index";
     }

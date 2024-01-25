@@ -47,7 +47,7 @@ public class AuthorityService {
         this.favListService = favListService;
     }
 
-    //以ID尋找會員
+    //以ID尋找權限
     public Authority getAuthorityById(Integer authId) {
         Optional<Authority> authorityOpt = authorityDao.findById(authId);
         //確認會員是否存在
