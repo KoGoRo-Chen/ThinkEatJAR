@@ -3,9 +3,11 @@ package ThinkEat.mvc.controller;
 import ThinkEat.mvc.model.dto.*;
 import ThinkEat.mvc.model.entity.*;
 import ThinkEat.mvc.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,30 +21,29 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("ViewEat/")
+@SessionAttributes("presetFavListId")
 public class ViewEatController {
 
     private final FavListService favListService;
     private final PriceService priceService;
-    private final TagService tagService;
     private final EatRepoService eatRepoService;
     private final CommentService commentService;
     private final RestaurantService restaurantService;
-    private final PictureService pictureService;
+    private final UserService userService;
 
     @Autowired
-    public ViewEatController(FavListService favListService, PriceService priceService,
-                             TagService tagService,
+    public ViewEatController(FavListService favListService,
+                             PriceService priceService,
                              EatRepoService eatRepoService,
                              CommentService commentService,
                              RestaurantService restaurantService,
-                             PictureService pictureService) {
+                             UserService userService) {
         this.favListService = favListService;
         this.priceService = priceService;
-        this.tagService = tagService;
         this.eatRepoService = eatRepoService;
         this.commentService = commentService;
         this.restaurantService = restaurantService;
-        this.pictureService = pictureService;
+        this.userService = userService;
     }
 
     //顯示ShowEat頁面(顯示所有餐廳)
@@ -156,7 +157,11 @@ public class ViewEatController {
 
     //顯示ViewEat/EatRepo/{eatRepoId}頁面
     @GetMapping("/EatRepo/{eatRepoId}")
-    public String GetViewEatPage(@PathVariable("eatRepoId") Integer eatRepoId, Model model) {
+    public String GetViewEatPage(@PathVariable("eatRepoId") Integer eatRepoId,
+                                 @SessionAttribute(name = "presetFavListId", required = false) Integer presetFavListId,
+                                 Authentication authentication,
+                                 Model model) {
+
         // 根據 eatRepoId 從數據庫中檢索相應的 食記
         EatRepo eatRepo = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
         System.out.println("ViewEat頁面顯示eatRepo: " + eatRepo);
@@ -173,13 +178,28 @@ public class ViewEatController {
         }
         model.addAttribute("imagePaths", imagePaths);
 
-        //加入收藏清單
-        model.addAttribute("allFavList", favListService.findAllFavList());
+        //獲取會員資料
+        if (authentication != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String username = userDetails.getUsername();
+            User user = userService.findUserByUsername(username);
+            model.addAttribute("userId", user.getId());
+            //加入會員收藏清單
+            model.addAttribute("allFavList", user.getFavLists());
+        } else {
+            //加入訪客收藏清單
+            FavList guestList = favListService.getFavListById(presetFavListId);
+            model.addAttribute("guestList", guestList);
+        }
+
+
+
 
         //處理留言
         List<Comment> commentList = eatRepoService.findAllCommentByEatRepoId(eatRepoId);
         model.addAttribute("commentList", commentList);
         model.addAttribute("comment", new Comment());
+
 
         // 返回 ViewEat 頁面
         return "ViewEat/EatRepo";
@@ -189,8 +209,25 @@ public class ViewEatController {
     @PostMapping("/EatRepo/PostComment")
     public String PostComment(@ModelAttribute("comment") Comment comment,
                               @RequestParam("eatRepoId") Integer eatRepoId,
+                              Authentication authentication,
                               Model model,
                               RedirectAttributes redirectAttributes) {
+        //檢查發文者是否具有會員身分
+        if (authentication == null || !authentication.isAuthenticated()) {
+            redirectAttributes.addFlashAttribute("NotLoginErrorMessage", "請登入後再發表留言。");
+            return "redirect:/ThinkEat/Login";
+        }
+
+        //給留言設定eatRepo
+        EatRepo eatRepo = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
+        comment.setComment_EatRepo(eatRepo);
+
+        //給留言設定會員
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        User user = userService.findUserByUsername(username);
+        comment.setComment_User(user);
+
         //儲存留言
         commentService.addComment(comment);
         System.out.println("新增留言成功: " + comment);

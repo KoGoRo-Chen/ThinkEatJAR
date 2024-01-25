@@ -204,14 +204,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // 使用 JavaScript 隱藏 datalist 中的 value 屬性
-    document.addEventListener('DOMContentLoaded', function () {
-    var priceOptions = document.getElementById('priceOptions');
-    var options = priceOptions.getElementsByTagName('option');
-    for (var i = 0; i < options.length; i++) {
-        options[i].value = options[i].getAttribute('data-value');
-    }
-});
 
 // 清空 modal 內容的JavaScript函数
 function clearModalContent() {

@@ -68,7 +68,7 @@
             <!-- 內容區塊 -->
             <div class="flexitem col-10" style="width:80%; ">
                 <!-- 返回餐廳按鈕 -->
-                <div class="returnToResView mb-2 ">
+                <div class="returnToResView mb-3">
                     <input type="button"
                            class="btn btn-warning"
                            th:value="'回到餐廳  ' + ${eatRepo.restaurant.getName()}"
@@ -107,10 +107,31 @@
                             </div>
                             <!--添加收藏 + 編輯-->
                             <div class="col-10 d-flex justify-content-end">
-                                <!--添加收藏 -->
+
+                                <!--添加訪客收藏清單 -->
                                 <form method="post"
-                                      class="me-5"
-                                      th:action="@{/ThinkEat/FavList/AddFavList/{eatRepoId}(eatRepoId=${eatRepo.id})}">
+                                      class="me-4"
+                                      th:action="@{/ThinkEat/FavList/AddFavList/{eatRepoId}(eatRepoId=${eatRepo.id})}"
+                                      th:if="${not #authorization.expression('isAuthenticated()')}">
+                                    添加收藏：
+                                    <select id="favListId" name="favListId">
+                                        <option th:each="favList : ${guestList}"
+                                                th:value="${favList.id}"
+                                                th:text="${favList.name}">
+                                        </option>
+                                    </select>
+                                    <input type="submit" class="btn btn-success ms-2" value="添加收藏">
+                                    <!-- 在頁面中顯示通知 -->
+                                    <div id="notification" th:if="${message}" class="notification fade-in">
+                                        <p th:text="${message}"></p>
+                                    </div>
+                                </form>
+
+                                <!--添加會員收藏清單 -->
+                                <form method="post"
+                                      class="me-4"
+                                      th:action="@{/ThinkEat/FavList/AddFavList/{eatRepoId}(eatRepoId=${eatRepo.id})}"
+                                      th:if="${#authorization.expression('isAuthenticated()')}">
                                     添加收藏：
                                     <select id="favListId" name="favListId">
                                         <option th:each="favList : ${allFavList}"
@@ -118,7 +139,7 @@
                                                 th:text="${favList.name}">
                                         </option>
                                     </select>
-                                    <input type="submit" value="添加收藏">
+                                    <input type="submit" class="btn btn-success ms-2" value="添加收藏">
                                     <!-- 在頁面中顯示通知 -->
                                     <div id="notification" th:if="${message}" class="notification fade-in">
                                         <p th:text="${message}"></p>
@@ -126,72 +147,83 @@
                                 </form>
                                 <!--編輯文章 -->
                                 <form method="get"
-                                      class=""
                                       th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepo.id})}">
-                                    <input type="submit" value="編輯文章">
+                                    <input type="submit" class="btn btn-warning" value="編輯文章">
                                 </form>
                             </div>
                         </div>
                         <!-- 食記內文 -->
-                        <div class="row my-1 py-3 ">
+                        <div class="row mx-2 my-3 py-4 bg-light border border-dark border border-1 rounded-3">
                             <div class="fs-6 mx-2" th:text="${eatRepo.article}"></div>
                         </div>
 
-                        <div class="row mt-2">
+                        <div class="mt-3">
                             <!-- 用餐日期 -->
-                            <div class="col-4">
-                                用餐日期：<span class="fw-light"
-                                               th:text="${#dates.format(eatRepo.date, 'yyyy-MM-dd E')}"></span>
-                            </div>
+                            用餐日期：<span class=""
+                                           th:text="${#dates.format(eatRepo.date, 'yyyy-MM-dd E')}"></span>
+                        </div>
+
+                        <div class="mt-3">
                             <!-- 價位 -->
-                            <div class="col-4">
-                                價位：<span class="fw-light" th:text="${eatRepo.price.getName()}"></span>
-                            </div>
+                            價位：<span class=""
+                                       th:text="${eatRepo.price.getName()}"></span>
                         </div>
                         <!-- 標籤 -->
-                        <div class="row col-12 mt-3">
-                            <div class="col-2 fw-light">標籤：</div>
-                            <div th:each="tag : ${eatRepo.eatRepo_TagList}" class="col-2 fw-lighter"
-                                 th:text="${tag.name}"></div>
+                        <div class="d-flex mt-3">
+                            <span class="me-3">標籤：</span>
+                            <span th:each="tag : ${eatRepo.eatRepo_TagList}">
+                                <span class="fw-bold" th:text="${tag.name}"></span>
+                            </span>
                         </div>
                     </div>
                 </div>
 
 
                 <!-- 留言區 -->
-                <section class="cmtArea d-flex flex-column my-2">
+                <section class="d-flex flex-column my-2">
                     <!-- 所有留言一覽區 -->
-                    <div class="border border-dark border-2 rounded-2 bg-light py-1 my-1"
+                    <div class="border border-warning border-2 rounded-2 bg-light py-1 my-1"
                          th:each="comment : ${commentList}">
                         <div class="row d-flex justify-content-between">
                             <!-- 用戶名稱 -->
                             <div class="col-3 ms-2 mt-1 fw-bold">用戶名稱</div>
-                            <!-- 刪除留言 -->
-                            <form method="post"
-                                  class="col-1 me-3"
-                                  th:action="@{/ThinkEat/ViewEat/EatRepo/DeleteComment}">
-                                <input type="hidden" id="commentId" name="commentId"
-                                       th:value="${comment.id}">
-                                <input type="submit" class="me-2" value="刪除留言">
-                            </form>
                         </div>
                         <!-- 留言內容 -->
                         <div class="row my-1 py-2 ms-2">
                             <div class="fs-5" th:text="${comment.commentContext}"></div>
                         </div>
                         <!-- 編輯留言 -->
-                        <div class="row d-flex justify-content-end">
+                        <div class="d-flex justify-content-end">
                             <form method="post"
-                                  class="col-1 me-3"
+                                  class="col-1 "
                                   th:action="@{/ThinkEat/ViewEat/EatRepo/EditComment}">
                                 <input type="hidden" id="commentId" name="commentId"
                                        th:value="${comment.id}">
-                                <input type="submit" class="me-2" value="編輯留言">
+                                <input type="submit" class="btn btn-warning" value="編輯留言">
+                            </form>
+                            <!-- 刪除留言 -->
+                            <form method="post"
+                                  class="col-1 "
+                                  th:action="@{/ThinkEat/ViewEat/EatRepo/DeleteComment}">
+                                <input type="hidden" id="commentId" name="commentId"
+                                       th:value="${comment.id}">
+                                <input type="submit" class="btn btn-warning" value="刪除留言">
                             </form>
                         </div>
                     </div>
+
+                    <div th:if="${not #authorization.expression('isAuthenticated()')}">
+                        <div class="d-flex mt-1 justify-content-center">
+                            <!-- 註冊會員 -->
+                            <div class="controls mt-3">
+                                <span class="fs-6 fw-light me-3">覺得這篇文章寫得很好嗎？登入會員來發表你的留言</span>
+                                <a th:href="@{/ThinkEat/Login}">登入會員</a>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- 發表留言 -->
-                    <div class="">
+                    <div class="mt-3" th:if="${#authorization.expression('isAuthenticated()')}">
                         <form th:action="@{/ThinkEat/ViewEat/EatRepo/PostComment}"
                               th:object="${comment}"
                               method="post">
@@ -199,15 +231,20 @@
                                 <legend>發表留言</legend>
                                 <!-- 食記ID -->
                                 <input id="eatRepoId" name="eatRepoId"
-                                       th:value="${eatRepo.id}"
+                                       th:value="${eatRepoId}"
+                                       type="hidden"/>
+                                <!-- 用戶ID -->
+                                <input id="userId" name="userId"
+                                       th:value="${userId}"
                                        type="hidden"/>
                                 <textarea id="commentContext" name="commentContext"
-
-                                          th:field="*{commentContext}"
-                                          rows="5" cols="93"></textarea>
+                                          rows="5" class="form-control"
+                                          th:field="*{commentContext}"></textarea>
                                 <P/>
-                                <input type="submit" value="發表留言">
-                                <button type="reset">清空</button>
+                                <div class="mt-3">
+                                    <input type="submit" class="btn btn-warning mx-1" value="發表留言">
+                                    <button type="reset" class="btn btn-danger mx-5">清空</button>
+                                </div>
                             </fieldset>
                         </form>
                     </div>

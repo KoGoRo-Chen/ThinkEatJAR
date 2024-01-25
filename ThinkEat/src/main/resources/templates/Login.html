@@ -49,6 +49,16 @@
                                 <div>
                                     <div>
                                         <!-- 登入錯誤 -->
+                                        <div th:if="${notLoginErrorMessage}">
+                                            <div class="alert alert-danger">
+                                                <span th:text="${notLoginErrorMessage}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <!-- 登入錯誤 -->
                                         <div th:if="${registrationError}">
                                             <div class="alert alert-danger">
                                                 <span th:text="${registrationError}"></span>
