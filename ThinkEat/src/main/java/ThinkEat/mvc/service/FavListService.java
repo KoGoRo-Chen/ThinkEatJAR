@@ -13,6 +13,7 @@ import ThinkEat.mvc.model.entity.Restaurant;
 import ThinkEat.mvc.model.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -26,22 +27,19 @@ import java.util.stream.Collectors;
 public class FavListService {
 
     private final FavListDao favListDao;
-    private final RestaurantDao restaurantDao;
     private final RestaurantService restaurantService;
     private final EatRepoService eatRepoService;
-    private final ModelMapper modelMapper;
+    private final UserService userService;
 
     @Autowired
     public FavListService(FavListDao favListDao,
-                          RestaurantDao restaurantDao,
                           RestaurantService restaurantService,
                           EatRepoService eatRepoService,
-                          ModelMapper modelMapper) {
+                          @Lazy UserService userService) {
         this.favListDao = favListDao;
-        this.restaurantDao = restaurantDao;
         this.restaurantService = restaurantService;
         this.eatRepoService = eatRepoService;
-        this.modelMapper = modelMapper;
+        this.userService = userService;
     }
 
     //新增訪客清單
@@ -262,7 +260,8 @@ public class FavListService {
     }
 
     //從ListCount及會員找到對應的清單
-    public FavList findFavListByUserAndListCount(User user, Integer listcount) {
+    public FavList findFavListByUserAndListCount(Integer userId, Integer listcount) {
+        User user = userService.getUserById(userId);
         List<FavList> favLists = user.getFavLists();
         Optional<FavList> matchingList = favLists.stream()
                 .filter(favList -> favList.getListCount().equals(listcount))

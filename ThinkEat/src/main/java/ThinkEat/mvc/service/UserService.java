@@ -12,6 +12,7 @@ import ThinkEat.mvc.model.entity.FavList;
 import ThinkEat.mvc.model.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,7 +37,7 @@ public class UserService implements UserDetailsService {
     public UserService(UserDao userDao,
                        UserServiceDao userServiceDao,
                        AuthorityService authorityService,
-                       FavListService favListService,
+                       @Lazy FavListService favListService,
                        BCryptPasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.userServiceDao = userServiceDao;

@@ -62,16 +62,16 @@
                 <div class="modal-body">
                     <form method="Post"
                           th:object="${favList}"
-                          th:action="@{/ThinkEat/FavList/Edit/{favListId}(favListId=${favListId})}">
+                          th:action="@{/ThinkEat/FavList/EditList}">
                         <fieldset>
                             請輸入新的清單名稱：
                             <!-- 輸入清單名字 -->
-                            <input id="name"
-                                   name="name"
+                            <input id="name" name="name"
                                    th:field="*{name}">
-                            </P>
+                            <input id="listCount" name="listCount" th:value="${listCount}" type="hidden">
+                            <input id="userId" name="userId" th:value="${userId}" type="hidden">
                             <!--送出-->
-                            <input type="submit" th:value="建立清單">
+                            <input type="submit" th:value="修改清單">
                             <!--送出-->
                             <input type="reset" th:value="清除">
                         </fieldset>
@@ -94,7 +94,7 @@
             </nav>
             <!-- 建立清單 互動視窗 -->
             <span class="mx-2 mt-1">
-              <button type="button" class=""
+              <button type="button" class="btn btn-success"
                       data-bs-toggle="modal"
                       data-bs-target="#addFavListModal"
                       onclick="clearModalContent()">

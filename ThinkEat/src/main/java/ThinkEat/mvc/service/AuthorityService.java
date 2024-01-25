@@ -26,25 +26,14 @@ public class AuthorityService {
     private final UserDao userDao;
     private final UserServiceDao userServiceDao;
     private final AuthorityDao authorityDao;
-    private final RestaurantService restaurantService;
-    private final EatRepoService eatRepoService;
-    private final FavListService favListService;
-    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public AuthorityService(UserDao userDao,
                             UserServiceDao userServiceDao,
-                            AuthorityDao authorityDao,
-                            RestaurantService restaurantService,
-                            EatRepoService eatRepoService,
-                            FavListService favListService,
-                            ModelMapper modelMapper) {
+                            AuthorityDao authorityDao) {
         this.userDao = userDao;
         this.userServiceDao = userServiceDao;
         this.authorityDao = authorityDao;
-        this.restaurantService = restaurantService;
-        this.eatRepoService = eatRepoService;
-        this.favListService = favListService;
     }
 
     //以ID尋找權限

@@ -150,7 +150,7 @@ public class FavListController {
         List<FavList> favListList = user.getFavLists();
         model.addAttribute("favListList", favListList);
 
-        FavList thisFavList = favListService.findFavListByUserAndListCount(user, listCount);
+        FavList thisFavList = favListService.findFavListByUserAndListCount(userId, listCount);
         Integer favListId = thisFavList.getId();
 
         //載入清單中的所有餐廳
@@ -204,21 +204,24 @@ public class FavListController {
     }
 
     //送出清單編輯結果
-    @PostMapping("/Edit/{favListId}")
-    public String EditFavListName(@PathVariable("favListId") Integer favListId,
-                                  @RequestParam("newFavListName") String newFavListName,
-                                  RedirectAttributes redirectAttributes,
-                                  Authentication authentication,
-                                  Model model) {
+    @PostMapping("/EditList")
+    public String EditList(@RequestParam("listCount") Integer listCount,
+                           @RequestParam("userId") Integer userId,
+                           @RequestParam("name") String newFavListName,
+                           RedirectAttributes redirectAttributes,
+                           Authentication authentication,
+                           Model model) {
         // 檢查會員 Session 是否過期
         if (authentication == null || !authentication.isAuthenticated()) {
             // 如果 Session 過期，導回登入頁面並顯示錯誤訊息
             redirectAttributes.addFlashAttribute("SessionExpiredError", "會員 Session 已過期，請重新登入。");
             return "redirect:/ThinkEat/Login";
         }
-        favListService.updateFavListById(favListId, newFavListName);
-        model.addAttribute("favListId", favListId);
-        return "redirect:/ThinkEat/FavList/{favListId}";
+        FavList favList = favListService.findFavListByUserAndListCount(userId, listCount);
+        favListService.updateFavListById(favList.getId(), newFavListName);
+        redirectAttributes.addAttribute("userId", userId);
+        redirectAttributes.addAttribute("listCount", listCount);
+        return "redirect:/ThinkEat/FavList/{userId}/List/{listCount}/";
     }
 
     //將文章添加至收藏清單
