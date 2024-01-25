@@ -32,10 +32,14 @@
                    class="d-block py-3">
                 </a>
             </nav>
-            <!-- 建立清單 互動視窗 -->
-            <span class="mx-2 mt-1">
-                加入會員已取得建立多筆清單的功能
-            </span>
+            <!-- 訪客登入會員 -->
+            <div class="d-flex mt-1 mx-2 justify-content-center">
+                <!-- 註冊會員 -->
+                <div class="controls mt-3">
+                    <a th:href="@{/ThinkEat/Login}">會員登入</a>
+                    <div class="fs-6 fw-light">登入會員以享受建立多筆清單的功能</div>
+                </div>
+            </div>
         </aside>
         <!-- 主內容區 -->
         <section class="w-100 d-flex justify-content-center align-items-center Intro"
