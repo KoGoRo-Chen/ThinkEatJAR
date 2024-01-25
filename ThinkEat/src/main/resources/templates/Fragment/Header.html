@@ -31,19 +31,19 @@
                     <li class="nav-item">
                         <a class="nav-link active" th:href="@{/ThinkEat/ShareEat/Restaurant}">發表食記</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/ThinkEat/Account/AccountCenter}">
-                            會員中心
-                        </a>
+                    <!-- 仅在未认证用户（未登录）时显示 -->
+                    <li class="nav-item" th:if="${not #authorization.expression('isAuthenticated()')}">
+                        <a class="nav-link active" th:href="@{/ThinkEat/Login}">會員登入</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/ThinkEat/SignIn}">
-                            加入會員
-                        </a>
+                    <li class="nav-item" th:if="${not #authorization.expression('isAuthenticated()')}">
+                        <a class="nav-link active" th:href="@{/ThinkEat/SignIn}">加入會員</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/ThinkEat/logout}"
-                           th:if="${#authorization.expression('isAuthenticated()')}">登出</a>
+                    <!-- 仅在认证用户（已登录）时显示 -->
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                        <a class="nav-link active" th:href="@{/ThinkEat/Account/AccountCenter}">會員中心</a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                        <a class="nav-link active" th:href="@{/ThinkEat/logout}">登出</a>
                     </li>
                 </ul>
             </div>

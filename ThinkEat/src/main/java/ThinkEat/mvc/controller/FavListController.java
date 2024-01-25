@@ -4,46 +4,46 @@ import ThinkEat.mvc.model.dto.CommentDto;
 import ThinkEat.mvc.model.dto.FavListDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.model.dto.ShowEatPageDto;
-import ThinkEat.mvc.model.entity.FavList;
-import ThinkEat.mvc.model.entity.Restaurant;
+import ThinkEat.mvc.model.entity.*;
 import ThinkEat.mvc.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.context.Context;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.List;
 
 @Controller
 @RequestMapping("FavList/")
+@SessionAttributes("presetFavListId")
 public class FavListController {
-    private final PriceService priceService;
-    private final TagService tagService;
-    private final EatRepoService eatRepoService;
-    private final RestaurantService restaurantService;
     private final FavListService favListService;
+    private final EatRepoService eatRepoService;
+    private final UserService userService;
+    private final HttpSession httpSession;
 
     // 使用建構子注入EatDataDao、ResDataDao、ShareEatDao
     @Autowired
-    public FavListController(PriceService priceService,
-                             TagService tagService,
+    public FavListController(FavListService favListService,
                              EatRepoService eatRepoService,
-                             RestaurantService restaurantService,
-                             FavListService favListService) {
-
-        this.priceService = priceService;
-        this.tagService = tagService;
-        this.eatRepoService = eatRepoService;
-        this.restaurantService = restaurantService;
+                             UserService userService,
+                             HttpSession httpSession) {
         this.favListService = favListService;
+        this.eatRepoService = eatRepoService;
+        this.userService = userService;
+        this.httpSession = httpSession;
+    }
+
+    @ModelAttribute("presetFavListId")
+    public Integer getPresetFavListId() {
+        // 初始化 presetFavListId，您可以根據需求進行調整
+        return null;
     }
 
     @ModelAttribute("favListDto")
@@ -54,84 +54,168 @@ public class FavListController {
 
     //顯示收藏清單頁面(跳轉用)
     @GetMapping("/")
-    public String getFavListPage(RedirectAttributes redirectAttributes) {
-        //設定預設清單Id為1
-        Integer favListId = 1;
-        Integer newId = 0;
+    public String getFavListPage(RedirectAttributes redirectAttributes,
+                                 @SessionAttribute(name = "presetFavListId", required = false) Integer presetFavListId) {
 
-        if (favListService.getFavListById(favListId) == null) {
-            FavList favList = new FavList();
-            favList.setName("預設清單");
-            newId = favListService.addFavList(favList);
-            redirectAttributes.addAttribute("newId", newId);
-            return "redirect:/ThinkEat/FavList/{newId}";
+        //找出會員資訊
+        User user = (User) httpSession.getAttribute("user");
+        if (user == null) {
+            if (presetFavListId == null) {
+                //處理訪客邏輯
+                FavList favList = new FavList();
+                favList.setName("訪客預設清單");
+                Integer Id = favListService.addFavList(favList);
+
+                httpSession.setAttribute("presetFavListId", Id);
+                return "redirect:/ThinkEat/FavList/GuestList";
+            } else {
+                //訪客已經有預設清單，導入至預設清單
+                return "redirect:/ThinkEat/FavList/GuestList";
+            }
+
         } else {
-            redirectAttributes.addAttribute("favListId", favListId);
-            return "redirect:/ThinkEat/FavList/{favListId}";
-        }
+            redirectAttributes.addAttribute("userId", user.getId());
+            redirectAttributes.addAttribute("favListCount", 1);
 
+            return "redirect:/ThinkEat/FavList/{userId}/List/{favListCount}";
+
+        }
+    }
+
+    //顯示訪客用清單
+    @GetMapping("/GuestList")
+    public String getGuestListPage(@RequestParam(name = "page", defaultValue = "0") int page,
+                                   @RequestParam(name = "size", defaultValue = "12") int size,
+                                   @ModelAttribute Restaurant restaurant,
+                                   @SessionAttribute(name = "presetFavListId", required = false) Integer presetFavListId,
+                                   Model model) {
+        // 根據清單 ID 獲取相關資訊，並將其添加到 Model 中
+        if (presetFavListId == null) {
+            return "redirect:/ThinkEat/FavList/";
+        }
+        FavList guestFavList = favListService.getFavListById(presetFavListId);
+        // 將清單資訊添加到模型中
+        model.addAttribute("favListList", guestFavList);
+
+        FavList favList = new FavList();
+        model.addAttribute("favList", favList);
+
+        //載入清單中的所有餐廳
+        Pageable pageable = PageRequest.of(page, size);
+        ShowEatPageDto showEatPageDto = favListService.getAllRestaurantInFavList(pageable, presetFavListId);
+        model.addAttribute("showEatPageDto", showEatPageDto);
+        Integer maxPage = showEatPageDto.getTotalPage();
+        model.addAttribute("maxPage", maxPage);
+
+        Integer curPage = showEatPageDto.getCurrentPage();
+        model.addAttribute("curPage", curPage);
+
+        //獲得清單中餐廳的總數
+        List<Restaurant> restaurantList = favListService.findAllRestaurantsInFavList(presetFavListId);
+        Integer totalRestaurants = restaurantList.size();
+        Integer count = 0;
+
+        model.addAttribute("count", count);
+        model.addAttribute("totalRestaurants", totalRestaurants);
+        model.addAttribute("restaurantList", restaurantList);
+        model.addAttribute("favListName", favListService.getFavListById(presetFavListId).getName());
+        model.addAttribute("favListId", presetFavListId);
+
+        return "FavList/GuestList";
     }
 
     //顯示收藏清單頁面(預設序號1)
-    @GetMapping("/{favListId}")
-    public String getFavListPageById(@PathVariable("favListId") Integer favListId,
+    @GetMapping("/{userId}/List/{favListCount}")
+    public String getFavListPageById(@PathVariable("userId") Integer userId,
+                                     @PathVariable("favListCount") Integer favListCount,
                                      @RequestParam(name = "page", defaultValue = "0") int page,
                                      @RequestParam(name = "size", defaultValue = "12") int size,
-                                     @ModelAttribute RestaurantDto restaurantDto,
+                                     @ModelAttribute Restaurant restaurant,
+                                     RedirectAttributes redirectAttributes,
+                                     Authentication authentication,
                                      Model model) {
-        if (favListId > 0) {
-            //載入所有清單(用於側邊欄)
-            List<FavList> favListList = favListService.findAllFavList();
-            model.addAttribute("favListList", favListList);
-
-            FavList favList = new FavList();
-            model.addAttribute("favList", favList);
-
-
-            //載入清單中的所有餐廳
-            Pageable pageable = PageRequest.of(page, size);
-            ShowEatPageDto showEatPageDto = favListService.getAllRestaurantInFavList(pageable, favListId);
-            model.addAttribute("showEatPageDto", showEatPageDto);
-            Integer maxPage = showEatPageDto.getTotalPage();
-            model.addAttribute("maxPage", maxPage);
-
-            Integer curPage = showEatPageDto.getCurrentPage();
-            model.addAttribute("curPage", curPage);
-
-            //獲得清單中餐廳的總數
-            List<Restaurant> restaurantList = favListService.findAllRestaurantsInFavList(favListId);
-            Integer totalRestaurants = restaurantList.size();
-            Integer count = 0;
-
-            model.addAttribute("count", count);
-            model.addAttribute("totalRestaurants", totalRestaurants);
-            model.addAttribute("restaurantList", restaurantList);
-            model.addAttribute("favListName", favListService.getFavListById(favListId).getName());
-            model.addAttribute("favListId", favListId);
-
-            return "FavList/FavList";
+        // 檢查會員 Session 是否過期
+        if (authentication == null || !authentication.isAuthenticated()) {
+            // 如果 Session 過期，導回登入頁面並顯示錯誤訊息
+            redirectAttributes.addFlashAttribute("SessionExpiredError", "會員 Session 已過期，請重新登入。");
+            return "redirect:/ThinkEat/Login";
         }
 
-        return "redirect:/ThinkEat/FavList/";
+        //找出會員資訊
+        User user = userService.getUserById(userId);
+        FavList favList = new FavList();
+        model.addAttribute("favList", favList);
+
+        //載入所有清單(用於側邊欄)
+        List<FavList> favListList = user.getFavLists();
+        model.addAttribute("favListList", favListList);
+
+        FavList thisFavList = user.getFavLists().get(favListCount - 1);
+        Integer favListId = thisFavList.getId();
+
+        //載入清單中的所有餐廳
+        Pageable pageable = PageRequest.of(page, size);
+        ShowEatPageDto showEatPageDto = favListService.getAllRestaurantInFavList(pageable, favListId);
+        model.addAttribute("showEatPageDto", showEatPageDto);
+        Integer maxPage = showEatPageDto.getTotalPage();
+        model.addAttribute("maxPage", maxPage);
+
+        Integer curPage = showEatPageDto.getCurrentPage();
+        model.addAttribute("curPage", curPage);
+
+        //獲得清單中餐廳的總數
+        List<Restaurant> restaurantList = favListService.findAllRestaurantsInFavList(favListId);
+        Integer totalRestaurants = restaurantList.size();
+        Integer count = 0;
+
+        model.addAttribute("count", count);
+        model.addAttribute("totalRestaurants", totalRestaurants);
+        model.addAttribute("restaurantList", restaurantList);
+        model.addAttribute("favListName", favListService.getFavListById(favListId).getName());
+        model.addAttribute("favListId", favListId);
+
+        return "FavList/FavList";
     }
 
     //創造收藏清單
     @PostMapping("/Create")
     public String CreateFavListPage(@ModelAttribute("favList") FavList favlist,
-                                    RedirectAttributes redirectAttributes) {
+                                    RedirectAttributes redirectAttributes,
+                                    Authentication authentication,
+                                    Model model) {
+
+        // 檢查會員 Session 是否過期
+        if (authentication == null || !authentication.isAuthenticated()) {
+            // 如果 Session 過期，導回登入頁面並顯示錯誤訊息
+            redirectAttributes.addFlashAttribute("SessionExpiredError", "會員 Session 已過期，請重新登入。");
+            return "redirect:/ThinkEat/Login";
+        }
+        //找出會員資訊
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        User user = userService.findUserByUsername(username);
+        favlist.setFavList_User(user);
+
         Integer favListId = favListService.addFavList(favlist);
-        redirectAttributes.addAttribute("favListId", favListId);
-        return "redirect:/ThinkEat/FavList/{favListId}";
+        model.addAttribute("favListId", favListId);
+        return "FavList/FavList";
     }
 
     //送出清單編輯結果
-    @PostMapping("/Edit/{favListDtoId}")
+    @PostMapping("/Edit/{favListId}")
     public String EditFavListName(@PathVariable("favListId") Integer favListId,
                                   @RequestParam("newFavListName") String newFavListName,
                                   RedirectAttributes redirectAttributes,
+                                  Authentication authentication,
                                   Model model) {
+        // 檢查會員 Session 是否過期
+        if (authentication == null || !authentication.isAuthenticated()) {
+            // 如果 Session 過期，導回登入頁面並顯示錯誤訊息
+            redirectAttributes.addFlashAttribute("SessionExpiredError", "會員 Session 已過期，請重新登入。");
+            return "redirect:/ThinkEat/Login";
+        }
         favListService.updateFavListById(favListId, newFavListName);
-        redirectAttributes.addAttribute("favListId", favListId);
+        model.addAttribute("favListId", favListId);
         return "redirect:/ThinkEat/FavList/{favListId}";
     }
 
@@ -139,7 +223,8 @@ public class FavListController {
     @PostMapping("/AddFavList/{eatRepoId}")
     public String AddFavList(@PathVariable("eatRepoId") Integer eatRepoId,
                              @RequestParam("favListId") Integer favListId,
-                             RedirectAttributes redirectAttributes) {
+                             RedirectAttributes redirectAttributes,
+                             Model model) {
         //以ID尋找對應清單
         FavList favList = favListService.getFavListById(favListId);
 
@@ -166,7 +251,7 @@ public class FavListController {
     }
 
     //處理餐廳抽選
-    @PostMapping("/{favListDtoId}/Gacha/{count}")
+    @PostMapping("/{favListId}/Gacha/{count}")
     public String PickRestaurantByCount(@RequestParam("count") Integer count,
                                         @RequestParam("favListId") Integer favListId,
                                         RedirectAttributes redirectAttributes,

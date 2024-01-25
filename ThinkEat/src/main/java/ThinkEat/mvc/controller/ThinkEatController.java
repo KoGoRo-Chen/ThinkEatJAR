@@ -3,13 +3,16 @@ package ThinkEat.mvc.controller;
 import ThinkEat.mvc.model.dto.PictureDto;
 import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.model.dto.UserDto;
+import ThinkEat.mvc.model.entity.FavList;
 import ThinkEat.mvc.model.entity.Restaurant;
 import ThinkEat.mvc.model.entity.User;
+import ThinkEat.mvc.model.entity.UserDetails;
 import ThinkEat.mvc.service.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,12 +31,9 @@ public class ThinkEatController {
 
     private Logger logger = Logger.getLogger(getClass().getName());
 
-    private final EatRepoService eatRepoService;
     private final RestaurantService restaurantService;
-    private final PriceService priceService;
-    private final TagService tagService;
-    private final PictureService pictureService;
     private final UserService userService;
+    private final FavListService favListService;
 
     @Autowired
     public ThinkEatController(EatRepoService eatRepoService,
@@ -41,12 +41,10 @@ public class ThinkEatController {
                               PriceService priceService,
                               TagService tagService,
                               PictureService pictureService,
-                              UserService userService) {
-        this.eatRepoService = eatRepoService;
+                              UserService userService,
+                              FavListService favListService) {
+        this.favListService = favListService;
         this.restaurantService = restaurantService;
-        this.priceService = priceService;
-        this.tagService = tagService;
-        this.pictureService = pictureService;
         this.userService = userService;
     }
 
@@ -62,8 +60,9 @@ public class ThinkEatController {
 
     //顯示首頁
     @GetMapping("/Index")
-    public String GetIndexPage(Model model) {
-
+    public String GetIndexPage(Authentication authentication,
+                               HttpSession httpSession,
+                               Model model) {
         //挑出所有餐廳
         List<Restaurant> restaurantList = restaurantService.getAllRestaurant();
         model.addAttribute("restaurantList", restaurantList);

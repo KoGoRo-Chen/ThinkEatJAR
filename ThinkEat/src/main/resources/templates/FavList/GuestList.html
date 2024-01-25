@@ -20,67 +20,6 @@
 <!-- Main區塊 -->
 <main>
 
-    <!-- 互動視窗1 建立清單 -->
-    <div class="modal fade" id="addFavListModal"
-         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">建立新的收藏清單</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="Post"
-                          th:object="${favList}"
-                          th:action="@{/ThinkEat/FavList/Create}">
-                        <fieldset>
-                            請輸入清單名稱：
-                            <!-- 輸入清單名字 -->
-                            <input id="name"
-                                   name="name"
-                                   th:field="*{name}">
-                            </P>
-                            <!--送出-->
-                            <input type="submit" th:value="建立清單">
-                            <!--送出-->
-                            <input type="reset" th:value="清除">
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 互動視窗2 修改清單名稱 -->
-    <div class="modal fade" id="editFavListModal" tabindex="-1"
-         aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">修改收藏清單</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="Post"
-                          th:object="${favList}"
-                          th:action="@{/ThinkEat/FavList/Edit/{favListId}(favListId=${favListId})}">
-                        <fieldset>
-                            請輸入新的清單名稱：
-                            <!-- 輸入清單名字 -->
-                            <input id="name"
-                                   name="name"
-                                   th:field="*{name}">
-                            </P>
-                            <!--送出-->
-                            <input type="submit" th:value="建立清單">
-                            <!--送出-->
-                            <input type="reset" th:value="清除">
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- 側邊攔 -->
     <div class="container-fluid d-flex mx-0 px-0" style="min-height: 100vh; ">
@@ -95,12 +34,7 @@
             </nav>
             <!-- 建立清單 互動視窗 -->
             <span class="mx-2 mt-1">
-              <button type="button" class=""
-                      data-bs-toggle="modal"
-                      data-bs-target="#addFavListModal"
-                      onclick="clearModalContent()">
-                  建立新的清單
-               </button>
+                加入會員已取得建立多筆清單的功能
             </span>
         </aside>
         <!-- 主內容區 -->
@@ -112,23 +46,6 @@
                     <section class="d-flex justify-content-between mt-2">
                         <!-- 標題 -->
                         <h3 th:text="${favListName}"></h3>
-                        <div class="d-flex">
-                            <!-- 修改清單 互動視窗 -->
-                            <button type="button"
-                                    class="mx-2 btn btn-warning"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editFavListModal"
-                                    onclick="clearModalContent()">
-                                修改這張清單
-                            </button>
-                        <!-- 刪除 -->
-                            <form method="post" th:action="@{/ThinkEat/FavList/DeleteFavList}" class="mx-1">
-                                <input type="hidden" id="favListId" name="favListId" th:value="${favListId}">
-                                <input type="submit" value="刪除清單"
-                                       style="width: 112px; height: 41.59px; "
-                                       class="btn btn-warning">
-                            </form>
-                        </div>
                         <!-- 功能區結束 -->
                     </section>
                     <!-- 抽選功能區 -->
@@ -178,16 +95,16 @@
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
                                     <!-- 第一頁 -->
-                                    <li class="page-item" th:if="${curPage > 0}">
-                                        <a class="page-link" th:href="@{/ThinkEat/ViewEat/ShowEat/(page=0)}">
+                                    <li class="page-item" th:if="${curPage >= 0}">
+                                        <a class="page-link" th:href="@{/ThinkEat/FavList/GuestList/(page=0)}">
                                             第一頁
                                         </a>
                                     </li>
 
                                     <!-- 上一頁 -->
-                                    <li class="page-item" th:if="${curPage > 0}">
+                                    <li class="page-item" th:if="${curPage >= 1}">
                                         <a class="page-link"
-                                           th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${curPage - 1})}"
+                                           th:href="@{/ThinkEat/FavList/GuestList/(page=${curPage - 1})}"
                                            aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
@@ -195,14 +112,14 @@
 
                                     <!-- 以頁碼切換 -->
                                     <li class="page-item" th:each="i : ${#numbers.sequence(0, maxPage -1)}">
-                                        <a class="page-link" th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${i})}"
+                                        <a class="page-link" th:href="@{/ThinkEat/FavList/GuestList/(page=${i})}"
                                            th:text="${i} + 1"></a>
                                     </li>
 
                                     <!-- 下一頁 -->
                                     <li class="page-item" th:if="${curPage < maxPage - 1}">
                                         <a class="page-link"
-                                           th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${curPage + 1})}"
+                                           th:href="@{/ThinkEat/FavList/GuestList/(page=${curPage + 1})}"
                                            aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
@@ -211,7 +128,7 @@
                                     <!-- 最後一頁一頁 -->
                                     <li class="page-item" th:if="${curPage < maxPage - 1}">
                                         <a class="page-link"
-                                           th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${maxPage}-1)}">
+                                           th:href="@{/ThinkEat/FavList/GuestList/(page=${maxPage}-1)}">
                                             最後一頁
                                         </a>
                                     </li>
@@ -219,7 +136,7 @@
                             </nav>
                         </div> <!-- 分頁頁籤結束 -->
 
-            </div> <!-- 大div區結束 -->
+                    </div> <!-- 大div區結束 -->
         </section>
     </div>
 </main>

@@ -36,7 +36,7 @@
             <div class="card border-dark">
 
                 <div class="card-header bg-warning fs-5">
-                    會員註冊
+                    登入
                 </div>
 
                 <div class="card-body ">
@@ -48,10 +48,20 @@
                             <div class="form-group">
                                 <div>
                                     <div>
-                                        <!-- Check for login error -->
+                                        <!-- 登入錯誤 -->
                                         <div th:if="${registrationError}">
                                             <div class="alert alert-danger">
                                                 <span th:text="${registrationError}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <!-- session過期請重新登入 -->
+                                        <div th:if="${SessionExpiredError}">
+                                            <div class="alert alert-danger">
+                                                <span th:text="${SessionExpiredError}"></span>
                                             </div>
                                         </div>
                                     </div>

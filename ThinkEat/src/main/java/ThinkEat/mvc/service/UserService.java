@@ -71,8 +71,8 @@ public class UserService implements UserDetailsService {
     public Integer addUser(User user) {
         FavList favList = new FavList();
         favList.setName("我的第一個清單");
+        favList.setFavList_User(user);
         Integer favListId = favListService.addFavList(favList);
-        user.getFavLists().add(favList);
         user.setFavListCount(1);
 
         String password = passwordEncoder.encode(user.getPassword());

@@ -27,7 +27,12 @@ public class ThinkEatSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
                                            AuthenticationSuccessHandler customAuthenticationSuccessHandler) throws Exception {
 
-        httpSecurity.authorizeHttpRequests(configurer ->
+        httpSecurity
+                .sessionManagement(configurer ->
+                        configurer
+                                .maximumSessions(1)
+                                .expiredUrl("/ThinkEat/Login"))
+                .authorizeHttpRequests(configurer ->
                         configurer
                                 .requestMatchers("/Account/*").hasRole("standard_user")
                                 .requestMatchers("/ShareEat/*").hasRole("standard_user")
@@ -51,7 +56,8 @@ public class ThinkEatSecurityConfig {
                 )
                 .exceptionHandling((configurer ->
                         configurer.accessDeniedPage("/ThinkEat/access-denied"))
-        );
+
+                );
 
         return httpSecurity.build();
     }
