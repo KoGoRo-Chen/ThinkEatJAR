@@ -27,7 +27,7 @@
             <div class="sidebar_header  text-center pt-2 fs-5">清單一覽</div>
             <nav class="sidebar mx-2"
                  th:each="favList : ${favListList}">
-                <a th:href="@{/ThinkEat/FavList/{id}(id=${favList.id})}"
+                <a th:href="@{/ThinkEat/FavList/GuestList/}"
                    th:text="${favList.name}"
                    class="d-block py-3">
                 </a>
@@ -95,14 +95,14 @@
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
                                     <!-- 第一頁 -->
-                                    <li class="page-item" th:if="${curPage >= 0}">
+                                    <li class="page-item" th:if="${curPage > 0}">
                                         <a class="page-link" th:href="@{/ThinkEat/FavList/GuestList/(page=0)}">
                                             第一頁
                                         </a>
                                     </li>
 
                                     <!-- 上一頁 -->
-                                    <li class="page-item" th:if="${curPage >= 1}">
+                                    <li class="page-item" th:if="${curPage > 0}">
                                         <a class="page-link"
                                            th:href="@{/ThinkEat/FavList/GuestList/(page=${curPage - 1})}"
                                            aria-label="Previous">
@@ -111,9 +111,11 @@
                                     </li>
 
                                     <!-- 以頁碼切換 -->
-                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, maxPage -1)}">
-                                        <a class="page-link" th:href="@{/ThinkEat/FavList/GuestList/(page=${i})}"
-                                           th:text="${i} + 1"></a>
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, maxPage - 1)}">
+                                        <th:block th:if="${i >= 0}">
+                                            <a class="page-link" th:href="@{/ThinkEat/FavList/GuestList/(page=${i})}"
+                                               th:text="${i + 1}"></a>
+                                        </th:block>
                                     </li>
 
                                     <!-- 下一頁 -->
@@ -135,6 +137,7 @@
                                 </ul>
                             </nav>
                         </div> <!-- 分頁頁籤結束 -->
+
 
                     </div> <!-- 大div區結束 -->
         </section>

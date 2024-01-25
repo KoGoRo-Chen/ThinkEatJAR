@@ -48,7 +48,7 @@ public class ShareEatController {
     @GetMapping("/Restaurant")
     public String GetRestaurantPage(Model model) {
         // 添加 restaurantDto 到模型
-        model.addAttribute("restaurant", new RestaurantDto());
+        model.addAttribute("restaurant", new Restaurant());
         List<Restaurant> restaurantList = restaurantService.getAllRestaurant();
         if (restaurantList != null) {
             model.addAttribute("restaurantList", restaurantList);

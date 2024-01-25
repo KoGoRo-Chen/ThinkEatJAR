@@ -10,7 +10,7 @@
     <!-- jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 </head>
-<body>
+<body style="background-color: rgb(240, 240, 240)">
 <!-- Header區塊 -->
 <header>
     <div th:insert="~{Fragment/Header :: header}"></div>
@@ -18,7 +18,7 @@
 
 <!-- Main區塊 -->
 <main>
-    <!-- Modal -->
+    <!-- 建立新餐廳互動視窗 -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -31,11 +31,15 @@
                           enctype="multipart/form-data">
                         <fieldset>
                             <!-- 餐廳名 -->
-                            餐廳名稱：<input type="text" id="name" name="name" th:field="*{name}"/>
-                            <p/>
+                            <div>
+                                <label class="form-label">餐廳名稱</label>
+                                <input type="text" class="form-control" id="name" name="name" th:field="*{name}"/>
+                            </div>
                             <!-- 餐廳ID -->
-                            <input id="id" field="*{id}" type="hidden"/>
-                            <p/>
+                            <div>
+                                <label class="form-label">ID</label>
+                                <input id="id" field="*{id}" type="hidden"/>
+                            </div>
                             <!-- 地址(googlemap) -->
                             餐廳地址：<input type="text" id="address" name="address" th:field="*{address}"/>
                             <p/>
@@ -52,71 +56,88 @@
         </div>
     </div>
 
+    <div class="row col-12 mt-5">
 
-    <form th:object="${restaurant}" method="post" th:action="@{/ThinkEat/ShareEat/ChooseRestaurant}"
-          enctype="multipart/form-data">
-        <fieldset>
-            <!-- 餐廳名 -->
-            餐廳名稱：<input type="text" id="name" name="name" th:field="${restaurant.name}"/>
-            <p/>
-            <!-- 餐廳ID -->
-            <input id="restaurantId" name="restaurantId" th:value="${restaurant.id}" type="hidden"/>
-            <p/>
-            <!-- 地址(googlemap) -->
-            餐廳地址：<input type="text" id="address" name="address" th:field="${restaurant.address}"/>
-            <p/>
-            <!-- 前往食記發表 -->
-            <input type="submit" value="前往食記發表"/>
+        <div class="flexitem col-2" style="width:15%; "></div>
+        <div class="col-8 mt-5 bg-light" style="width:70">
+            <form th:object="${restaurant}" method="post" th:action="@{/ThinkEat/ShareEat/ChooseRestaurant}"
+                  enctype="multipart/form-data">
+                <fieldset>
+                    <div>
+                        <!-- 餐廳名 -->
+                        <div class="m-2 row">
+                            <label for="name" class="col-form-label col-2">餐廳名稱：</label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="name" name="name"
+                                       th:field="${restaurant.name}"/>
+                            </div>
+                        </div>
+                        <!-- 餐廳ID -->
+                        <input id="restaurantId" name="restaurantId" th:value="${restaurant.id}" type="hidden"/>
+                        <!-- 地址(googlemap) -->
+                        <div class="m-2 row">
+                            <label for="address" class="col-form-label col-2">餐廳地址：</label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="address" name="address"
+                                       th:field="${restaurant.address}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <!-- 前往食記發表 -->
+                        <input class="mx-2 btn btn-warning" type="submit" value="前往食記發表"/>
 
-            <!-- 一鍵清除所有內容(javascript) -->
-            <button type="button" onclick="clearForm()">清空</button>
-        </fieldset>
-    </form>
-    <table>
-        <thead>
-        <div>
-            <span>現有餐廳清單</span>
-            <div>
-                <!-- Button trigger modal -->
-                <button type="button" class=""
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        onclick="clearModalContent()">
-                    增加新餐廳
-                </button>
-            </div>
+                        <!-- 一鍵清除所有內容(javascript) -->
+                        <button class="mx-2 btn btn-danger" type="button" onclick="clearForm()">清空</button>
+                    </div>
+                </fieldset>
+            </form>
+            <!-- 食記列表 -->
+            <section class="ViewAllRestaurant">
+                <fieldset class="">
+                    <legend class="d-flex justify-content-between">
+                        <span>現有餐廳清單</span>
+                        <div>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-warning"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                    onclick="clearModalContent()">
+                                增加新餐廳
+                            </button>
+                        </div>
+                    </legend>
+                    <table class="table table-warning table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th class="text-center">餐廳名稱</th>
+                            <th class="text-center">地址</th>
+                            <th class="text-center">選擇這家餐廳</th>
+                        </tr>
+                        </thead>
+                        <tbody th:if="${not #lists.isEmpty(restaurantList)}"
+                               th:each="restaurant : ${restaurantList}">
+                        <tr>
+                            <!--餐廳名稱-->
+                            <td class="text-center" th:text="${restaurant.name}"></td>
+                            <!--餐廳地址-->
+                            <td class="text-center" th:text="${restaurant.address}"></td>
+                            <!--連結-->
+                            <td class="text-center">
+                                <form th:object="${restaurant}"
+                                      method="get"
+                                      th:action="@{/ThinkEat/ShareEat/Restaurant/{restaurantId}(restaurantId=${restaurant.id})}">
+                                    <input type="submit" value="選擇這家餐廳">
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </section>
         </div>
-        <tr>
-            <th>餐廳名稱</th>
-            <th>地址</th>
-            <th>選擇這家餐廳</th>
-        </tr>
-        </thead>
-        <tbody th:if="${not #lists.isEmpty(restaurantList)}"
-               th:each="restaurant : ${restaurantList}">
-        <tr>
-            <!--餐廳名稱-->
-            <td th:text="${restaurant.name}"></td>
-            <!--餐廳地址-->
-            <td th:text="${restaurant.address}"></td>
-            <!--連結-->
-            <td>
-                <form th:object="${restaurant}"
-                      method="get"
-                      th:action="@{/ThinkEat/ShareEat/Restaurant/{restaurantId}(restaurantId=${restaurant.id})}">
-                    <input type="submit" value="選擇這家餐廳">
-                </form>
-            </td>
-        </tr>
-        </tbody>
-        <tbody th:if="${#lists.isEmpty(restaurantList)}">
-        <tr>
-            <td colspan="3">No restaurants available</td>
-        </tr>
-        </tbody>
-    </table>
-
-
+        <div class="flexitem col-2" style="width:15%; "></div>
+    </div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>

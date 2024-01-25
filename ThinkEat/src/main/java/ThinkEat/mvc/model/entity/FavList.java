@@ -19,8 +19,8 @@ public class FavList {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "listId")
-    private Integer listId;
+    @Column(name = "listCount")
+    private Integer listCount;
 
     @Column
     private String name;

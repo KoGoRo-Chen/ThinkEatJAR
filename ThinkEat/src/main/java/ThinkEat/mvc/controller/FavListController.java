@@ -64,26 +64,26 @@ public class FavListController {
                 //處理訪客邏輯
                 FavList favList = new FavList();
                 favList.setName("訪客預設清單");
-                Integer Id = favListService.addFavList(favList);
+                Integer Id = favListService.addGuestList(favList);
 
                 httpSession.setAttribute("presetFavListId", Id);
-                return "redirect:/ThinkEat/FavList/GuestList";
+                return "redirect:/ThinkEat/FavList/GuestList/";
             } else {
                 //訪客已經有預設清單，導入至預設清單
-                return "redirect:/ThinkEat/FavList/GuestList";
+                return "redirect:/ThinkEat/FavList/GuestList/";
             }
 
         } else {
             redirectAttributes.addAttribute("userId", user.getId());
             redirectAttributes.addAttribute("favListCount", 1);
 
-            return "redirect:/ThinkEat/FavList/{userId}/List/{favListCount}";
+            return "redirect:/ThinkEat/FavList/{userId}/List/{favListCount}/";
 
         }
     }
 
     //顯示訪客用清單
-    @GetMapping("/GuestList")
+    @GetMapping("/GuestList/")
     public String getGuestListPage(@RequestParam(name = "page", defaultValue = "0") int page,
                                    @RequestParam(name = "size", defaultValue = "12") int size,
                                    @ModelAttribute Restaurant restaurant,
@@ -125,9 +125,9 @@ public class FavListController {
     }
 
     //顯示收藏清單頁面(預設序號1)
-    @GetMapping("/{userId}/List/{favListCount}")
+    @GetMapping("/{userId}/List/{listCount}/")
     public String getFavListPageById(@PathVariable("userId") Integer userId,
-                                     @PathVariable("favListCount") Integer favListCount,
+                                     @PathVariable("listCount") Integer listCount,
                                      @RequestParam(name = "page", defaultValue = "0") int page,
                                      @RequestParam(name = "size", defaultValue = "12") int size,
                                      @ModelAttribute Restaurant restaurant,
@@ -150,7 +150,7 @@ public class FavListController {
         List<FavList> favListList = user.getFavLists();
         model.addAttribute("favListList", favListList);
 
-        FavList thisFavList = user.getFavLists().get(favListCount - 1);
+        FavList thisFavList = favListService.findFavListByUserAndListCount(user, listCount);
         Integer favListId = thisFavList.getId();
 
         //載入清單中的所有餐廳
@@ -168,6 +168,8 @@ public class FavListController {
         Integer totalRestaurants = restaurantList.size();
         Integer count = 0;
 
+        model.addAttribute("listCount", listCount);
+        model.addAttribute("userId", userId);
         model.addAttribute("count", count);
         model.addAttribute("totalRestaurants", totalRestaurants);
         model.addAttribute("restaurantList", restaurantList);

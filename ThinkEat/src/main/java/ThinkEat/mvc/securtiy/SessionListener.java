@@ -30,7 +30,7 @@ public class SessionListener implements HttpSessionListener {
     public void sessionCreated(HttpSessionEvent se) {
         FavList favList = new FavList();
         favList.setName("訪客預設清單");
-        Integer presetFavListId = favListService.addFavList(favList);
+        Integer presetFavListId = favListService.addGuestList(favList);
 
         se.getSession().setAttribute("presetFavListId", presetFavListId);
 

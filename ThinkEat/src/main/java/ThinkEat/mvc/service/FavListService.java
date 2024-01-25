@@ -10,6 +10,7 @@ import ThinkEat.mvc.model.dto.ShowEatPageDto;
 import ThinkEat.mvc.model.entity.EatRepo;
 import ThinkEat.mvc.model.entity.FavList;
 import ThinkEat.mvc.model.entity.Restaurant;
+import ThinkEat.mvc.model.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,10 +44,18 @@ public class FavListService {
         this.modelMapper = modelMapper;
     }
 
+    //新增訪客清單
+    @Transactional
+    public Integer addGuestList(FavList favList) {
+        favListDao.save(favList);
+        return favList.getId();
+    }
 
     //新增清單
     @Transactional
     public Integer addFavList(FavList favList) {
+        Integer max = favList.getFavList_User().getFavLists().size();
+        favList.setListCount(max + 1);
         favListDao.save(favList);
         return favList.getId();
     }
@@ -250,6 +259,15 @@ public class FavListService {
         }
 
         return null;
+    }
+
+    //從ListCount及會員找到對應的清單
+    public FavList findFavListByUserAndListCount(User user, Integer listcount) {
+        List<FavList> favLists = user.getFavLists();
+        Optional<FavList> matchingList = favLists.stream()
+                .filter(favList -> favList.getListCount().equals(listcount))
+                .findFirst();
+        return matchingList.orElse(null);
     }
 
 }

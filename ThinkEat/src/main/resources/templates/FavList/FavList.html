@@ -10,7 +10,7 @@
     <!-- jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 </head>
-<body>
+
 <body>
 <!-- Header區塊 -->
 <header>
@@ -39,7 +39,6 @@
                             <input id="name"
                                    name="name"
                                    th:field="*{name}">
-                            </P>
                             <!--送出-->
                             <input type="submit" th:value="建立清單">
                             <!--送出-->
@@ -88,7 +87,7 @@
             <div class="sidebar_header  text-center pt-2 fs-5">清單一覽</div>
             <nav class="sidebar mx-2"
                  th:each="favList : ${favListList}">
-                <a th:href="@{/ThinkEat/FavList/{id}(id=${favList.id})}"
+                <a th:href="@{/ThinkEat/FavList/{userId}/List/{listCount}/(userId=${userId}, listCount=${listCount})}"
                    th:text="${favList.name}"
                    class="d-block py-3">
                 </a>
@@ -179,7 +178,8 @@
                                 <ul class="pagination">
                                     <!-- 第一頁 -->
                                     <li class="page-item" th:if="${curPage > 0}">
-                                        <a class="page-link" th:href="@{/ThinkEat/ViewEat/ShowEat/(page=0)}">
+                                        <a class="page-link"
+                                           th:href="@{/ThinkEat/FavList/{userId}/List/{listCount}/(page=0, userId=${userId}, listCount=${listCount})}">
                                             第一頁
                                         </a>
                                     </li>
@@ -187,7 +187,7 @@
                                     <!-- 上一頁 -->
                                     <li class="page-item" th:if="${curPage > 0}">
                                         <a class="page-link"
-                                           th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${curPage - 1})}"
+                                           th:href="@{/ThinkEat/FavList/{userId}/List/{listCount}/(page=${curPage - 1}, userId=${userId}, listCount=${listCount})}"
                                            aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
@@ -195,14 +195,17 @@
 
                                     <!-- 以頁碼切換 -->
                                     <li class="page-item" th:each="i : ${#numbers.sequence(0, maxPage -1)}">
-                                        <a class="page-link" th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${i})}"
-                                           th:text="${i} + 1"></a>
+                                        <th:block th:if="${i >= 0}">
+                                            <a class="page-link"
+                                               th:href="@{/ThinkEat/FavList/{userId}/List/{listCount}/(page=${i}, userId=${userId}, listCount=${listCount})}"
+                                               th:text="${i + 1}"></a>
+                                        </th:block>
                                     </li>
 
                                     <!-- 下一頁 -->
                                     <li class="page-item" th:if="${curPage < maxPage - 1}">
                                         <a class="page-link"
-                                           th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${curPage + 1})}"
+                                           th:href="@{/ThinkEat/FavList/{userId}/List/{listCount}/(page=${curPage + 1}, userId=${userId}, listCount=${listCount})}"
                                            aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
@@ -211,7 +214,7 @@
                                     <!-- 最後一頁一頁 -->
                                     <li class="page-item" th:if="${curPage < maxPage - 1}">
                                         <a class="page-link"
-                                           th:href="@{/ThinkEat/ViewEat/ShowEat/(page=${maxPage}-1)}">
+                                           th:href="@{/ThinkEat/FavList/{userId}/List/{listCount}/(page=${maxPage-1}, userId=${userId}, listCount=${listCount}}">
                                             最後一頁
                                         </a>
                                     </li>

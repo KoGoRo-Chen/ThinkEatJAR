@@ -36,9 +36,6 @@ public class User {
     @Column(columnDefinition = "timestamp NOT NULL")
     private Date date;
 
-    @Column
-    private Integer favListCount;
-
     @Column(columnDefinition = "TINYINT(1)")
     private boolean enabled;
 
