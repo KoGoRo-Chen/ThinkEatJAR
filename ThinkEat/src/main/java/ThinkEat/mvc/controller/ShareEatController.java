@@ -231,11 +231,30 @@ public class ShareEatController {
 
 
     //顯示食記編輯表單
-    @GetMapping("/ShareEatRepo/Edit/{eatRepoId}")
+    @GetMapping("/EditEatRepo/{eatRepoId}")
     public String GetEditEatRepoPage(@PathVariable("eatRepoId") Integer eatRepoId,
+                                     Authentication authentication,
+                                     RedirectAttributes redirectAttributes,
                                      Model model) {
+
+        //檢查發文者是否具有會員身分
+        if (authentication == null || !authentication.isAuthenticated()) {
+            redirectAttributes.addFlashAttribute("NotLoginErrorMessage", "請登入後再發表留言。");
+            return "redirect:/ThinkEat/Login";
+        }
+
+        EatRepo eatRepo = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
+        model.addAttribute("eatRepo", eatRepo);
+        model.addAttribute("eatRepoId", eatRepoId);
+
         Restaurant restaurant = eatRepoService.getEatRepoByEatRepoId(eatRepoId).getRestaurant();
         model.addAttribute("restaurant", restaurant);
+
+        //圖片
+        if (eatRepo != null && eatRepo.getPicList() != null && !eatRepo.getPicList().isEmpty()) {
+            Picture picture = eatRepo.getPicList().get(0);
+            model.addAttribute("picture", picture);
+        }
 
         //價格
         List<Price> prices = priceService.findAllPrice();
@@ -249,11 +268,63 @@ public class ShareEatController {
         Tag tag = new Tag();
         model.addAttribute("tag", tag);
 
-        EatRepo eatRepo = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
-        model.addAttribute("eatRepo", eatRepo);
-
         return "ShareEat/Edit";
     }
+
+    //編輯食記
+    @PostMapping("/UpdateEatRepo")
+    public String updateEatRepo(@RequestParam("eatRepoId") Integer eatRepoId,
+                                @RequestParam("restaurantId") Integer restaurantId,
+                                @RequestParam("priceId") Integer priceId,
+                                @RequestParam("tagIds") List<Integer> tagIds,
+                                @RequestPart("multipartFileList") List<MultipartFile> multipartFileList,
+                                HttpSession session,
+                                RedirectAttributes redirectAttributes,
+                                Model model) {
+        EatRepo eatRepoToUpdate = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
+
+        // 從 Session 中獲取用戶資訊
+        User user = (User) session.getAttribute("user");
+        System.out.println("get到的user是:" + user);
+        eatRepoToUpdate.setEatRepo_User(user);
+
+        // 根據 restaurantId 獲取相應的 RestaurantDto 對象，然後將其設置到 eatRepoDto 中
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        eatRepoToUpdate.setRestaurant(restaurant);
+
+        //處理價格
+        Price price = priceService.getPriceById(priceId);
+        eatRepoToUpdate.setPrice(price);
+
+        //處理標籤
+        List<Tag> selectedTags = new ArrayList<>();
+        for (Integer tagId : tagIds) {
+            Tag fetchedTag = tagService.getTagById(tagId);
+            selectedTags.add(fetchedTag);
+        }
+        eatRepoToUpdate.setEatRepo_TagList(selectedTags);
+
+        //處理多張圖片
+        for (MultipartFile multipartFile : multipartFileList) {
+            Picture picture = new Picture();
+            picture.setPic_EatRepo(eatRepoToUpdate);
+            picture.setPic_Restaurant(restaurant);
+            Integer picDtoId = pictureService.addPicture(picture, multipartFile);
+            picture.setId(picDtoId);
+            eatRepoToUpdate.getPicList().add(picture);
+        }
+
+        //將圖片放入文章中
+        eatRepoService.updateEatRepoByEatRepoId(eatRepoId, eatRepoToUpdate);
+        System.out.println(eatRepoToUpdate);
+
+        // 將食記 ID 添加到重定向 URL 的查詢字符串中
+        redirectAttributes.addAttribute("eatRepoId", eatRepoId);
+
+        // 重導到文章瀏覽頁面
+        return "redirect:/ThinkEat/ViewEat/EatRepo/{eatRepoId}";
+    }
+
 
     //刪除文章
     @PostMapping("/ShareEatRepo/Delete/{eatRepoId}")
@@ -271,6 +342,18 @@ public class ShareEatController {
         eatRepoService.delete(eatRepoId);
 
         return "redirect:/ThinkEat/ViewEat/ResInfo/{restaurantId}";
+    }
+
+    //刪除文章中的照片
+    @PostMapping("/DeletePicture")
+    public String deletePicture(@RequestParam("eatRepoId") Integer eatRepoId,
+                                @RequestParam("pictureId") Integer pictureId,
+                                RedirectAttributes redirectAttributes) {
+
+        pictureService.deletePicture(pictureId);
+        redirectAttributes.addAttribute("eatRepoId", eatRepoId);
+
+        return "redirect:/ThinkEat/ShareEat/EditEatRepo/{eatRepoId}";
     }
 
 

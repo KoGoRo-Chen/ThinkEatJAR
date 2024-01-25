@@ -147,7 +147,7 @@
                                 </form>
                                 <!--編輯文章 -->
                                 <form method="get"
-                                      th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Edit/{eatRepoId}(eatRepoId=${eatRepo.id})}">
+                                      th:action="@{/ThinkEat/ShareEat/EditEatRepo/{eatRepoId}(eatRepoId=${eatRepoId})}">
                                     <input type="submit" class="btn btn-warning" value="編輯文章">
                                 </form>
                             </div>
@@ -172,7 +172,7 @@
                         <div class="d-flex mt-3">
                             <span class="me-3">標籤：</span>
                             <span th:each="tag : ${eatRepo.eatRepo_TagList}">
-                                <span class="fw-bold" th:text="${tag.name}"></span>
+                                <span class="fw-bold mx-2" th:text="${tag.name}"></span>
                             </span>
                         </div>
                     </div>

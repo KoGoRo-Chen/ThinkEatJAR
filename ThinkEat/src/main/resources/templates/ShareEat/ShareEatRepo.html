@@ -94,7 +94,7 @@
                         <label for="progressbarTWInput" class="col-form-label col-2">上傳圖片</label>
                         <div class="col-10">
                             <input type="file" class="form-control" id="progressbarTWInput" name="multipartFileList"
-                                   accept="image/**">
+                                   accept="image/**" required>
                             <div id="preview_progressbarTW_imgs"
                                  style="width:100%; height: fit-content; overflow:scroll">
                             </div>
@@ -106,7 +106,7 @@
                         <label for="eatRepoTitle" class="col-form-label col-2">標題：</label>
                         <div class="col-10">
                             <input type="text" class="form-control" id="eatRepoTitle" name="eatRepoTitle"
-                                   th:field="*{title}"/>
+                                   th:field="*{title}" required/>
                         </div>
                     </div>
 
@@ -136,14 +136,14 @@
                     <div class="m-2 row">
                         <label for="date" class="col-form-label col-2">日期：</label>
                         <div class="col-10">
-                            <input type="date" class="form-control" id="date" name="date" th:field="*{date}"/>
+                            <input type="date" class="form-control" id="date" name="date" th:field="*{date}" required/>
                         </div>
                     </div>
                     <!-- 價位 -->
                     <div class="m-2 row">
                         <label for="price" class="col-form-label col-2">價位</label>
                         <div class="col-8">
-                            <select class="form-select" id="price" name="priceId">
+                            <select class="form-select" id="price" name="priceId" required>
                                 <option th:each="price : ${prices}"
                                         th:value="${price.id}"
                                         th:text="${price.name}"></option>
@@ -165,7 +165,7 @@
                         <div class="col-8">
                             <div class="form-check form-check-inline" th:each="tag : ${tags}">
                                 <input type="checkbox" class="form-check-input" id="tag" name="tagIds"
-                                       th:value="${tag.id}" th:text="${tag.name}">
+                                       th:value="${tag.id}" th:text="${tag.name}" required>
                             </div>
                         </div>
                         <div class="col-2">
@@ -182,7 +182,7 @@
                         <label for="date" class="col-form-label col-2">食記：</label>
                         <div class="col-10">
                             <textarea type="text" rows="10" class="form-control" id="article" name="article"
-                                      th:field="*{article}"></textarea>
+                                      th:field="*{article}" required></textarea>
                         </div>
                     </div>
 
