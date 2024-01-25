@@ -102,7 +102,7 @@ public class UserService implements UserDetailsService {
 
     //更新會員密碼
     @Transactional
-    public Integer updateUserPasswordById(Integer userId,
+    public void updateUserPasswordById(Integer userId,
                                           String curPassword,
                                           String newPassword) {
         Optional<User> userOpt = userDao.findById(userId);
@@ -113,10 +113,8 @@ public class UserService implements UserDetailsService {
             if (userToUpdate.getPassword().equals(curPassword)) {
                 userToUpdate.setPassword(newPassword);
                 userDao.save(userToUpdate);
-                return userToUpdate.getId();
-            }//驗證結束
+            }
         }
-        return null;
     }
 
     //以ID刪除會員

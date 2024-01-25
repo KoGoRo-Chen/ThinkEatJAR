@@ -83,13 +83,6 @@
                         <div class="col-10">
                             <h3 th:text="${eatRepo.title}"></h3>
                         </div>
-                        <!-- 刪除文章(後臺做好後拿掉) -->
-                        <div class="col-2">
-                            <form method="post"
-                                  th:action="@{/ThinkEat/ShareEat/ShareEatRepo/Delete/{eatRepoId}(eatRepoId=${eatRepo.id})}">
-                                <input type="submit" value="刪除文章">
-                            </form>
-                        </div>
                     </div>
 
                     <!-- 圖片 -->
@@ -147,7 +140,8 @@
                                 </form>
                                 <!--編輯文章 -->
                                 <form method="get"
-                                      th:action="@{/ThinkEat/ShareEat/EditEatRepo/{eatRepoId}(eatRepoId=${eatRepoId})}">
+                                      th:action="@{/ThinkEat/ShareEat/EditEatRepo/{eatRepoId}(eatRepoId=${eatRepoId})}"
+                                      th:if="${not #authorization.expression('isAuthenticated()')}>
                                     <input type="submit" class="btn btn-warning" value="編輯文章">
                                 </form>
                             </div>

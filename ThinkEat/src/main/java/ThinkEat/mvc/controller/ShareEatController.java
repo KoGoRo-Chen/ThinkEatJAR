@@ -356,5 +356,17 @@ public class ShareEatController {
         return "redirect:/ThinkEat/ShareEat/EditEatRepo/{eatRepoId}";
     }
 
+    //在會員中心刪除文章
+    @PostMapping("/DeleteArticleFromAccountCenter/{eatRepoId}")
+    public String deleteArticleFromAccountCenter(@PathVariable("eatRepoId") Integer eatRepoId,
+                                                 @RequestParam("userId") Integer userId,
+                                                 RedirectAttributes redirectAttributes) {
+        eatRepoService.delete(eatRepoId);
+
+        redirectAttributes.addAttribute("userId", userId);
+
+        return "redirect:/ThinkEat/Account/{userId}";
+
+    }
 
 }
