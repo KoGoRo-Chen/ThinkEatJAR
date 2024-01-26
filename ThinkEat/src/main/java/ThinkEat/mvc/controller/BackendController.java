@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/BackEnd")
+@RequestMapping("/Backend")
 //網頁路徑：http://localhost:8080/ThinkEat/mvc/Account
 public class BackendController {
 
@@ -29,7 +29,7 @@ public class BackendController {
         this.eatRepoService = eatRepoService;
     }
 
-    //顯示會員管理
+    //顯示後台首頁
     @GetMapping("/")
     public String getAccountCenterPageForDealing(Authentication authentication,
                                                  RedirectAttributes redirectAttributes,
@@ -41,7 +41,7 @@ public class BackendController {
             redirectAttributes.addFlashAttribute("NotLoginErrorMessage", "請登入後再發表留言。");
             return "redirect:/ThinkEat/Login";
         }
-        return "BackEnd/BackEnd";
+        return "Backend/Backend";
     }
 
 

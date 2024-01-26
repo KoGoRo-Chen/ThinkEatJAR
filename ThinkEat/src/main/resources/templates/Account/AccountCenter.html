@@ -111,7 +111,7 @@
                      sec:authorize="hasAnyRole('admin','founder')">
                     <div class="fs-3">會員資訊</div>
                     <div>
-                        <button class="btn btn-danger" th:onclick="@{/ThinkEat/Backend/}">
+                        <button class="btn btn-danger" th:onclick="|window.location.href='/ThinkEat/Backend/'|">
                             進入後臺
                         </button>
                     </div>
