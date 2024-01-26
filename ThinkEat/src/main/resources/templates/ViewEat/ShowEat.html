@@ -40,7 +40,7 @@
                                         class="m-2">
                                     <img th:src="${restaurant.resPicList.get(0).htmlPath}"
                                          class="img-thumbnail"
-                                         style="height: 180px; width: 180px; background-color: red;">
+                                         style="height: 100px; width: 100px; background-color: red;">
                                     <div class="d-flex justify-content-center my-1">
                                         <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
                                            th:text="${restaurant.name}"></a>
@@ -48,10 +48,11 @@
                                 </figure>
                                 <figure th:unless="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
                                         class="m-2">
-                                    <img style="height: 180px; width: 180px; background-color: darkgray;"
+                                    <img style="height: 100px; width: 100px; background-color: darkgray;"
                                          class="img-thumbnail">
                                     <div class="d-flex justify-content-center">
-                                        <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                        <a class="text-center fs-6"
+                                           th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
                                            th:text="${restaurant.name}"></a>
                                     </div>
                                 </figure>

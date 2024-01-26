@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 <head>
     <meta charset="UTF-8">
-    <title>會員中心</title>
+    <title>後台首頁</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -19,87 +19,8 @@
 
 <!-- Main區塊 -->
 <main>
-    <!-- 互動視窗1 更改暱稱 -->
-    <div class="modal fade" id="addPriceModal"
-         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">增加新價位</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" th:action="@{/ThinkEat/Account/ChangeUserNickname}">
-                        <fieldset>
-                            <!-- 輸入新暱稱 -->
-                            <div class="m-2 row">
-                                <label for="name" class="col-form-label col-4">輸入新暱稱：</label>
-                                <div class="col-8">
-                                    <input type="text" class="form-control" id="name" name="name" required/>
-                                </div>
-                            </div>
-                            <!-- 用戶ID -->
-                            <input id="userId" name="userId" th:value="${user.id}" type="hidden"/>
-                            <div class="d-flex justify-content-center">
-                                <!-- 儲存資料 -->
-                                <input type="submit" class="btn btn-success mx-4" value="確認送出"/>
-                                <!-- 清空輸入的內容 -->
-                                <button type="reset" class="btn btn-danger mx-4">清空</button>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-                .
-            </div>
-        </div>
-    </div>
-
-    <!-- 互動視窗2 更改密碼 -->
-    <div class="modal fade" id="addTagModal" tabindex="-1"
-         aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">增加新標籤</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="post"
-                          th:action="@{/ThinkEat/Account/ChangeUserPassword}">
-                        <fieldset>
-                            <!-- 舊密碼 -->
-                            <div class="m-2 row">
-                                <label for="oldPassword" class="col-form-label col-4">輸入舊密碼：</label>
-                                <div class="col-8">
-                                    <input type="text" class="form-control" id="oldPassword" name="oldPassword"
-                                           required/>
-                                </div>
-                            </div>
-                            <!-- 新密碼 -->
-                            <div class="m-2 row">
-                                <label for="newPassword" class="col-form-label col-4">輸入新密碼：</label>
-                                <div class="col-8">
-                                    <input type="text" class="form-control" id="newPassword" name="newPassword"
-                                           required/>
-                                </div>
-                            </div>
-                            <!-- 用戶ID -->
-                            <input id="userId" name="userId" th:value="${user.id}" type="hidden"/>
-                            <div class="d-flex justify-content-center">
-                                <!-- 送出結果 -->
-                                <input type="submit" class="btn btn-success mx-4" value="確認送出"/>
-                                <!-- 清空輸入的內容 -->
-                                <button type="reset" class="btn btn-danger mx-4">清空</button>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="container-fluid px-5 py-3" style="min-height: 100vh;">
-
         <!-- 主內容區 -->
         <div class="text-center pt-2 fs-4 my-3">會員中心</div>
 

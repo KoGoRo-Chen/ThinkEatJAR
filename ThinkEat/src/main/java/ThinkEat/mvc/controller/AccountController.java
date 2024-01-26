@@ -109,10 +109,4 @@ public class AccountController {
 
     }
 
-    //進入管理後台
-    @GetMapping("/Backend")
-    public String getBackendPage() {
-        return "Account/Backend";
-    }
-
 }
