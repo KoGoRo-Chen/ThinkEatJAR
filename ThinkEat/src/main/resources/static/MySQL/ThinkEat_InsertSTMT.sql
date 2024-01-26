@@ -24,3 +24,7 @@ INSERT INTO `thinkeat`.`user` (`id`, `enabled`, `nickname`, `password`, `token_e
 INSERT INTO `thinkeat`.`user_authority` (`id`, `authority_id`, `user_id`) VALUES ('1', '1', '1');
 INSERT INTO `thinkeat`.`user_authority` (`id`, `authority_id`, `user_id`) VALUES ('2', '2', '2');
 INSERT INTO `thinkeat`.`user_authority` (`id`, `authority_id`, `user_id`) VALUES ('3', '3', '3');
+
+INSERT INTO `thinkeat`.`favlist` (`id`, `list_count`, `name`, `user_id`) VALUES ('1', '1', '我的第一個清單', '1');
+INSERT INTO `thinkeat`.`favlist` (`id`, `list_count`, `name`, `user_id`) VALUES ('2', '1', '我的第一個清單', '2');
+INSERT INTO `thinkeat`.`favlist` (`id`, `list_count`, `name`, `user_id`) VALUES ('3', '1', '我的第一個清單', '3');
