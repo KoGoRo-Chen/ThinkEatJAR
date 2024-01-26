@@ -4,6 +4,7 @@ import ThinkEat.mvc.model.dto.UserDto;
 import ThinkEat.mvc.model.entity.EatRepo;
 import ThinkEat.mvc.model.entity.User;
 import ThinkEat.mvc.model.entity.UserDetails;
+import ThinkEat.mvc.service.EatRepoService;
 import ThinkEat.mvc.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,13 @@ import java.util.List;
 public class AccountController {
 
     private final UserService userService;
+    private final EatRepoService eatRepoService;
 
     @Autowired
-    public AccountController(UserService userService) {
+    public AccountController(UserService userService,
+                             EatRepoService eatRepoService) {
         this.userService = userService;
+        this.eatRepoService = eatRepoService;
     }
 
     //顯示會員中心頁面
@@ -90,6 +94,19 @@ public class AccountController {
 
         redirectAttributes.addAttribute("userId", userId);
         return "redirect:/ThinkEat/Account/{userId}";
+    }
+
+    //在會員中心刪除文章
+    @PostMapping("/DeleteEatRepoFromBackend")
+    public String DeleteEatRepoFromBackend(@RequestParam("eatRepoId") Integer eatRepoId,
+                                           @RequestParam("userId") Integer userId,
+                                           RedirectAttributes redirectAttributes) {
+        eatRepoService.delete(eatRepoId);
+
+        redirectAttributes.addAttribute("userId", userId);
+
+        return "redirect:/ThinkEat/Account/{userId}";
+
     }
 
     //進入管理後台

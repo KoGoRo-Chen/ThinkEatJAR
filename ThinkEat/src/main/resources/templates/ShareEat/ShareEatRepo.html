@@ -142,7 +142,7 @@
                     <div class="m-2 row">
                         <label for="price" class="col-form-label col-2">價位</label>
                         <div class="col-8">
-                            <select class="form-select" id="price" name="priceId" required>
+                            <select class="form-select" id="price" name="priceId">
                                 <option th:each="price : ${prices}"
                                         th:value="${price.id}"
                                         th:text="${price.name}"></option>
@@ -164,7 +164,7 @@
                         <div class="col-8">
                             <div class="form-check form-check-inline" th:each="tag : ${tags}">
                                 <input type="checkbox" class="form-check-input" id="tag" name="tagIds"
-                                       th:value="${tag.id}" th:text="${tag.name}" required>
+                                       th:value="${tag.id}" th:text="${tag.name}">
                             </div>
                         </div>
                         <div class="col-2">

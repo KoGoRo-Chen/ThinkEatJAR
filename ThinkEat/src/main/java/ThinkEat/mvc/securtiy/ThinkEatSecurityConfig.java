@@ -34,8 +34,8 @@ public class ThinkEatSecurityConfig {
                                 .expiredUrl("/ThinkEat/Login"))
                 .authorizeHttpRequests(configurer ->
                         configurer
-                                .requestMatchers("/Account/*").hasRole("standard_user")
-                                .requestMatchers("/ShareEat/*").hasRole("standard_user")
+                                .requestMatchers("/Account/*").authenticated()
+                                .requestMatchers("/ShareEat/*").authenticated()
                                 .anyRequest().permitAll()
         )
         .formLogin(form ->

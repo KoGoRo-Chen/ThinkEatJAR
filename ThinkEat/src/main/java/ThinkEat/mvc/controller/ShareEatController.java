@@ -25,7 +25,6 @@ public class ShareEatController {
     private final EatRepoService eatRepoService;
     private final RestaurantService restaurantService;
     private final PictureService pictureService;
-    private final UserService userService;
 
     // 建構子注入依賴
     @Autowired
@@ -33,15 +32,13 @@ public class ShareEatController {
                               TagService tagService,
                               EatRepoService eatRepoService,
                               RestaurantService restaurantService,
-                              PictureService pictureService,
-                              UserService userService) {
+                              PictureService pictureService) {
 
         this.priceService = priceService;
         this.tagService = tagService;
         this.eatRepoService = eatRepoService;
         this.restaurantService = restaurantService;
         this.pictureService = pictureService;
-        this.userService = userService;
     }
 
     //顯示餐廳選擇表單
@@ -354,19 +351,6 @@ public class ShareEatController {
         redirectAttributes.addAttribute("eatRepoId", eatRepoId);
 
         return "redirect:/ThinkEat/ShareEat/EditEatRepo/{eatRepoId}";
-    }
-
-    //在會員中心刪除文章
-    @PostMapping("/DeleteArticleFromAccountCenter/{eatRepoId}")
-    public String deleteArticleFromAccountCenter(@PathVariable("eatRepoId") Integer eatRepoId,
-                                                 @RequestParam("userId") Integer userId,
-                                                 RedirectAttributes redirectAttributes) {
-        eatRepoService.delete(eatRepoId);
-
-        redirectAttributes.addAttribute("userId", userId);
-
-        return "redirect:/ThinkEat/Account/{userId}";
-
     }
 
 }

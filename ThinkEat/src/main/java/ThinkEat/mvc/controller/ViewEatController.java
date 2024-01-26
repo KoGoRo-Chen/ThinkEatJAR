@@ -137,6 +137,7 @@ public class ViewEatController {
         System.out.println("出現次數前五多的標籤：" + topFiveTagNameList);
         model.addAttribute("topFiveTagNameList", topFiveTagNameList);
 
+
         // 返回 ViewEat 頁面
         return "ViewEat/ResInfo";
     }

@@ -82,13 +82,13 @@
                             <h2 class="pt-3 col-11" th:text="${restaurant.name}"></h2>
                         </div>
 
-                        <div class="col-2 pt-4">
-                            <form method="post" th:action="@{/ThinkEat/ViewEat/ResInfo/DeleteRestaurant}">
-                                <input type="hidden" id="restaurantId" name="restaurantId"
-                                       th:value="${restaurant.id}">
-                                <input type="submit" value="刪除這家餐廳">
-                            </form>
-                        </div>
+                        <!--                        <div class="col-2 pt-4">-->
+                        <!--                            <form method="post" th:action="@{/ThinkEat/ViewEat/ResInfo/DeleteRestaurant}">-->
+                        <!--                                <input type="hidden" id="restaurantId" name="restaurantId"-->
+                        <!--                                       th:value="${restaurant.id}">-->
+                        <!--                                <input type="submit" value="刪除這家餐廳">-->
+                        <!--                            </form>-->
+                        <!--                        </div>-->
                     </div>
 
 
@@ -179,7 +179,7 @@
                             </thead>
                             <tbody th:each="eatRepo : ${eatRepoList}">
                             <tr>
-                                <td>會員功能尚待追加</td>
+                                <td th:text="${eatRepo.eatRepo_User.getNickname()}"></td>
                                 <td th:text="${#dates.format(eatRepo.date, 'yyyy-MM-dd E')}"></td>
                                 <td th:text="${eatRepo.title}"></td>
                                 <td>
