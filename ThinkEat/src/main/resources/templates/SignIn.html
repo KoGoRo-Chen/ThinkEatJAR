@@ -69,12 +69,12 @@
                                 <div class="my-4">
                                     <!-- 密碼 -->
                                     密碼：<input type="password" id="password" name="password" placeholder="請輸入密碼"
-                                                th:field="*{password}"
+                                                th:field="*{rawPassword}"
                                                 required/>
                                     <!-- 錯誤訊息 -->
-                                    <div th:if="${#fields.hasErrors('password')}" class="text-danger">
+                                    <div th:if="${#fields.hasErrors('rawPassword')}" class="text-danger">
                                         <ul>
-                                            <li th:each="err : ${#fields.errors('password')}"
+                                            <li th:each="err : ${#fields.errors('rawPassword')}"
                                                 th:text="'密碼錯誤：' + ${err}"/>
                                         </ul>
                                     </div>

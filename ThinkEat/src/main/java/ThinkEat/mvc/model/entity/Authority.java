@@ -1,5 +1,7 @@
 package ThinkEat.mvc.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,9 +27,10 @@ public class Authority implements GrantedAuthority {
     @Column(nullable = false)
     private String description;
 
-    //每個權限可分配給多個用戶(user)
-    @ManyToMany(mappedBy = "authorities", cascade = CascadeType.DETACH)
-    private List<User> userList = new ArrayList<>();
+    //一個權限可分配給多個用戶(user)
+    @OneToMany(mappedBy = "authority", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<User> userList;
 
     @Override
     public String getAuthority() {

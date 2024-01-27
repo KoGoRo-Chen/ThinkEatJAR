@@ -86,11 +86,11 @@ public class AccountController {
     //更改會員密碼
     @PostMapping("/ChangeUserPassword")
     public String changeUserPassword(@RequestParam("userId") Integer userId,
-                                     @RequestParam("oldPassword") String oldPassword,
+                                     @RequestParam("curPassword") String curPassword,
                                      @RequestParam("newPassword") String newPassword,
                                      RedirectAttributes redirectAttributes) {
         User user = userService.getUserById(userId);
-        userService.updateUserPasswordById(userId, oldPassword, newPassword);
+        userService.updateUserPasswordById(userId, curPassword, newPassword);
 
         redirectAttributes.addAttribute("userId", userId);
         return "redirect:/ThinkEat/Account/{userId}";

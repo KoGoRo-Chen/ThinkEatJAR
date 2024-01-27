@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString(exclude = {"eatRepoList", "commentList", "favLists"})
 public class User {
 
@@ -27,6 +28,9 @@ public class User {
 
     @Column
     private String password;
+
+    @Column
+    private String rawPassword;
 
     @Column
     private String nickname;
@@ -54,18 +58,9 @@ public class User {
     @OneToMany(mappedBy = "favList_User", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<FavList> favLists = new ArrayList<>();
 
-    //一個用戶可以擁有多個權限
-    @ManyToMany(targetEntity = Authority.class, cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_authority",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id")
-    )
-    private List<Authority> authorities;
-
-    public User() {
-        this.authorities = new ArrayList<>();
-    }
-
+    //有多個權限，但一個用戶只可以擁有一個權限
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "authority_id")
+    private Authority authority;
 
 }

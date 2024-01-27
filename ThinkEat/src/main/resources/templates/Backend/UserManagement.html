@@ -1,10 +1,269 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>會員管理</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 </head>
-<body>
+<body style="background-color: rgb(240, 240, 240);">
+<!-- Header區塊 -->
+<header>
+    <div th:insert="~{Fragment/Header :: header}"></div>
+</header>
 
+<!-- Main區塊 -->
+<main style="height:75vh">
+    <div class="container-fluid h-75 w-100 d-flex justify-content-evenly-medium my-5">
+        <div class="row col-12 mt-2">
+            <div class="flexitem col-1" style="width:25%; height:100%; "></div>
+            <!-- 內容區塊 -->
+            <div class="container-fluid mh-100 col-10 bg-light p-0"
+                 style="width:50%; height:100%; ">
+                <div class="d-flex justify-content-evenly"
+                     style="width:100%; height:100%; ">
+                    <!-- 側邊攔導覽頁 -->
+                    <ul class="nav col-4 flex-column justify-content-start
+                               border-end border-2 mt-2 shadow-sm"
+                        style="width:30%; height:auto%; ">
+                        <!-- 會員管理 -->
+                        <li class="nav-item border border-3 m-2 p-2 bg-primary">
+                            <a class="nav-link text-center text-light fw-bold fs-5" aria-current="page"
+                               th:href="@{/ThinkEat/Backend/User/}">會員管理</a>
+                        </li>
+                        <!-- 餐廳管理 -->
+                        <li class="nav-item border border-2 m-2">
+                            <a class="nav-link text-center"
+                               th:href="@{/ThinkEat/Backend/Restaurant/}">餐廳管理</a>
+                        </li>
+                        <!-- 食記管理 -->
+                        <li class="nav-item border border-2 m-2">
+                            <a class="nav-link text-center"
+                               th:href="@{/ThinkEat/Backend/EatRepo/}">食記管理</a>
+                        </li>
+                        <!-- 價位管理 -->
+                        <li class="nav-item border border-2 m-2">
+                            <a class="nav-link text-center"
+                               th:href="@{/ThinkEat/Backend/Price/}">價位管理</a>
+                        </li>
+                        <!-- 標籤管理 -->
+                        <li class="nav-item border border-2 m-2">
+                            <a class="nav-link text-center"
+                               th:href="@{/ThinkEat/Backend/Tag/}">標籤管理</a>
+                        </li>
+                        <!-- 收藏清單管理 -->
+                        <li class="nav-item border border-2 m-2">
+                            <a class="nav-link text-center"
+                               th:href="@{/ThinkEat/Backend/FavList/}">收藏清單管理</a>
+                        </li>
+                    </ul>
+                    <!-- 內容區 -->
+                    <div class=" d-flex flex-column align-items-center"
+                         style="width:70%; height:100%; ">
+
+                        <!-- 互動視窗 更改密碼 -->
+                        <div class="modal fade" id="changePasswordModal" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">變更會員資訊</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" th:action="@{/ThinkEat/Backend/UpdateUserAccount}" class="">
+                                            <!-- 帳號 -->
+                                            <div class="mb-3 row col-12">
+                                                <label for="username" class="col-3 col-form-label">會員帳號：</label>
+                                                <div class="col-9">
+                                                    <input type="text" readonly class="form-control-plaintext"
+                                                           id="username" name="username">
+                                                </div>
+                                            </div>
+                                            <!-- 暱稱 -->
+                                            <div class="mb-3 row col-12">
+                                                <label for="nickname" class="col-3 col-form-label">暱稱：</label>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control"
+                                                           id="nickname" name="nickname">
+                                                </div>
+                                            </div>
+                                            <!-- 密碼 -->
+                                            <div class="mb-3 row col-12">
+                                                <label for="password" class="col-3 col-form-label">密碼：</label>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control"
+                                                           id="password" name="password">
+                                                </div>
+                                            </div>
+                                            <!-- 權限 -->
+                                            <div class="mb-3 row col-12" sec:authorize="hasRole('founder')">
+                                                <label for="authority" class="col-3 col-form-label">權限：</label>
+                                                <div class="col-9">
+                                                    <select id="authority" name="authority"
+                                                            class="form-select">
+                                                        <option th:each="authority : ${authorities}"
+                                                                th:value="${authority.id}"
+                                                                th:text="${authority.description}">
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- 會員Id -->
+                                            <input type="hidden" class="col-3 col-form-label" id="userId" name="userId">
+                                            <!-- 送出 -->
+                                            <div class="d-flex justify-content-evenly">
+                                                <input type="submit" class="btn btn-success">
+                                                <button type="reset" class="btn btn-danger">清空</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 表格區 -->
+                        <div class="mx-0 px-3 mt-3 shadow-sm" style="height:fit-content">
+                            <table class="table table-striped table-hover caption-top align-middle">
+                                <thead class="table-primary">
+                                <caption class="fw-bold fs-5 text-dark">會員列表</caption>
+                                <th class="text-center">會員編號</th>
+                                <th class="text-center">會員暱稱</th>
+                                <th class="text-center">加入日期</th>
+                                <th class="text-center">會員權限</th>
+                                <th class="text-center">會員主頁</th>
+                                <th class="text-center">變更會員資訊</th>
+                                <th class="text-center">刪除會員</th>
+                                </thead>
+                                <tbody class="">
+                                <tr th:each="user : ${userPageDto.userList}">
+                                    <!-- 會員編號 -->
+                                    <td th:text="${user.id}"></td>
+                                    <!-- 會員暱稱 -->
+                                    <td th:text="${user.nickname}"></td>
+                                    <!-- 加入日期 -->
+                                    <td>加入日期</td>
+                                    <!-- 會員權限 -->
+                                    <td>
+                                        <span th:text="${user.authority.getDescription}"></span>
+                                    </td>
+                                    <!-- 會員主頁 -->
+                                    <td>
+                                        <a th:href="@{/ThinkEat/Account/id(id= ${user.id})}"
+                                           th:text="${user.nickname}"></a>
+                                    </td>
+                                    <!-- 更改密碼 -->
+                                    <td>
+                                        <button type="button" class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#changePasswordModal"
+                                                th:onclick="'fetchMemberInfo(' + ${user.id} + ')'">
+                                            變更會員資訊
+                                        </button>
+                                    </td>
+                                    <!-- 刪除會員 -->
+                                    <td>
+                                        <form method="post" th:action="@{/ThinkEat/Backend/DeleteUser}">
+                                            <input type="hidden" th:value="${user.id}">
+                                            <input type="submit" class="btn btn-danger" th:value="刪除會員">
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!-- 分頁頁籤 -->
+                            <div class="d-flex justify-content-center">
+                                <div class="bg-light mt-5 align-self-center">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <!-- 第一頁 -->
+                                            <li class="page-item" th:if="${curPage > 0}">
+                                                <a class="page-link" th:href="@{/ThinkEat/Backend/User/(page=0)}">
+                                                    第一頁
+                                                </a>
+                                            </li>
+                                            <!-- 上一頁 -->
+                                            <li class="page-item" th:if="${curPage > 0}">
+                                                <a class="page-link"
+                                                   th:href="@{/ThinkEat/Backend/User/(page=${curPage - 1})}"
+                                                   aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                            <!-- 以頁碼切換 -->
+                                            <li class="page-item" th:each="i : ${#numbers.sequence(0, maxPage -1)}">
+                                                <a class="page-link" th:href="@{/ThinkEat/Backend/User/(page=${i})}"
+                                                   th:text="${i} + 1"></a>
+                                            </li>
+                                            <!-- 下一頁 -->
+                                            <li class="page-item" th:if="${curPage < maxPage - 1}">
+                                                <a class="page-link"
+                                                   th:href="@{/ThinkEat/Backend/User/(page=${curPage + 1})}"
+                                                   aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                            <!-- 最後一頁 -->
+                                            <li class="page-item" th:if="${curPage < maxPage - 1}">
+                                                <a class="page-link"
+                                                   th:href="@{/ThinkEat/Backend/User/(page=${maxPage}-1)}">
+                                                    最後一頁
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 返回後台首頁按鈕 -->
+                        <div class="mt-5 me-5 d-flex align-self-end">
+                            <button class="btn btn-primary" th:onclick="|window.location.href='/ThinkEat/Backend/'|">
+                                回到後臺
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flexitem col-1" style="width:25%; height:100%; "></div>
+
+        </div>
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // AJAX 函數，用於從後台獲取用戶資訊並填充到互動視窗中
+    function fetchMemberInfo(userId) {
+        $.ajax({
+            url: '/ThinkEat/Backend/GetUserInfo', // 後台端點 URL
+            type: 'GET',
+            data: { userId: userId }, // 傳遞的參數，用戶 ID
+            success: function(response) {
+                // 在成功接收後台資訊時，填充互動視窗中的 HTML 元素
+                $('#userId').val(response.userId);
+                $('#username').val(response.username);
+                $('#nickname').val(response.nickname);
+                $('#password').val(response.password);
+                $('#authority').val(response.authority);
+
+                // 將用戶的權限設置為下拉選單的值
+                $('#authority').val(response.authority.id);
+            },
+            error: function(xhr, status, error) {
+                // 請求失敗時的處理邏輯
+                console.error(error);
+            }
+        });
+    }
+</script>
 </body>
 </html>
+

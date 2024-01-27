@@ -18,13 +18,58 @@
 </header>
 
 <!-- Main區塊 -->
-<main>
-    <div class="container-medium d-flex justify-content-evenly-medium">
-        <div class="row col-12">
-            <div class="flexitem col-1" style="width:15%; height:100%; "></div>
+<main style="height:75vh">
+    <div class="container-fluid h-75 w-100 d-flex justify-content-evenly-medium my-5">
+        <div class="row col-12 mt-2">
+            <div class="flexitem col-1" style="width:25%; height:100%; "></div>
             <!-- 內容區塊 -->
-            <div class="flexitem col-10 bg-light pb-3" style="width:70%; height:100%; "></div>
-            <div class="flexitem col-1" style="width:15%; height:100%; "></div>
+            <div class="container-fluid mh-100 col-10 bg-light pb-3"
+                 style="width:50%; height:100%; ">
+                <div class="d-flex justify-content-evenly"
+                     style="width:100%; height:100%; ">
+                    <!-- 側邊攔導覽頁 -->
+                    <ul class="nav col-4 flex-column justify-content-start
+                               border-end border-2 mt-2 shadow-sm"
+                        style="width:30%; height:auto%; ">
+                        <!-- 會員管理 -->
+                        <li class="nav-item border border-2 m-2">
+                            <a class="nav-link text-center " aria-current="page"
+                               th:href="@{/ThinkEat/Backend/User/}">會員管理</a>
+                        </li>
+                        <!-- 餐廳管理 -->
+                        <li class="nav-item border border-2 m-2">
+                            <a class="nav-link text-center"
+                               th:href="@{/ThinkEat/Backend/Restaurant/}">餐廳管理</a>
+                        </li>
+                        <!-- 食記管理 -->
+                        <li class="nav-item border border-2 m-2">
+                            <a class="nav-link text-center"
+                               th:href="@{/ThinkEat/Backend/EatRepo/}">食記管理</a>
+                        </li>
+                        <!-- 價位管理 -->
+                        <li class="nav-item border border-2 m-2">
+                            <a class="nav-link text-center"
+                               th:href="@{/ThinkEat/Backend/Price/}">價位管理</a>
+                        </li>
+                        <!-- 標籤管理 -->
+                        <li class="nav-item border border-2 m-2">
+                            <a class="nav-link text-center"
+                               th:href="@{/ThinkEat/Backend/Tag/}">標籤管理</a>
+                        </li>
+                        <!-- 收藏清單管理 -->
+                        <li class="nav-item border border-2 m-2">
+                            <a class="nav-link text-center"
+                               th:href="@{/ThinkEat/Backend/FavList/}">收藏清單管理</a>
+                        </li>
+                    </ul>
+                    <!-- 內容區 -->
+                    <div class=" d-flex align-items-center justify-content-center"
+                         style="width:70%; height:100%; ">
+                        <div class=" fs-4 fw-bold text-center">管理後台首頁</div>
+                    </div>
+                </div>
+            </div>
+            <div class="flexitem col-1" style="width:25%; height:100%; "></div>
         </div>
     </div>
 

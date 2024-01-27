@@ -3,6 +3,8 @@ package ThinkEat.mvc.securtiy;
 import ThinkEat.mvc.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -36,6 +38,7 @@ public class ThinkEatSecurityConfig {
                         configurer
                                 .requestMatchers("/Account/*").authenticated()
                                 .requestMatchers("/ShareEat/*").authenticated()
+                                .requestMatchers("/Backend/*").hasAnyRole("admin", "founder")
                                 .anyRequest().permitAll()
         )
         .formLogin(form ->
@@ -82,4 +85,13 @@ public class ThinkEatSecurityConfig {
             AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
+    //身分繼承關係
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_founder > ROLE_admin > ROLE_standard_user");
+        return roleHierarchy;
+    }
+
 }

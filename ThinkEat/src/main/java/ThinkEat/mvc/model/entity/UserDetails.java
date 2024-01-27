@@ -20,10 +20,9 @@ public class UserDetails implements org.springframework.security.core.userdetail
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (Authority authority : user.getAuthorities()) {
-            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority.getAuthority());
-            authorities.add(simpleGrantedAuthority);
-        }
+        // 假設 User 類中有一個名為 getAuthority() 的方法返回權限
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(user.getAuthority().getAuthority());
+        authorities.add(simpleGrantedAuthority);
         return authorities;
     }
 
@@ -31,6 +30,11 @@ public class UserDetails implements org.springframework.security.core.userdetail
     public String getPassword() {
 
         return user.getPassword();
+    }
+
+    public String getRawPassword() {
+
+        return user.getRawPassword();
     }
 
     @Override
