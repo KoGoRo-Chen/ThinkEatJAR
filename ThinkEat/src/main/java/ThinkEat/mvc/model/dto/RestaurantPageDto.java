@@ -9,14 +9,14 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ShowEatPageDto {
+public class RestaurantPageDto {
     private List<Restaurant> restaurantList; // 存儲分頁查詢結果的列表
     private int currentPage; // 當前頁碼
     private int totalPage; // 總頁數
 
-    public ShowEatPageDto(Page<Restaurant> showEatPagePage) {
-        this.restaurantList = showEatPagePage.getContent();
-        this.currentPage = showEatPagePage.getNumber();
-        this.totalPage = showEatPagePage.getTotalPages();
+    public RestaurantPageDto(Page<Restaurant> restaurantPageDto) {
+        this.restaurantList = restaurantPageDto.getContent();
+        this.currentPage = restaurantPageDto.getNumber();
+        this.totalPage = restaurantPageDto.getTotalPages();
     }
 }

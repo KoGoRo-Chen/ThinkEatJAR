@@ -3,7 +3,6 @@ package ThinkEat.mvc.controller;
 import ThinkEat.mvc.model.dto.*;
 import ThinkEat.mvc.model.entity.*;
 import ThinkEat.mvc.service.*;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,16 +49,16 @@ public class ViewEatController {
     @GetMapping("/ShowEat/")
     public String GetShowEatPage(@RequestParam(name = "page", defaultValue = "0") int page,
                                  @RequestParam(name = "size", defaultValue = "12") int size,
-                                 @ModelAttribute RestaurantDto restaurantDto,
+                                 @ModelAttribute Restaurant restaurant,
                                  Model model) {
         Pageable pageable = PageRequest.of(page, size);
-        ShowEatPageDto showEatPageDto = restaurantService.getAllRestaurant(pageable);
-        model.addAttribute("showEatPageDto", showEatPageDto);
+        RestaurantPageDto restaurantPageDto = restaurantService.getAllRestaurant(pageable);
+        model.addAttribute("showEatPageDto", restaurantPageDto);
 
-        Integer maxPage = showEatPageDto.getTotalPage();
+        Integer maxPage = restaurantPageDto.getTotalPage();
         model.addAttribute("maxPage", maxPage);
 
-        Integer curPage = showEatPageDto.getCurrentPage();
+        Integer curPage = restaurantPageDto.getCurrentPage();
         model.addAttribute("curPage", curPage);
 
         return "ViewEat/ShowEat";

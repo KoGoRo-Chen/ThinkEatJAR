@@ -1,9 +1,6 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.model.dto.CommentDto;
-import ThinkEat.mvc.model.dto.FavListDto;
-import ThinkEat.mvc.model.dto.RestaurantDto;
-import ThinkEat.mvc.model.dto.ShowEatPageDto;
+import ThinkEat.mvc.model.dto.RestaurantPageDto;
 import ThinkEat.mvc.model.entity.*;
 import ThinkEat.mvc.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -46,9 +43,9 @@ public class FavListController {
         return null;
     }
 
-    @ModelAttribute("favListDto")
-    public FavListDto getFavListDto() {
-        return new FavListDto();
+    @ModelAttribute("favList")
+    public FavList getFavList() {
+        return new FavList();
     }
 
 
@@ -102,12 +99,12 @@ public class FavListController {
 
         //載入清單中的所有餐廳
         Pageable pageable = PageRequest.of(page, size);
-        ShowEatPageDto showEatPageDto = favListService.getAllRestaurantInFavList(pageable, presetFavListId);
-        model.addAttribute("showEatPageDto", showEatPageDto);
-        Integer maxPage = showEatPageDto.getTotalPage();
+        RestaurantPageDto restaurantPageDto = favListService.getAllRestaurantInFavList(pageable, presetFavListId);
+        model.addAttribute("showEatPageDto", restaurantPageDto);
+        Integer maxPage = restaurantPageDto.getTotalPage();
         model.addAttribute("maxPage", maxPage);
 
-        Integer curPage = showEatPageDto.getCurrentPage();
+        Integer curPage = restaurantPageDto.getCurrentPage();
         model.addAttribute("curPage", curPage);
 
         //獲得清單中餐廳的總數
@@ -155,12 +152,12 @@ public class FavListController {
 
         //載入清單中的所有餐廳
         Pageable pageable = PageRequest.of(page, size);
-        ShowEatPageDto showEatPageDto = favListService.getAllRestaurantInFavList(pageable, favListId);
-        model.addAttribute("showEatPageDto", showEatPageDto);
-        Integer maxPage = showEatPageDto.getTotalPage();
+        RestaurantPageDto restaurantPageDto = favListService.getAllRestaurantInFavList(pageable, favListId);
+        model.addAttribute("showEatPageDto", restaurantPageDto);
+        Integer maxPage = restaurantPageDto.getTotalPage();
         model.addAttribute("maxPage", maxPage);
 
-        Integer curPage = showEatPageDto.getCurrentPage();
+        Integer curPage = restaurantPageDto.getCurrentPage();
         model.addAttribute("curPage", curPage);
 
         //獲得清單中餐廳的總數
@@ -273,7 +270,7 @@ public class FavListController {
 
 
     @GetMapping("/GachaResult")
-    public String GetGachaResultPage(@ModelAttribute("selectedRestaurants") List<RestaurantDto> selectedRestaurants,
+    public String GetGachaResultPage(@ModelAttribute("selectedRestaurants") List<Restaurant> selectedRestaurants,
                                      Model model) {
 
         return "FavList/GachaResult";

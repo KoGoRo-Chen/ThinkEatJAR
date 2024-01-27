@@ -1,9 +1,6 @@
 package ThinkEat.mvc;
 
-import ThinkEat.mvc.model.dto.EatRepoDto;
-import ThinkEat.mvc.model.dto.RestaurantDto;
 import ThinkEat.mvc.model.entity.EatRepo;
-import ThinkEat.mvc.model.entity.Restaurant;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
@@ -11,8 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.thymeleaf.spring6.SpringTemplateEngine;
-import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 
 @Configuration
 public class MyConfig implements WebMvcConfigurer {
@@ -20,12 +15,6 @@ public class MyConfig implements WebMvcConfigurer {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addMappings(new PropertyMap<EatRepoDto, EatRepo>() {
-            protected void configure() {
-                map().getPrice().setId(source.getPriceId());
-            }
-        });
-
         return modelMapper;
     }
 

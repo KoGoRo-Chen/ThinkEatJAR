@@ -7,6 +7,8 @@ import ThinkEat.mvc.model.entity.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,6 +75,7 @@ public class EatRepoService {
         return eatRepo.getId();
     }
 
+    //更新食記
     @Transactional
     public void updateEatRepoByEatRepoId(Integer eatRepoId, EatRepo eatRepo) {
         Optional<EatRepo> eatRepoOpt = eatRepoDao.findById(eatRepoId);
@@ -112,7 +115,7 @@ public class EatRepoService {
 
     // 以ID刪除單篇食記
     @Transactional
-    public void delete(Integer eatRepoId) {
+    public String deleteEatRepo(Integer eatRepoId) {
         Optional<EatRepo> eatRepoOpt = eatRepoDao.findById(eatRepoId);
         if (eatRepoOpt.isPresent()) {
             EatRepo eatRepo = eatRepoOpt.get();
@@ -134,7 +137,9 @@ public class EatRepoService {
             }
 
             eatRepoDao.delete(eatRepo);
+            return "刪除成功";
         }
+        return "找不到食記";
     }
 
     //以ID尋找單篇食記
@@ -162,6 +167,12 @@ public class EatRepoService {
     public List<EatRepo> findAllEatRepo() {
         List<EatRepo> eatRepoList = eatRepoDao.findAll();
         return eatRepoList;
+    }
+
+    //查詢所有餐廳(分頁)
+    public EatRepoPageDto getAllEatRepoPagination(Pageable pageable) {
+        Page<EatRepo> eatRepoPage = eatRepoDao.findAll(pageable);
+        return new EatRepoPageDto(eatRepoPage);
     }
 
 

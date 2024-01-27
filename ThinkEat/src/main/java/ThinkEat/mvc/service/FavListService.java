@@ -2,16 +2,11 @@ package ThinkEat.mvc.service;
 
 
 import ThinkEat.mvc.dao.FavListDao;
-import ThinkEat.mvc.dao.RestaurantDao;
-import ThinkEat.mvc.model.dto.EatRepoDto;
-import ThinkEat.mvc.model.dto.FavListDto;
-import ThinkEat.mvc.model.dto.RestaurantDto;
-import ThinkEat.mvc.model.dto.ShowEatPageDto;
+import ThinkEat.mvc.model.dto.RestaurantPageDto;
 import ThinkEat.mvc.model.entity.EatRepo;
 import ThinkEat.mvc.model.entity.FavList;
 import ThinkEat.mvc.model.entity.Restaurant;
 import ThinkEat.mvc.model.entity.User;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -152,8 +147,8 @@ public class FavListService {
     }
 
     //查詢清單裡的所有餐廳(分頁)
-    public ShowEatPageDto getAllRestaurantInFavList(Pageable pageable,
-                                                    Integer favListId) {
+    public RestaurantPageDto getAllRestaurantInFavList(Pageable pageable,
+                                                       Integer favListId) {
 
         Set<Restaurant> uniqueRestaurants = new HashSet<>();
 
@@ -184,7 +179,7 @@ public class FavListService {
 
         Page<Restaurant> restaurantPage = new PageImpl<>(paginatedList, pageable, restaurantList.size());
 
-        return new ShowEatPageDto(restaurantPage);
+        return new RestaurantPageDto(restaurantPage);
     }
 
     // 將餐廳從清單中移除

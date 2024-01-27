@@ -1,7 +1,6 @@
 package ThinkEat.mvc.service;
 
 import ThinkEat.mvc.dao.TagDao;
-import ThinkEat.mvc.model.dto.TagDto;
 import ThinkEat.mvc.model.entity.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

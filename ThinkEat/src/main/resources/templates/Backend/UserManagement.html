@@ -149,7 +149,7 @@
                                     <!-- 會員暱稱 -->
                                     <td th:text="${user.nickname}"></td>
                                     <!-- 加入日期 -->
-                                    <td>加入日期</td>
+                                    <td th:text="${user.date}"></td>
                                     <!-- 會員權限 -->
                                     <td>
                                         <span th:text="${user.authority.getDescription}"></span>

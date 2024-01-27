@@ -1,12 +1,10 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.model.dto.UserDto;
 import ThinkEat.mvc.model.entity.EatRepo;
 import ThinkEat.mvc.model.entity.User;
 import ThinkEat.mvc.model.entity.UserDetails;
 import ThinkEat.mvc.service.EatRepoService;
 import ThinkEat.mvc.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.net.http.HttpRequest;
 import java.util.List;
 
 @Controller
@@ -97,11 +94,11 @@ public class AccountController {
     }
 
     //在會員中心刪除文章
-    @PostMapping("/DeleteEatRepoFromBackend")
-    public String DeleteEatRepoFromBackend(@RequestParam("eatRepoId") Integer eatRepoId,
-                                           @RequestParam("userId") Integer userId,
-                                           RedirectAttributes redirectAttributes) {
-        eatRepoService.delete(eatRepoId);
+    @PostMapping("/DeleteEatRepo")
+    public String DeleteEatRepo(@RequestParam("eatRepoId") Integer eatRepoId,
+                                @RequestParam("userId") Integer userId,
+                                RedirectAttributes redirectAttributes) {
+        eatRepoService.deleteEatRepo(eatRepoId);
 
         redirectAttributes.addAttribute("userId", userId);
 

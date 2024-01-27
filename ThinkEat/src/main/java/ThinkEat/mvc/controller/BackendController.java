@@ -1,6 +1,7 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.model.dto.ShowEatPageDto;
+import ThinkEat.mvc.model.dto.EatRepoPageDto;
+import ThinkEat.mvc.model.dto.RestaurantPageDto;
 import ThinkEat.mvc.model.dto.UserPageDto;
 import ThinkEat.mvc.model.entity.*;
 import ThinkEat.mvc.service.*;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -132,13 +132,13 @@ public class BackendController {
                                               @RequestParam(name = "size", defaultValue = "12") int size,
                                               Model model) {
         Pageable pageable = PageRequest.of(page, size);
-        ShowEatPageDto showEatPageDto = restaurantService.getAllRestaurant(pageable);
-        model.addAttribute("showEatPageDto", showEatPageDto);
+        RestaurantPageDto restaurantPageDto = restaurantService.getAllRestaurant(pageable);
+        model.addAttribute("showEatPageDto", restaurantPageDto);
 
-        Integer maxPage = showEatPageDto.getTotalPage();
+        Integer maxPage = restaurantPageDto.getTotalPage();
         model.addAttribute("maxPage", maxPage);
 
-        Integer curPage = showEatPageDto.getCurrentPage();
+        Integer curPage = restaurantPageDto.getCurrentPage();
         model.addAttribute("curPage", curPage);
 
 
@@ -175,55 +175,76 @@ public class BackendController {
                                    RedirectAttributes redirectAttributes) {
         String updateResult = restaurantService.updateRestaurant(restaurantId, restaurantName, restaurantAddress);
         redirectAttributes.addAttribute("updateResult", updateResult);
-        return "redirect:/ThinkEat/Backend/User";
+        return "redirect:/ThinkEat/Backend/Restaurant/";
 
     }
 
     //刪除餐廳
     @PostMapping("/DeleteRestaurant/")
-    public String deleteRestaurant(@RequestParam("userId") Integer userId,
+    public String deleteRestaurant(@RequestParam("restaurantId") Integer restaurantId,
                                    RedirectAttributes redirectAttributes) {
 
-        String deleteResult = restaurantService.deleteRestaurant(userId);
+        String deleteResult = restaurantService.deleteRestaurant(restaurantId);
         redirectAttributes.addAttribute("deleteResult", deleteResult);
-        return "redirect:/ThinkEat/Backend/User";
+        return "redirect:/ThinkEat/Backend/Restaurant/";
     }
 
     //顯示文章管理頁面
     @GetMapping("/EatRepo/")
-    public String getEatRepoManagementPage(Model model) {
-        List<EatRepo> eatRepoList = eatRepoService.findAllEatRepo();
-        model.addAttribute("eatRepoList", eatRepoList);
+    public String getEatRepoManagementPage(@RequestParam(name = "page", defaultValue = "0") int page,
+                                           @RequestParam(name = "size", defaultValue = "12") int size,
+                                           Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        EatRepoPageDto eatRepoPageDto = eatRepoService.getAllEatRepoPagination(pageable);
+        model.addAttribute("eatRepoPageDto", eatRepoPageDto);
 
         return "Backend/EatRepoManagement";
     }
 
+    //刪除文章
+    @PostMapping("/DeleteEatRepo/")
+    public String deleteEatRepo(@RequestParam("eatRepoId") Integer eatRepoId,
+                                RedirectAttributes redirectAttributes) {
+
+        String deleteResult = eatRepoService.deleteEatRepo(eatRepoId);
+        redirectAttributes.addAttribute("deleteResult", deleteResult);
+        return "redirect:/ThinkEat/Backend/EatRepo/";
+    }
+
     //顯示價格管理頁面
     @GetMapping("/Price/")
-    public String getPriceManagementPage(Model model) {
-        List<Price> priceList = priceService.findAllPrice();
-        model.addAttribute("priceList", priceList);
+    public String getPriceManagementPage(@RequestParam(name = "page", defaultValue = "0") int page,
+                                         @RequestParam(name = "size", defaultValue = "12") int size,
+                                         Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        EatRepoPageDto eatRepoPageDto = eatRepoService.getAllEatRepoPagination(pageable);
+        model.addAttribute("eatRepoPageDto", eatRepoPageDto);
 
-        return "Backend/PriceManagement";
+        return "Backend/EatRepoManagement";
     }
 
     //顯示Tag管理頁面
     @GetMapping("/Tag/")
-    public String getTagManagementPage(Model model) {
-        List<Tag> tagList = tagService.findAllTag();
-        model.addAttribute("tagList", tagList);
+    public String getTagManagementPage(@RequestParam(name = "page", defaultValue = "0") int page,
+                                       @RequestParam(name = "size", defaultValue = "12") int size,
+                                       Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        EatRepoPageDto eatRepoPageDto = eatRepoService.getAllEatRepoPagination(pageable);
+        model.addAttribute("eatRepoPageDto", eatRepoPageDto);
 
-
-        return "Backend/TagManagement";
+        return "Backend/EatRepoManagement";
     }
 
     //顯示收藏清單管理頁面
     @GetMapping("/FavList/")
-    public String getFavListManagementPage(Model model) {
-        List<FavList> favLists = favListService.findAllFavList();
-        model.addAttribute("favLists", favLists);
+    public String getFavListManagementPage(@RequestParam(name = "page", defaultValue = "0") int page,
+                                           @RequestParam(name = "size", defaultValue = "12") int size,
+                                           Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        EatRepoPageDto eatRepoPageDto = eatRepoService.getAllEatRepoPagination(pageable);
+        model.addAttribute("eatRepoPageDto", eatRepoPageDto);
 
-        return "Backend/FavListManagement";
+        return "Backend/EatRepoManagement";
     }
 
 

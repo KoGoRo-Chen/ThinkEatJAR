@@ -70,7 +70,7 @@
 
                     <!-- 接收所有餐廳資訊，生成縮圖 -->
                     <div class="pagination d-flex flex-wrap justify-content-center mt-4">
-                        <th:block th:each="restaurant : ${showEatPageDto.restaurantList}">
+                        <th:block th:each="restaurant : ${restaurantPageDto.restaurantList}">
                             <figure th:if="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
                                     class="m-2">
                                 <img th:src="${restaurant.resPicList.get(0).htmlPath}"

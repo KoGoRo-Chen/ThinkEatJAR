@@ -124,8 +124,8 @@
                                 <th class="text-center">刪除餐廳</th>
                                 </thead>
                                 <tbody class="">
-                                <tr th:if="${not #lists.isEmpty(showEatPageDto.restaurantList)}"
-                                    th:each="restaurant : ${showEatPageDto.restaurantList}">
+                                <tr th:if="${not #lists.isEmpty(restaurantPageDto.restaurantList)}"
+                                    th:each="restaurant : ${restaurantPageDto.restaurantList}">
                                     <!-- 餐廳編號 -->
                                     <td th:text="${restaurant.id}"></td>
                                     <!-- 縮圖 -->

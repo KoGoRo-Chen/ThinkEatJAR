@@ -2,28 +2,19 @@ package ThinkEat.mvc.service;
 
 
 import ThinkEat.mvc.dao.PictureDao;
-import ThinkEat.mvc.model.dto.PictureDto;
 import ThinkEat.mvc.model.entity.Picture;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-
-import static java.awt.Image.SCALE_SMOOTH;
 
 @Service
 public class PictureService {
@@ -143,15 +134,6 @@ public class PictureService {
         return croppedWideImage;
     }
 
-    // 以ID修改圖片
-    public void updatePictureById(Integer pictureId, PictureDto pictureDto) {
-        Optional<Picture> pictureOpt = pictureDao.findById(pictureId);
-        if (pictureOpt.isPresent()) {
-            Picture updatedPicture = modelMapper.map(pictureDto, Picture.class);
-            pictureDao.save(updatedPicture);
-        }
-
-    }
 
     // 以ID刪除圖片
     @Transactional
