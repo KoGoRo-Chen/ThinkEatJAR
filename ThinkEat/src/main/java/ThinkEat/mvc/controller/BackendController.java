@@ -1,8 +1,6 @@
 package ThinkEat.mvc.controller;
 
-import ThinkEat.mvc.model.dto.EatRepoPageDto;
-import ThinkEat.mvc.model.dto.RestaurantPageDto;
-import ThinkEat.mvc.model.dto.UserPageDto;
+import ThinkEat.mvc.model.dto.*;
 import ThinkEat.mvc.model.entity.*;
 import ThinkEat.mvc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,7 +143,7 @@ public class BackendController {
         return "Backend/RestaurantManagement";
     }
 
-    // 接受 AJAX 請求，返回餐廳資訊資訊
+    // 接受 AJAX 請求，返回餐廳資訊
     @GetMapping("/GetRestaurantInfo/")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getRestaurantInfo(@RequestParam Integer restaurantId) {
@@ -217,10 +215,46 @@ public class BackendController {
                                          @RequestParam(name = "size", defaultValue = "12") int size,
                                          Model model) {
         Pageable pageable = PageRequest.of(page, size);
-        EatRepoPageDto eatRepoPageDto = eatRepoService.getAllEatRepoPagination(pageable);
-        model.addAttribute("eatRepoPageDto", eatRepoPageDto);
+        PricePageDto pricePageDto = priceService.getAllPriceInPage(pageable);
+        model.addAttribute("pricePageDto", pricePageDto);
 
-        return "Backend/EatRepoManagement";
+        return "Backend/PriceManagement";
+    }
+
+    // 接受 AJAX 請求，返回價格資訊
+    @GetMapping("/GetPriceInfo/")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getPriceInfo(@RequestParam Integer priceId) {
+        // 從數據庫中查詢餐廳資訊
+        Price price = priceService.getPriceById(priceId);
+
+        // 將餐廳資訊封裝成 Map 返回給前端
+        Map<String, Object> priceInfo = new HashMap<>();
+        priceInfo.put("priceId", priceId);
+        priceInfo.put("priceName", price.getName());
+
+        return ResponseEntity.ok(priceInfo);
+    }
+
+    //變更價位
+    @PostMapping("/UpdatePrice/")
+    public String updatePrice(@RequestParam("priceId") Integer priceId,
+                              @RequestParam("priceName") String newPricename,
+                              RedirectAttributes redirectAttributes) {
+        String updateResult = priceService.updatePriceById(priceId, newPricename);
+        redirectAttributes.addAttribute("updateResult", updateResult);
+        return "redirect:/ThinkEat/Backend/Price";
+
+    }
+
+    //刪除價位
+    @PostMapping("/DeletePrice/")
+    public String deletePrice(@RequestParam("priceId") Integer priceId,
+                              RedirectAttributes redirectAttributes) {
+
+        String deleteResult = priceService.deletePrice(priceId);
+        redirectAttributes.addAttribute("deleteResult", deleteResult);
+        return "redirect:/ThinkEat/Backend/Price/";
     }
 
     //顯示Tag管理頁面
@@ -229,22 +263,58 @@ public class BackendController {
                                        @RequestParam(name = "size", defaultValue = "12") int size,
                                        Model model) {
         Pageable pageable = PageRequest.of(page, size);
-        EatRepoPageDto eatRepoPageDto = eatRepoService.getAllEatRepoPagination(pageable);
-        model.addAttribute("eatRepoPageDto", eatRepoPageDto);
+        TagPageDto tagPageDto = tagService.getAllTagInPage(pageable);
+        model.addAttribute("tagPageDto", tagPageDto);
 
-        return "Backend/EatRepoManagement";
+        return "Backend/TagManagement";
     }
 
-    //顯示收藏清單管理頁面
-    @GetMapping("/FavList/")
-    public String getFavListManagementPage(@RequestParam(name = "page", defaultValue = "0") int page,
-                                           @RequestParam(name = "size", defaultValue = "12") int size,
-                                           Model model) {
-        Pageable pageable = PageRequest.of(page, size);
-        EatRepoPageDto eatRepoPageDto = eatRepoService.getAllEatRepoPagination(pageable);
-        model.addAttribute("eatRepoPageDto", eatRepoPageDto);
+    // 接受 AJAX 請求，返回Tag資訊
+    @GetMapping("/GetTagInfo/")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getTagInfo(@RequestParam Integer tagId) {
+        // 從數據庫中查詢餐廳資訊
+        Tag tag = tagService.getTagById(tagId);
 
-        return "Backend/EatRepoManagement";
+        // 將餐廳資訊封裝成 Map 返回給前端
+        Map<String, Object> priceInfo = new HashMap<>();
+        priceInfo.put("tagId", tagId);
+        priceInfo.put("tagName", tag.getName());
+
+        return ResponseEntity.ok(priceInfo);
+    }
+
+    //變更標籤
+    @PostMapping("/UpdateTag/")
+    public String updateTag(@RequestParam("tagId") Integer tagId,
+                            @RequestParam("tagName") String newTagname,
+                            RedirectAttributes redirectAttributes) {
+        String updateResult = tagService.updateTagByTagId(tagId, newTagname);
+        redirectAttributes.addAttribute("updateResult", updateResult);
+        return "redirect:/ThinkEat/Backend/Tag/";
+
+    }
+
+    //刪除標籤
+    @PostMapping("/DeleteTag/")
+    public String deleteTag(@RequestParam("tagId") Integer tagId,
+                            RedirectAttributes redirectAttributes) {
+
+        String deleteResult = tagService.deleteTag(tagId);
+        redirectAttributes.addAttribute("deleteResult", deleteResult);
+        return "redirect:/ThinkEat/Backend/Tag/";
+    }
+
+    //跳轉至用戶收藏清單頁面
+    @PostMapping("/MoveToUserFavList/")
+    public String MoveToUserFavListPage(@RequestParam("userId") Integer userId,
+                                        RedirectAttributes redirectAttributes) {
+        //找出會員資訊
+        User user = userService.getUserById(userId);
+
+        redirectAttributes.addAttribute("userId", userId);
+        redirectAttributes.addAttribute("listCount", 1);
+        return "redirect:/ThinkEat/FavList/{userId}/List/{listCount}/";
     }
 
 

@@ -2,11 +2,10 @@ package ThinkEat.mvc.service;
 
 
 import ThinkEat.mvc.dao.FavListDao;
+import ThinkEat.mvc.model.dto.FavListPageDto;
+import ThinkEat.mvc.model.dto.PricePageDto;
 import ThinkEat.mvc.model.dto.RestaurantPageDto;
-import ThinkEat.mvc.model.entity.EatRepo;
-import ThinkEat.mvc.model.entity.FavList;
-import ThinkEat.mvc.model.entity.Restaurant;
-import ThinkEat.mvc.model.entity.User;
+import ThinkEat.mvc.model.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -180,6 +179,12 @@ public class FavListService {
         Page<Restaurant> restaurantPage = new PageImpl<>(paginatedList, pageable, restaurantList.size());
 
         return new RestaurantPageDto(restaurantPage);
+    }
+
+    //尋找所有清單(分頁)
+    public FavListPageDto getAllFavListInPage(Pageable pageable) {
+        Page<FavList> favListPage = favListDao.findAll(pageable);
+        return new FavListPageDto(favListPage);
     }
 
     // 將餐廳從清單中移除

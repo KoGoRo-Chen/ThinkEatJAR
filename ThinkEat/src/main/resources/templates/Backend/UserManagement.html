@@ -66,7 +66,7 @@
                     <div class=" d-flex flex-column align-items-center"
                          style="width:70%; height:100%; ">
 
-                        <!-- 互動視窗 更改密碼 -->
+                        <!-- 互動視窗1 編輯會員 -->
                         <div class="modal fade" id="changePasswordModal" tabindex="-1"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -123,11 +123,11 @@
                                                 <button type="reset" class="btn btn-danger">清空</button>
                                             </div>
                                         </form>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
+
 
                         <!-- 表格區 -->
                         <div class="mx-0 px-3 mt-3 shadow-sm" style="height:fit-content">
@@ -138,8 +138,9 @@
                                 <th class="text-center">會員暱稱</th>
                                 <th class="text-center">加入日期</th>
                                 <th class="text-center">會員權限</th>
+                                <th class="text-center">編輯收藏清單</th>
                                 <th class="text-center">會員主頁</th>
-                                <th class="text-center">變更會員資訊</th>
+                                <th class="text-center">編輯會員</th>
                                 <th class="text-center">刪除會員</th>
                                 </thead>
                                 <tbody class="">
@@ -154,18 +155,25 @@
                                     <td>
                                         <span th:text="${user.authority.getDescription}"></span>
                                     </td>
+                                    <!-- 編輯收藏清單 -->
+                                    <td>
+                                        <form method="post" th:action="@{/ThinkEat/Backend/MoveToUserFavList}">
+                                            <input type="hidden" th:value="${user.id}">
+                                            <input type="submit" class="btn btn-primary" th:value="刪除會員">
+                                        </form>
+                                    </td>
                                     <!-- 會員主頁 -->
                                     <td>
                                         <a th:href="@{/ThinkEat/Account/id(id= ${user.id})}"
                                            th:text="${user.nickname}"></a>
                                     </td>
-                                    <!-- 更改密碼 -->
+                                    <!-- 編輯會員 -->
                                     <td>
                                         <button type="button" class="btn btn-primary"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#changePasswordModal"
                                                 th:onclick="'fetchMemberInfo(' + ${user.id} + ')'">
-                                            變更會員資訊
+                                            編輯會員
                                         </button>
                                     </td>
                                     <!-- 刪除會員 -->

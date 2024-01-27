@@ -2,9 +2,14 @@ package ThinkEat.mvc.service;
 
 
 import ThinkEat.mvc.dao.PriceDao;
+import ThinkEat.mvc.model.dto.PricePageDto;
+import ThinkEat.mvc.model.dto.UserPageDto;
 import ThinkEat.mvc.model.entity.Price;
+import ThinkEat.mvc.model.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,23 +36,26 @@ public class PriceService {
     }
 
     // 以ID修改價位
-    public void updatePriceById(Integer priceId, String name) {
+    public String updatePriceById(Integer priceId, String name) {
         Optional<Price> priceOpt = priceDao.findById(priceId);
         if (priceOpt.isPresent()) {
             Price updatedPrice = priceOpt.get();
             updatedPrice.setName(name);
             priceDao.save(updatedPrice);
+            return "修改成功";
         }
-
+        return "找不到價位";
     }
 
     // 以ID刪除價位
     @Transactional
-    public void deletePrice(Integer priceId) {
+    public String deletePrice(Integer priceId) {
         Optional<Price> priceOpt = priceDao.findById(priceId);
         if (priceOpt.isPresent()) {
             priceDao.delete(priceOpt.get());
+            return "刪除成功";
         }
+        return "找不到價位";
     }
 
     // 以ID尋找單個價位
@@ -64,6 +72,12 @@ public class PriceService {
     public List<Price> findAllPrice() {
         List<Price> priceList = priceDao.findAll();
         return priceList;
+    }
+
+    //尋找所有價位(分頁)
+    public PricePageDto getAllPriceInPage(Pageable pageable) {
+        Page<Price> pricePage = priceDao.findAll(pageable);
+        return new PricePageDto(pricePage);
     }
 
 }

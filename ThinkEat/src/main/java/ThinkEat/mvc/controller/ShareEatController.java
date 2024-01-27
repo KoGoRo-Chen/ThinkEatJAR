@@ -325,7 +325,7 @@ public class ShareEatController {
 
     //刪除文章
     @PostMapping("/ShareEatRepo/Delete/{eatRepoId}")
-    public String CreateNewTag(@PathVariable("eatRepoId") Integer eatRepoId,
+    public String deleteEatRepo(@PathVariable("eatRepoId") Integer eatRepoId,
                                RedirectAttributes redirectAttributes) {
         //以ID找到正確的eatRepo
         EatRepo eatRepo = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
@@ -336,7 +336,7 @@ public class ShareEatController {
         redirectAttributes.addAttribute("restaurantId", restaurantId);
 
         //service執行刪除
-        eatRepoService.delete(eatRepoId);
+        eatRepoService.deleteEatRepo(eatRepoId);
 
         return "redirect:/ThinkEat/ViewEat/ResInfo/{restaurantId}";
     }
