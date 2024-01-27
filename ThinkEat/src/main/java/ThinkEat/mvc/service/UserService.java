@@ -153,8 +153,7 @@ public class UserService implements UserDetailsService {
         Optional<User> userOpt = userDao.findById(userId);
         //確認會員是否存在
         if (userOpt.isPresent()) {
-            User userToDelete = userOpt.get();
-            userDao.delete(userToDelete);
+            userDao.delete(userOpt.get());
             return "刪除成功";
         } else {
             return "找不到會員";

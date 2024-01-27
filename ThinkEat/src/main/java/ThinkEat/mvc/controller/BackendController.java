@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,11 +128,65 @@ public class BackendController {
 
     //顯示餐廳管理頁面
     @GetMapping("/Restaurant/")
-    public String getRestaurantManagementPage(Model model) {
-        List<Restaurant> restaurantList = restaurantService.getAllRestaurant();
-        model.addAttribute("restaurantList", restaurantList);
+    public String getRestaurantManagementPage(@RequestParam(name = "page", defaultValue = "0") int page,
+                                              @RequestParam(name = "size", defaultValue = "12") int size,
+                                              Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        ShowEatPageDto showEatPageDto = restaurantService.getAllRestaurant(pageable);
+        model.addAttribute("showEatPageDto", showEatPageDto);
+
+        Integer maxPage = showEatPageDto.getTotalPage();
+        model.addAttribute("maxPage", maxPage);
+
+        Integer curPage = showEatPageDto.getCurrentPage();
+        model.addAttribute("curPage", curPage);
+
 
         return "Backend/RestaurantManagement";
+    }
+
+    // 接受 AJAX 請求，返回餐廳資訊資訊
+    @GetMapping("/GetRestaurantInfo/")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getRestaurantInfo(@RequestParam Integer restaurantId) {
+        // 從數據庫中查詢餐廳資訊
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        // 收集餐廳圖片網址
+        List<String> restaurantPicPathList = new ArrayList<>();
+        for (Picture picture : restaurant.getResPicList()) {
+            restaurantPicPathList.add(picture.getHtmlPath());
+        }
+
+        // 將餐廳資訊封裝成 Map 返回給前端
+        Map<String, Object> restaurantInfo = new HashMap<>();
+        restaurantInfo.put("restaurantId", restaurantId);
+        restaurantInfo.put("restaurantName", restaurant.getName());
+        restaurantInfo.put("restaurantAddress", restaurant.getAddress());
+        restaurantInfo.put("restaurantPicPathList", restaurantPicPathList);
+
+        return ResponseEntity.ok(restaurantInfo);
+    }
+
+    //更改餐廳資訊
+    @PostMapping("/UpdateRestaurant/")
+    public String updateRestaurant(@RequestParam("restaurantId") Integer restaurantId,
+                                   @RequestParam("restaurantName") String restaurantName,
+                                   @RequestParam("restaurantAddress") String restaurantAddress,
+                                   RedirectAttributes redirectAttributes) {
+        String updateResult = restaurantService.updateRestaurant(restaurantId, restaurantName, restaurantAddress);
+        redirectAttributes.addAttribute("updateResult", updateResult);
+        return "redirect:/ThinkEat/Backend/User";
+
+    }
+
+    //刪除餐廳
+    @PostMapping("/DeleteRestaurant/")
+    public String deleteRestaurant(@RequestParam("userId") Integer userId,
+                                   RedirectAttributes redirectAttributes) {
+
+        String deleteResult = restaurantService.deleteRestaurant(userId);
+        redirectAttributes.addAttribute("deleteResult", deleteResult);
+        return "redirect:/ThinkEat/Backend/User";
     }
 
     //顯示文章管理頁面

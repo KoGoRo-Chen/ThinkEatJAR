@@ -51,24 +51,27 @@ public class RestaurantService {
 
     //修改
     @Transactional
-    public void updateRestaurant(Integer restaurantId, String name, String address) {
+    public String updateRestaurant(Integer restaurantId, String name, String address) {
         Optional<Restaurant> resOpt = restaurantDao.findById(restaurantId);
         if (resOpt.isPresent()) {
             Restaurant restaurantToUpdate = resOpt.get();
             restaurantToUpdate.setName(name);
             restaurantToUpdate.setAddress(address);
             restaurantDao.save(restaurantToUpdate);
+            return "更改成功";
         }
-        ;
+        return "找不到餐廳";
     }
 
     //刪除
     @Transactional
-    public void deleteRestaurant(Integer restaurantId) {
+    public String deleteRestaurant(Integer restaurantId) {
         Optional<Restaurant> resOpt = restaurantDao.findById(restaurantId);
         if (resOpt.isPresent()) {
             restaurantDao.delete(resOpt.get());
+            return "刪除成功";
         }
+        return "找不到會員";
     }
 
     //查詢單間
