@@ -167,6 +167,20 @@ public class BackendController {
         return ResponseEntity.ok(restaurantInfo);
     }
 
+    // 創建餐廳
+    @PostMapping("/CreateRestaurant/")
+    public String CreateRestaurantPage(@RequestParam("name") String name,
+                                       @RequestParam("address") String address) {
+        Restaurant newRestaurant = new Restaurant();
+        newRestaurant.setName(name);
+        newRestaurant.setAddress(address);
+
+        // 將餐廳保存到資料庫
+        Integer id = restaurantService.addRestaurant(newRestaurant);
+
+        return "redirect:/ThinkEat/Backend/Restaurant/";
+    }
+
     //更改餐廳資訊
     @PostMapping("/UpdateRestaurant/")
     public String updateRestaurant(@RequestParam("restaurantId") Integer restaurantId,
@@ -247,6 +261,19 @@ public class BackendController {
         return ResponseEntity.ok(priceInfo);
     }
 
+    // 增加新價格
+    @PostMapping("/CreateNewPrice/")
+    public String CreateNewPrice(@RequestParam("name") String name) {
+        // 使用新價格的名稱設置PriceDto
+        Price newPrice = new Price();
+        newPrice.setName(name);
+
+        // 將新價格添加到數據庫
+        Integer priceId = priceService.addPrice(newPrice);
+
+        return "redirect:/ThinkEat/Backend/Price/";
+    }
+
     //變更價位
     @PostMapping("/UpdatePrice/")
     public String updatePrice(@RequestParam("priceId") Integer priceId,
@@ -297,6 +324,19 @@ public class BackendController {
         priceInfo.put("tagName", tag.getName());
 
         return ResponseEntity.ok(priceInfo);
+    }
+
+    // 增加新TAG
+    @PostMapping("/CreateNewTag/")
+    public String CreateNewTag(@RequestParam("name") String name) {
+        // 使用新價格的名稱設置PriceDto
+        Tag newTag = new Tag();
+        newTag.setName(name);
+
+        // 將新價格添加到數據庫
+        Integer tagId = tagService.addTag(newTag);
+
+        return "redirect:/ThinkEat/Backend/Tag/";
     }
 
     //變更標籤

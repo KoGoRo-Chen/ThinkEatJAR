@@ -60,7 +60,7 @@
                     <div class=" d-flex flex-column align-items-center"
                          style="width:70%; height:100%; ">
 
-                        <!-- 互動視窗 更改Tag -->
+                        <!-- 互動視窗1 更改Tag -->
                         <div class="modal fade" id="changeTagModal" tabindex="-1"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -89,6 +89,42 @@
                                             </div>
                                         </form>
 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 互動視窗2 新增標籤 -->
+                        <div class="modal fade" id="addTagModal" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">增加新標籤</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" th:action="@{/ThinkEat/Backend/CreateNewTag/}">
+                                            <fieldset>
+                                                <!-- 新標籤 -->
+                                                <div class="m-3 row">
+                                                    <label for="name" class="col-form-label col-3">輸入新Tag：</label>
+                                                    <div class="col-9">
+                                                        <input type="text" class="form-control"
+                                                               id="name" name="name" required/>
+                                                    </div>
+                                                </div>
+                                                <!-- 按鍵區 -->
+                                                <div class="mt-4">
+                                                    <!-- 前往食記發表 -->
+                                                    <input type="submit" class="btn btn-warning mx-3" value="確認"/>
+
+                                                    <!-- 一鍵清除所有內容(javascript) -->
+                                                    <button type="reset" class="btn btn-danger mx-3">清空</button>
+                                                </div>
+                                            </fieldset>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -178,10 +214,22 @@
                         </div>
 
                         <!-- 返回後台首頁按鈕 -->
-                        <div class="m-5 d-flex align-self-end">
-                            <button class="btn btn-primary" th:onclick="|window.location.href='/ThinkEat/Backend/'|">
-                                回到後臺
-                            </button>
+                        <div class="m-5 row col-12 d-flex justify-content-between">
+                            <div class="col-6 text-center">
+                                <button type="button" class="btn btn-warning"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addTagModal"
+                                        onclick="clearModalContent()">
+                                    增加新標籤
+                                </button>
+                            </div>
+
+                            <div class="col-6 text-center">
+                                <button class="btn btn-primary"
+                                        th:onclick="|window.location.href='/ThinkEat/Backend/'|">
+                                    回到後臺
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

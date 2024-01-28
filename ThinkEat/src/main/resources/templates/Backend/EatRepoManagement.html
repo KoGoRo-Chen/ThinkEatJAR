@@ -72,8 +72,7 @@
                                 <th class="m-2 text-center">標題</th>
                                 <th class="m-2 text-center">價位</th>
                                 <th class="m-2 text-center">標籤</th>
-                                <th class="m-2 text-center">編輯食記</th>
-                                <th class="m-2 text-center">刪除食記</th>
+                                <th colspan="2" class="m-2 text-center">功能區</th>
                                 </thead>
                                 <tbody class="">
                                 <tr th:if="${not #lists.isEmpty(eatRepoPageDto.eatRepoList)}"
@@ -81,7 +80,7 @@
                                     <!-- 食記編號 -->
                                     <td class="m-2 text-center" th:text="${eatRepo.id}"></td>
                                     <!-- 發文會員 -->
-                                    <td class="m-2 text-center" th:text="${eatRepo.eatRepo_User}"></td>
+                                    <td class="m-2 text-center" th:text="${eatRepo.eatRepo_User.nickname}"></td>
                                     <!-- 縮圖 -->
                                     <td class="m-2 text-center">
                                         <img th:src="${eatRepo.picList[0]?.htmlPath}"
@@ -92,9 +91,10 @@
                                     <!-- 價位 -->
                                     <td class="m-2 text-center" th:text="${eatRepo.price.getName}"></td>
                                     <!-- 標籤 -->
-                                    <td class="m-2 text-center"
-                                        th:each="tag : ${eatRepo.eatRepo_TagList}">
-                                        <span th:text="${eatRepo.tag}"></span>
+                                    <td class="m-2 text-center">
+                                        <div th:each="tag : ${eatRepo.eatRepo_TagList}">
+                                            <span th:text="${tag.name}"></span>
+                                        </div>
                                     </td>
                                     <!-- 編輯食記 -->
                                     <td class="m-2 text-center">
@@ -107,7 +107,7 @@
                                     <!-- 刪除食記 -->
                                     <td class="m-2 text-center">
                                         <form method="post"
-                                              th:action="@{/ThinkEat/Backend/DeleteEatRepo}">
+                                              th:action="@{/ThinkEat/Backend/DeleteEatRepo/}">
                                             <input type="hidden" id="eatRepoId" name="eatRepoId"
                                                    th:value="${eatRepo.id}">
                                             <input type="submit" class="btn btn-danger" value="刪除文章">
@@ -162,10 +162,20 @@
                         </div>
 
                         <!-- 返回後台首頁按鈕 -->
-                        <div class="m-5 d-flex align-self-end">
-                            <button class="btn btn-primary" th:onclick="|window.location.href='/ThinkEat/Backend/'|">
-                                回到後臺
-                            </button>
+                        <div class="m-5 row col-12 d-flex justify-content-between">
+                            <div class="col-6 text-center">
+                                <button class="btn btn-warning"
+                                        th:onclick="|window.location.href='/ThinkEat/ShareEat/Restaurant'|">
+                                    建立新文章
+                                </button>
+                            </div>
+
+                            <div class="col-6 text-center">
+                                <button class="btn btn-primary"
+                                        th:onclick="|window.location.href='/ThinkEat/Backend/'|">
+                                    回到後臺
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

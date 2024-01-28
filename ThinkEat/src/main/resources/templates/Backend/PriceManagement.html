@@ -60,7 +60,7 @@
                     <div class=" d-flex flex-column align-items-center"
                          style="width:70%; height:100%; ">
 
-                        <!-- 互動視窗 更改價位 -->
+                        <!-- 互動視窗1 更改價位 -->
                         <div class="modal fade" id="changePriceModal" tabindex="-1"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -76,7 +76,7 @@
                                             <div class="mb-3 row col-12">
                                                 <label for="priceName" class="col-3 col-form-label">價位：</label>
                                                 <div class="col-9">
-                                                    <input type="text" readonly class="form-control-plaintext"
+                                                    <input type="text" class="form-control"
                                                            id="priceName" name="priceName">
                                                 </div>
                                             </div>
@@ -91,6 +91,43 @@
                                         </form>
 
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 互動視窗2 新增價位 -->
+                        <div class="modal fade" id="addPriceModal"
+                             tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">增加新價位</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" th:action="@{/ThinkEat/Backend/CreateNewPrice/}">
+                                            <fieldset>
+                                                <!-- 新價位 -->
+                                                <div class="m-3 row">
+                                                    <label for="name" class="col-form-label col-3">價位名稱：</label>
+                                                    <div class="col-9">
+                                                        <input type="text" class="form-control"
+                                                               id="name" name="name" required/>
+                                                    </div>
+                                                </div>
+                                                <!-- 按鍵區 -->
+                                                <div class="mt-4">
+                                                    <!-- 前往食記發表 -->
+                                                    <input type="submit" class="btn btn-warning mx-3" value="確認"/>
+
+                                                    <!-- 一鍵清除所有內容(javascript) -->
+                                                    <button type="reset" class="btn btn-danger mx-3">清空</button>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                    .
                                 </div>
                             </div>
                         </div>
@@ -117,14 +154,14 @@
                                         <button type="button" class="btn btn-primary"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#changePriceModal"
-                                                th:onclick="'fetchMemberInfo(' + ${price.id} + ')'">
+                                                th:onclick="'fetchPriceInfo(\'' + ${price.id} + '\')'">
                                             編輯價位
                                         </button>
                                     </td>
                                     <!-- 刪除價位 -->
                                     <td class="m-2 text-center">
                                         <form method="post"
-                                              th:action="@{/ThinkEat/Backend/Deleteprice}">
+                                              th:action="@{/ThinkEat/Backend/DeletePrice/}">
                                             <input type="hidden" id="priceId" name="priceId"
                                                    th:value="${price.id}">
                                             <input type="submit" class="btn btn-danger" value="刪除價位">
@@ -179,11 +216,24 @@
                         </div>
 
                         <!-- 返回後台首頁按鈕 -->
-                        <div class="m-5 d-flex align-self-end">
-                            <button class="btn btn-primary" th:onclick="|window.location.href='/ThinkEat/Backend/'|">
-                                回到後臺
-                            </button>
+                        <div class="m-5 row col-12 d-flex justify-content-between">
+                            <div class="col-6 text-center">
+                                <button type="button" class="btn btn-warning"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addPriceModal"
+                                        onclick="clearModalContent()">
+                                    增加新價位
+                                </button>
+                            </div>
+
+                            <div class="col-6 text-center">
+                                <button class="btn btn-primary"
+                                        th:onclick="|window.location.href='/ThinkEat/Backend/'|">
+                                    回到後臺
+                                </button>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -198,9 +248,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // AJAX 函數，用於從後台獲取用戶資訊並填充到互動視窗中
-    function fetchMemberInfo(priceId) {
+    function fetchPriceInfo(priceId) {
         $.ajax({
-            url: '/ThinkEat/Backend/GetPriceInfo', // 後台端點 URL
+            url: '/ThinkEat/Backend/GetPriceInfo/', // 後台端點 URL
             type: 'GET',
             data: { priceId: priceId }, // 傳遞的參數，餐廳 ID
             success: function(response) {

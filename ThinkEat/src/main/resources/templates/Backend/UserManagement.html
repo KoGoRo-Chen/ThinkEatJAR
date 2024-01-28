@@ -222,10 +222,20 @@
                         </div>
 
                         <!-- 返回後台首頁按鈕 -->
-                        <div class="m-5 d-flex align-self-end">
-                            <button class="btn btn-primary" th:onclick="|window.location.href='/ThinkEat/Backend/'|">
-                                回到後臺
-                            </button>
+                        <div class="m-5 row col-12 d-flex justify-content-between">
+                            <div class="col-6 text-center">
+                                <button class="btn btn-warning"
+                                        th:onclick="|window.location.href='/ThinkEat/SignIn'|">
+                                    建立新會員
+                                </button>
+                            </div>
+
+                            <div class="col-6 text-center">
+                                <button class="btn btn-primary"
+                                        th:onclick="|window.location.href='/ThinkEat/Backend/'|">
+                                    回到後臺
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
