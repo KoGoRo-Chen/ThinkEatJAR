@@ -112,19 +112,17 @@ public class BackendController {
                 newNickname,
                 newPassword,
                 newAuthority);
-        redirectAttributes.addAttribute("updateResult", updateResult);
-        return "redirect:/ThinkEat/Backend/User";
+        return "redirect:/ThinkEat/Backend/User/";
 
     }
 
     //刪除會員
-    @PostMapping("/DeleteUser/")
+    @PostMapping("/DeleteUser")
     public String deleteUser(@RequestParam("userIdforDelete") Integer userId,
                              RedirectAttributes redirectAttributes) {
 
         String deleteResult = userService.deleteUserById(userId);
-        redirectAttributes.addAttribute("deleteResult", deleteResult);
-        return "redirect:/ThinkEat/Backend/User";
+        return "redirect:/ThinkEat/Backend/User/";
     }
 
 
@@ -176,7 +174,6 @@ public class BackendController {
                                    @RequestParam("restaurantAddress") String restaurantAddress,
                                    RedirectAttributes redirectAttributes) {
         String updateResult = restaurantService.updateRestaurant(restaurantId, restaurantName, restaurantAddress);
-        redirectAttributes.addAttribute("updateResult", updateResult);
         return "redirect:/ThinkEat/Backend/Restaurant/";
 
     }
@@ -187,7 +184,6 @@ public class BackendController {
                                    RedirectAttributes redirectAttributes) {
 
         String deleteResult = restaurantService.deleteRestaurant(restaurantId);
-        redirectAttributes.addAttribute("deleteResult", deleteResult);
         return "redirect:/ThinkEat/Backend/Restaurant/";
     }
 
@@ -209,7 +205,6 @@ public class BackendController {
                                 RedirectAttributes redirectAttributes) {
 
         String deleteResult = eatRepoService.deleteEatRepo(eatRepoId);
-        redirectAttributes.addAttribute("deleteResult", deleteResult);
         return "redirect:/ThinkEat/Backend/EatRepo/";
     }
 
@@ -246,7 +241,6 @@ public class BackendController {
                               @RequestParam("priceName") String newPricename,
                               RedirectAttributes redirectAttributes) {
         String updateResult = priceService.updatePriceById(priceId, newPricename);
-        redirectAttributes.addAttribute("updateResult", updateResult);
         return "redirect:/ThinkEat/Backend/Price";
 
     }
@@ -257,7 +251,6 @@ public class BackendController {
                               RedirectAttributes redirectAttributes) {
 
         String deleteResult = priceService.deletePrice(priceId);
-        redirectAttributes.addAttribute("deleteResult", deleteResult);
         return "redirect:/ThinkEat/Backend/Price/";
     }
 
@@ -305,7 +298,6 @@ public class BackendController {
                             RedirectAttributes redirectAttributes) {
 
         String deleteResult = tagService.deleteTag(tagId);
-        redirectAttributes.addAttribute("deleteResult", deleteResult);
         return "redirect:/ThinkEat/Backend/Tag/";
     }
 

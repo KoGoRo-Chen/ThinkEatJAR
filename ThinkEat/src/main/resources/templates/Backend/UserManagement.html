@@ -24,7 +24,7 @@
             <div class="flexitem col-1" style="width:25%; height:100%; "></div>
             <!-- 內容區塊 -->
             <div class="container-fluid mh-100 col-10 bg-light p-0"
-                 style="width:fit-content; height:100%; ">
+                 style="width:50%; height:100%; ">
                 <div class="d-flex justify-content-evenly"
                      style="width:100%; height:100%; ">
                     <!-- 側邊攔導覽頁 -->
@@ -69,13 +69,15 @@
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">變更會員資訊</h5>
                                         <!-- 刪除會員 -->
-                                        <form method="post" th:action="@{/ThinkEat/Backend/DeleteUser}">
-                                            <input type="" id="userIdforDelete" name="userIdforDelete">
+                                        <form method="post" sec:authorize="hasAnyRole('admin', 'founder')"
+                                              th:action="@{/ThinkEat/Backend/DeleteUser}">
+                                            <input type="hidden" id="userIdforDelete" name="userIdforDelete">
                                             <input type="submit" class="btn btn-danger" th:value="刪除會員">
                                         </form>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" th:action="@{/ThinkEat/Backend/UpdateUserAccount}" class="">
+                                        <form method="post" th:action="@{/ThinkEat/Backend/UpdateUserAccount/}"
+                                              class="">
                                             <!-- 帳號 -->
                                             <div class="mb-3 row col-12">
                                                 <label for="username" class="col-3 col-form-label">會員帳號：</label>
@@ -154,8 +156,8 @@
                                     </td>
                                     <!-- 編輯收藏清單 -->
                                     <td>
-                                        <form method="post" th:action="@{/ThinkEat/Backend/MoveToUserFavList}">
-                                            <input type="hidden" th:value="${user.id}">
+                                        <form method="post" th:action="@{/ThinkEat/Backend/MoveToUserFavList/}">
+                                            <input type="hidden" name="userId" th:value="${user.id}">
                                             <input type="submit" class="btn btn-primary" th:value="前往收藏清單">
                                         </form>
                                     </td>
@@ -166,10 +168,10 @@
                                     </td>
                                     <!-- 編輯會員 -->
                                     <td>
-                                        <button type="button" class="btn btn-primary"
+                                        <button type="button" class="btn btn-danger"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#changePasswordModal"
-                                                th:onclick="'fetchMemberInfo(' + ${user.id} + ')'">
+                                                th:attr="onclick='fetchUserInfo(\'' + ${user.id} + '\')'">
                                             編輯會員
                                         </button>
                                     </td>
@@ -239,9 +241,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // AJAX 函數，用於從後台獲取用戶資訊並填充到互動視窗中
-    function fetchMemberInfo(userId) {
+    function fetchUserInfo(userId) {
         $.ajax({
-            url: '/ThinkEat/Backend/GetUserInfo', // 後台端點 URL
+            url: '/ThinkEat/Backend/GetUserInfo/', // 後台端點 URL
             type: 'GET',
             data: { userId: userId }, // 傳遞的參數，用戶 ID
             success: function(response) {
@@ -255,6 +257,7 @@
 
                 // 將用戶的權限設置為下拉選單的值
                 $('#authority').val(response.authority.id);
+
             },
             error: function(xhr, status, error) {
                 // 請求失敗時的處理邏輯

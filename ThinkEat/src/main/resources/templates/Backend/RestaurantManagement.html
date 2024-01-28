@@ -72,7 +72,7 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" th:action="@{/ThinkEat/Backend/UpdateRestaurant}" class="">
+                                        <form method="post" th:action="@{/ThinkEat/Backend/UpdateRestaurant/}" class="">
                                             <!-- 名稱 -->
                                             <div class="mb-3 row col-12">
                                                 <label for="restaurantName"
@@ -110,7 +110,11 @@
                         <div class="mx-0 px-3 mt-5 shadow-sm " style="height:fit-content">
                             <table class="table table-striped table-hover caption-top align-middle">
                                 <thead class="table-primary">
-                                <caption class="fw-bold fs-5 text-dark">餐廳列表</caption>
+                                <caption class="d-flex justify-content-evenly">
+                                    <span class="fw-bold fs-5 text-dark">
+                                        餐廳列表
+                                    </span>
+                                </caption>
                                 <th class="text-center m-2">餐廳編號</th>
                                 <th class="text-center m-2">縮圖</th>
                                 <th class="text-center m-2">餐廳名稱</th>
@@ -158,14 +162,14 @@
                                         <button type="button" class="btn btn-primary"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#changeRestaurantModal"
-                                                th:onclick="'fetchMemberInfo(' + ${restaurant.id} + ')'">
+                                                th:onclick="'fetchRestaurantInfo(\'' + ${restaurant.id} + '\')'">
                                             變更餐廳資訊
                                         </button>
                                     </td>
                                     <!-- 刪除餐廳 -->
                                     <td class="m-2">
-                                        <form method="post" th:action="@{/ThinkEat/Backend/DeleteRestaurant}">
-                                            <input type="hidden" th:value="${restaurant.id}">
+                                        <form method="post" th:action="@{/ThinkEat/Backend/DeleteRestaurant/}">
+                                            <input type="hidden" name="restaurantId" th:value="${restaurant.id}">
                                             <input type="submit" class="btn btn-danger" th:value="刪除餐廳">
                                         </form>
                                     </td>
@@ -237,9 +241,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // AJAX 函數，用於從後台獲取用戶資訊並填充到互動視窗中
-    function fetchMemberInfo(restaurantId) {
+    function fetchRestaurantInfo(restaurantId) {
         $.ajax({
-            url: '/ThinkEat/Backend/GetRestaurantInfo', // 後台端點 URL
+            url: '/ThinkEat/Backend/GetRestaurantInfo/', // 後台端點 URL
             type: 'GET',
             data: { restaurantId: restaurantId }, // 傳遞的參數，餐廳 ID
             success: function(response) {
