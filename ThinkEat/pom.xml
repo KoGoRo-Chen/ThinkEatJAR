@@ -136,6 +136,18 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<version>3.2.1</version>
+				<configuration>
+					<url>http://localhost:8080/manager/text</url>
+					<server>tomcat</server>
+					<path>/myapp</path>
+					<username>admin</username>
+					<password>admin</password>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
