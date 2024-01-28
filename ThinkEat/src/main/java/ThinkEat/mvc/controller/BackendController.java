@@ -196,6 +196,12 @@ public class BackendController {
         EatRepoPageDto eatRepoPageDto = eatRepoService.getAllEatRepoPagination(pageable);
         model.addAttribute("eatRepoPageDto", eatRepoPageDto);
 
+        Integer maxPage = eatRepoPageDto.getTotalPage();
+        model.addAttribute("maxPage", maxPage);
+
+        Integer curPage = eatRepoPageDto.getCurrentPage();
+        model.addAttribute("curPage", curPage);
+
         return "Backend/EatRepoManagement";
     }
 
@@ -216,6 +222,12 @@ public class BackendController {
         Pageable pageable = PageRequest.of(page, size);
         PricePageDto pricePageDto = priceService.getAllPriceInPage(pageable);
         model.addAttribute("pricePageDto", pricePageDto);
+
+        Integer maxPage = pricePageDto.getTotalPage();
+        model.addAttribute("maxPage", maxPage);
+
+        Integer curPage = pricePageDto.getCurrentPage();
+        model.addAttribute("curPage", curPage);
 
         return "Backend/PriceManagement";
     }
@@ -262,6 +274,12 @@ public class BackendController {
         Pageable pageable = PageRequest.of(page, size);
         TagPageDto tagPageDto = tagService.getAllTagInPage(pageable);
         model.addAttribute("tagPageDto", tagPageDto);
+
+        Integer maxPage = tagPageDto.getTotalPage();
+        model.addAttribute("maxPage", maxPage);
+
+        Integer curPage = tagPageDto.getCurrentPage();
+        model.addAttribute("curPage", curPage);
 
         return "Backend/TagManagement";
     }

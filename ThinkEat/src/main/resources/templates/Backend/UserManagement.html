@@ -23,14 +23,13 @@
         <div class="row col-12 mt-2">
             <div class="flexitem col-1" style="width:25%; height:100%; "></div>
             <!-- 內容區塊 -->
-            <div class="container-fluid mh-100 col-10 bg-light p-0"
-                 style="width:50%; height:100%; ">
+            <div class="container-fluid mh-100 col-10 bg-light p-0" style="width:50%; height:100%; ">
                 <div class="d-flex justify-content-evenly"
                      style="width:100%; height:100%; ">
-                    <!-- 側邊攔導覽頁 -->
+                    <!-- 側邊欄 -->
                     <ul class="nav col-4 flex-column justify-content-start
                                border-end border-2 mt-2 shadow-sm"
-                        style="width:30%; height:auto%; ">
+                        style="width:30%; height:auto; ">
                         <!-- 會員管理 -->
                         <li class="nav-item border border-3 m-2 p-2 bg-primary">
                             <a class="nav-link text-center text-light fw-bold fs-5" aria-current="page"
@@ -57,6 +56,7 @@
                                th:href="@{/ThinkEat/Backend/Tag/}">標籤管理</a>
                         </li>
                     </ul>
+
                     <!-- 內容區 -->
                     <div class=" d-flex flex-column align-items-center"
                          style="width:fit-content; height:100%; ">
@@ -128,46 +128,45 @@
                             </div>
                         </div>
 
-
                         <!-- 表格區 -->
-                        <div class="mx-0 px-3 mt-3 shadow-sm" style="height:fit-content">
+                        <div class="mx-0 px-3 mt-3 shadow-sm" style="height:fit-content; min-width:90%">
                             <table class="table table-striped table-hover caption-top align-middle">
                                 <thead class="table-primary">
                                 <caption class="fw-bold fs-5 text-dark">會員列表</caption>
-                                <th class="text-center">會員編號</th>
-                                <th class="text-center">會員暱稱</th>
-                                <th class="text-center">加入日期</th>
-                                <th class="text-center">會員權限</th>
-                                <th class="text-center">編輯收藏清單</th>
-                                <th class="text-center">會員主頁</th>
-                                <th class="text-center">編輯會員</th>
+                                <th class="m-2 text-center">會員編號</th>
+                                <th class="m-2 text-center">會員暱稱</th>
+                                <th class="m-2 text-center">加入日期</th>
+                                <th class="m-2 text-center">會員權限</th>
+                                <th class="m-2 text-center">編輯收藏清單</th>
+                                <th class="m-2 text-center">會員主頁</th>
+                                <th class="m-2 text-center">編輯會員</th>
                                 </thead>
                                 <tbody class="">
                                 <tr th:each="user : ${userPageDto.userList}">
                                     <!-- 會員編號 -->
-                                    <td th:text="${user.id}"></td>
+                                    <td class="m-2 text-center" th:text="${user.id}"></td>
                                     <!-- 會員暱稱 -->
-                                    <td th:text="${user.nickname}"></td>
+                                    <td class="m-2 text-center" th:text="${user.nickname}"></td>
                                     <!-- 加入日期 -->
-                                    <td th:text="${user.date}"></td>
+                                    <td class="m-2 text-center" th:text="${user.date}"></td>
                                     <!-- 會員權限 -->
-                                    <td>
+                                    <td class="m-2 text-center">
                                         <span th:text="${user.authority.getDescription}"></span>
                                     </td>
                                     <!-- 編輯收藏清單 -->
-                                    <td>
+                                    <td class="m-2 text-center">
                                         <form method="post" th:action="@{/ThinkEat/Backend/MoveToUserFavList/}">
                                             <input type="hidden" name="userId" th:value="${user.id}">
                                             <input type="submit" class="btn btn-primary" th:value="前往收藏清單">
                                         </form>
                                     </td>
                                     <!-- 會員主頁 -->
-                                    <td>
+                                    <td class="m-2 text-center">
                                         <a th:href="@{/ThinkEat/Account/id(id= ${user.id})}"
                                            th:text="${user.nickname}"></a>
                                     </td>
                                     <!-- 編輯會員 -->
-                                    <td>
+                                    <td class="m-2 text-center">
                                         <button type="button" class="btn btn-danger"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#changePasswordModal"
