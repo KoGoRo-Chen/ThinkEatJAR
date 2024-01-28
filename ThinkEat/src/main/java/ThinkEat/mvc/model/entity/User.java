@@ -37,7 +37,7 @@ public class User {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @Column(columnDefinition = "timestamp NOT NULL")
+    @Column(columnDefinition = "date NOT NULL")
     private Date date;
 
     @Column(columnDefinition = "TINYINT(1)")

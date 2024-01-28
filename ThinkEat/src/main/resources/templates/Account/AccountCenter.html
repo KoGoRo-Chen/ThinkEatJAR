@@ -108,6 +108,7 @@
             <div class="bg-light p-2 align-items-start m-5 w-50">
                 <div class="my-3">
                     <div class="row my-3">
+                        <!-- 會員暱稱 -->
                         <strong class="col-3">會員暱稱:</strong>
                         <span class="col-5" id="nickname" name="nickname" th:text="${user.nickname}"></span>
                         <span class="col-4">
@@ -120,18 +121,24 @@
                             </button>
                         </span>
                     </div>
+                    <!-- 加入日期 -->
+                    <div class="row my-3">
+                        <strong class="col-3">加入日期:</strong>
+                        <span class="col-5" id="date" name="date" th:text="${user.date}"></span>
+                    </div>
+                    <!-- 會員帳號 -->
                     <div class="row my-3">
                         <strong class="col-3">會員帳號:</strong>
                         <span class="col-5" id="username" name="username" th:text="${user.username}"></span>
                         <span class="col-4">
-                                <!-- 更改密碼 -->
-                                <button type="button" class="btn btn-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#addTagModal"
-                                        onclick="clearModalContent()"
-                                        th:text="更改密碼">
-                                </button>
-                            </span>
+                            <!-- 更改密碼 -->
+                            <button type="button" class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#addTagModal"
+                                    onclick="clearModalContent()"
+                                    th:text="更改密碼">
+                            </button>
+                        </span>
                     </div>
                 </div>
                 <!-- 發表的文章 -->

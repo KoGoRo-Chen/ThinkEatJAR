@@ -100,7 +100,8 @@ public class FavListController {
         //載入清單中的所有餐廳
         Pageable pageable = PageRequest.of(page, size);
         RestaurantPageDto restaurantPageDto = favListService.getAllRestaurantInFavList(pageable, presetFavListId);
-        model.addAttribute("showEatPageDto", restaurantPageDto);
+        model.addAttribute("restaurantPageDto", restaurantPageDto);
+
         Integer maxPage = restaurantPageDto.getTotalPage();
         model.addAttribute("maxPage", maxPage);
 
