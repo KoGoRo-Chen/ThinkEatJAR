@@ -53,7 +53,7 @@ public class ViewEatController {
                                  Model model) {
         Pageable pageable = PageRequest.of(page, size);
         RestaurantPageDto restaurantPageDto = restaurantService.getAllRestaurant(pageable);
-        model.addAttribute("showEatPageDto", restaurantPageDto);
+        model.addAttribute("restaurantPageDto", restaurantPageDto);
 
         Integer maxPage = restaurantPageDto.getTotalPage();
         model.addAttribute("maxPage", maxPage);

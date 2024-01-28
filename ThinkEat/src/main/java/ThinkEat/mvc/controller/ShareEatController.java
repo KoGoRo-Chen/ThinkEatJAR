@@ -326,7 +326,7 @@ public class ShareEatController {
     //刪除文章
     @PostMapping("/ShareEatRepo/Delete/{eatRepoId}")
     public String deleteEatRepo(@PathVariable("eatRepoId") Integer eatRepoId,
-                               RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes) {
         //以ID找到正確的eatRepo
         EatRepo eatRepo = eatRepoService.getEatRepoByEatRepoId(eatRepoId);
 

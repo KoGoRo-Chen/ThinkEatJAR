@@ -18,13 +18,13 @@
 </header>
 
 <!-- Main區塊 -->
-<main style="height:75vh">
+<main style="min-height:75vh">
     <div class="container-fluid h-75 w-100 d-flex justify-content-evenly-medium my-5">
         <div class="row col-12 mt-2">
             <div class="flexitem col-1" style="width:25%; height:100%; "></div>
             <!-- 內容區塊 -->
             <div class="container-fluid mh-100 col-10 bg-light p-0"
-                 style="width:50%; height:100%; ">
+                 style="width:fit-content; height:100%; ">
                 <div class="d-flex justify-content-evenly"
                      style="width:100%; height:100%; ">
                     <!-- 側邊攔導覽頁 -->
@@ -56,15 +56,10 @@
                             <a class="nav-link text-center"
                                th:href="@{/ThinkEat/Backend/Tag/}">標籤管理</a>
                         </li>
-                        <!-- 收藏清單管理 -->
-                        <li class="nav-item border border-2 m-2">
-                            <a class="nav-link text-center"
-                               th:href="@{/ThinkEat/Backend/FavList/}">收藏清單管理</a>
-                        </li>
                     </ul>
                     <!-- 內容區 -->
                     <div class=" d-flex flex-column align-items-center"
-                         style="width:70%; height:100%; ">
+                         style="width:fit-content; height:100%; ">
 
                         <!-- 互動視窗1 編輯會員 -->
                         <div class="modal fade" id="changePasswordModal" tabindex="-1"
@@ -73,8 +68,11 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">變更會員資訊</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
+                                        <!-- 刪除會員 -->
+                                        <form method="post" th:action="@{/ThinkEat/Backend/DeleteUser}">
+                                            <input type="" id="userIdforDelete" name="userIdforDelete">
+                                            <input type="submit" class="btn btn-danger" th:value="刪除會員">
+                                        </form>
                                     </div>
                                     <div class="modal-body">
                                         <form method="post" th:action="@{/ThinkEat/Backend/UpdateUserAccount}" class="">
@@ -141,7 +139,6 @@
                                 <th class="text-center">編輯收藏清單</th>
                                 <th class="text-center">會員主頁</th>
                                 <th class="text-center">編輯會員</th>
-                                <th class="text-center">刪除會員</th>
                                 </thead>
                                 <tbody class="">
                                 <tr th:each="user : ${userPageDto.userList}">
@@ -159,7 +156,7 @@
                                     <td>
                                         <form method="post" th:action="@{/ThinkEat/Backend/MoveToUserFavList}">
                                             <input type="hidden" th:value="${user.id}">
-                                            <input type="submit" class="btn btn-primary" th:value="刪除會員">
+                                            <input type="submit" class="btn btn-primary" th:value="前往收藏清單">
                                         </form>
                                     </td>
                                     <!-- 會員主頁 -->
@@ -175,13 +172,6 @@
                                                 th:onclick="'fetchMemberInfo(' + ${user.id} + ')'">
                                             編輯會員
                                         </button>
-                                    </td>
-                                    <!-- 刪除會員 -->
-                                    <td>
-                                        <form method="post" th:action="@{/ThinkEat/Backend/DeleteUser}">
-                                            <input type="hidden" th:value="${user.id}">
-                                            <input type="submit" class="btn btn-danger" th:value="刪除會員">
-                                        </form>
                                     </td>
                                 </tr>
                             </table>
@@ -231,7 +221,7 @@
                         </div>
 
                         <!-- 返回後台首頁按鈕 -->
-                        <div class="mt-5 me-5 d-flex align-self-end">
+                        <div class="m-5 d-flex align-self-end">
                             <button class="btn btn-primary" th:onclick="|window.location.href='/ThinkEat/Backend/'|">
                                 回到後臺
                             </button>
@@ -257,6 +247,7 @@
             success: function(response) {
                 // 在成功接收後台資訊時，填充互動視窗中的 HTML 元素
                 $('#userId').val(response.userId);
+                $('#userIdforDelete').val(response.userIdforDelete);
                 $('#username').val(response.username);
                 $('#nickname').val(response.nickname);
                 $('#password').val(response.password);
@@ -274,4 +265,9 @@
 </script>
 </body>
 </html>
+
+<!--
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+-->
 

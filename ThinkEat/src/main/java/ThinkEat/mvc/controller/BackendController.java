@@ -83,12 +83,16 @@ public class BackendController {
     @GetMapping("/GetUserInfo/")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getUserInfo(@RequestParam Integer userId) {
+        System.out.println("接收到的用戶Id為:" + userId);
+
         // 從數據庫中查詢用戶資訊，這裡假設 userService 提供了相應的方法
         User user = userService.getUserById(userId);
 
+
         // 將用戶資訊封裝成 Map 返回給前端
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("userId", userId);
+        userInfo.put("userId", user.getId());
+        userInfo.put("userIdforDelete", user.getId());
         userInfo.put("username", user.getUsername());
         userInfo.put("nickname", user.getNickname());
         userInfo.put("password", user.getRawPassword());
@@ -115,7 +119,7 @@ public class BackendController {
 
     //刪除會員
     @PostMapping("/DeleteUser/")
-    public String deleteUser(@RequestParam("userId") Integer userId,
+    public String deleteUser(@RequestParam("userIdforDelete") Integer userId,
                              RedirectAttributes redirectAttributes) {
 
         String deleteResult = userService.deleteUserById(userId);
@@ -131,7 +135,7 @@ public class BackendController {
                                               Model model) {
         Pageable pageable = PageRequest.of(page, size);
         RestaurantPageDto restaurantPageDto = restaurantService.getAllRestaurant(pageable);
-        model.addAttribute("showEatPageDto", restaurantPageDto);
+        model.addAttribute("restaurantPageDto", restaurantPageDto);
 
         Integer maxPage = restaurantPageDto.getTotalPage();
         model.addAttribute("maxPage", maxPage);
