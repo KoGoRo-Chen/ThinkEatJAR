@@ -16,33 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 @WebListener
 public class SessionListener implements HttpSessionListener {
 
-    private static FavListService favListService;
-
-    @Autowired
-    public SessionListener() {
-    }
-
-    public static void setFavListService(FavListService service) {
-        favListService = service;
-    }
-
     @Override
     public void sessionCreated(HttpSessionEvent se) {
-        FavList favList = new FavList();
-        favList.setName("訪客預設清單");
-        Integer presetFavListId = favListService.addGuestList(favList);
-
-        se.getSession().setAttribute("presetFavListId", presetFavListId);
-
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-
-        Integer presetFavListId = (Integer) se.getSession().getAttribute("presetFavListId");
-        if (presetFavListId != null) {
-            favListService.deleteFavListById(presetFavListId);
-        }
-
     }
 }

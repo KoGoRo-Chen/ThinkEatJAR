@@ -46,36 +46,43 @@
                               method="post" class="form-horizontal" onsubmit="return validateForm();">
                             <!-- Place for messages: error, alert etc ... -->
                             <div class="form-group">
-                                <div>
-                                    <div>
                                         <!-- 登入錯誤 -->
-                                        <div th:if="${notLoginErrorMessage}">
-                                            <div class="alert alert-danger">
-                                                <span th:text="${notLoginErrorMessage}"></span>
-                                            </div>
-                                        </div>
+                                <div th:if="${notLoginErrorMessage}">
+                                    <div class="alert alert-danger">
+                                        <span th:text="${notLoginErrorMessage}"></span>
                                     </div>
                                 </div>
-                                <div>
-                                    <div>
-                                        <!-- 登入錯誤 -->
-                                        <div th:if="${registrationError}">
-                                            <div class="alert alert-danger">
-                                                <span th:text="${registrationError}"></span>
-                                            </div>
-                                        </div>
+
+                                <!-- 註冊錯誤 -->
+                                <div th:if="${registrationError}">
+                                    <div class="alert alert-danger">
+                                        <span th:text="${registrationError}"></span>
                                     </div>
                                 </div>
-                                <div>
-                                    <div>
-                                        <!-- session過期請重新登入 -->
-                                        <div th:if="${SessionExpiredError}">
-                                            <div class="alert alert-danger">
-                                                <span th:text="${SessionExpiredError}"></span>
-                                            </div>
-                                        </div>
+
+                                <!-- session過期請重新登入 -->
+                                <div th:if="${SessionExpiredError}">
+                                    <div class="alert alert-danger">
+                                        <span th:text="${SessionExpiredError}"></span>
                                     </div>
                                 </div>
+
+                                <!-- Check for login error -->
+
+                                <div th:if="${param.error}">
+                                    <div class="alert alert-danger col-xs-offset-1 col-xs-10">
+                                        帳號密碼錯誤
+                                    </div>
+                                </div>
+
+                                <!-- Check for logout -->
+
+                                <div th:if="${param.logout}">
+                                    <div class="alert alert-success col-xs-offset-1 col-xs-10">
+                                        你已登出
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="p-3">
                                 <div class="my-4">

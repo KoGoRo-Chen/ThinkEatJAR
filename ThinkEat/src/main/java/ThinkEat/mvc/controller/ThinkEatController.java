@@ -1,5 +1,6 @@
 package ThinkEat.mvc.controller;
 
+import ThinkEat.mvc.model.entity.FavList;
 import ThinkEat.mvc.model.entity.Restaurant;
 import ThinkEat.mvc.model.entity.User;
 import ThinkEat.mvc.service.*;
@@ -29,11 +30,7 @@ public class ThinkEatController {
     private final FavListService favListService;
 
     @Autowired
-    public ThinkEatController(EatRepoService eatRepoService,
-                              RestaurantService restaurantService,
-                              PriceService priceService,
-                              TagService tagService,
-                              PictureService pictureService,
+    public ThinkEatController(RestaurantService restaurantService,
                               UserService userService,
                               FavListService favListService) {
         this.favListService = favListService;
@@ -50,12 +47,27 @@ public class ThinkEatController {
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
+    //跳轉至首頁
+    @GetMapping("/")
+    public String jumpToIndexPage() {
+        return "redirect:/ThinkEat/Index";
+    }
 
     //顯示首頁
     @GetMapping("/Index")
     public String GetIndexPage(Authentication authentication,
                                HttpSession httpSession,
                                Model model) {
+        User user = (User) httpSession.getAttribute("user");
+        if (user == null) {
+            //處理訪客邏輯
+            FavList favList = new FavList();
+            favList.setName("訪客預設清單");
+            Integer Id = favListService.addGuestList(favList);
+
+            httpSession.setAttribute("presetFavListId", Id);
+        }
+
         //挑出所有餐廳
         List<Restaurant> restaurantList = restaurantService.getAllRestaurant();
         model.addAttribute("restaurantList", restaurantList);

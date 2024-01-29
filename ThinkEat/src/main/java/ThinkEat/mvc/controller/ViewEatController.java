@@ -3,6 +3,7 @@ package ThinkEat.mvc.controller;
 import ThinkEat.mvc.model.dto.*;
 import ThinkEat.mvc.model.entity.*;
 import ThinkEat.mvc.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,6 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("ViewEat/")
-@SessionAttributes("presetFavListId")
 public class ViewEatController {
 
     private final FavListService favListService;
@@ -141,24 +141,10 @@ public class ViewEatController {
         return "ViewEat/ResInfo";
     }
 
-    //刪除餐廳
-    @PostMapping("/ResInfo/DeleteRestaurant")
-    public String DeleteRestaurant(@RequestParam("restaurantId") Integer restaurantId,
-                                   Model model) {
-        // 根據 restaurantId 從數據庫中檢索相應的 餐廳
-        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
-
-        //RestaurantService執行刪除
-        restaurantService.deleteRestaurant(restaurantId);
-
-        // 返回 ShowEat 頁面
-        return "redirect:/ThinkEat/ViewEat/ShowEat";
-    }
-
     //顯示ViewEat/EatRepo/{eatRepoId}頁面
     @GetMapping("/EatRepo/{eatRepoId}")
     public String GetViewEatPage(@PathVariable("eatRepoId") Integer eatRepoId,
-                                 @SessionAttribute(name = "presetFavListId", required = false) Integer presetFavListId,
+                                 HttpSession session,
                                  Authentication authentication,
                                  Model model) {
 
@@ -186,8 +172,14 @@ public class ViewEatController {
             model.addAttribute("userId", user.getId());
             //加入會員收藏清單
             model.addAttribute("allFavList", user.getFavLists());
+            if (user.getId().equals(eatRepo.getEatRepo_User().getId()) || user.getAuthority().equals("admin") || user.getAuthority().equals("founder")) {
+                model.addAttribute("enableEdit", true);
+            } else {
+                model.addAttribute("enableEdit", false);
+            }
         } else {
             //加入訪客收藏清單
+            Integer presetFavListId = (Integer) session.getAttribute("presetFavListId");
             FavList guestList = favListService.getFavListById(presetFavListId);
             model.addAttribute("guestList", guestList);
         }
