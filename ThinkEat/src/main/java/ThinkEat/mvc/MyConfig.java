@@ -27,7 +27,7 @@ public class MyConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/image/**")
-                .addResourceLocations("file:C:/ThinkEat/images");
+                .addResourceLocations("file:C:/ThinkEat/image/");
 
     }
             /*

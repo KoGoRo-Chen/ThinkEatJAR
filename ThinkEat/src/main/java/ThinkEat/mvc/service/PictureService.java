@@ -47,7 +47,7 @@ public class PictureService {
             System.out.println("副檔名為" + formatName);
 
             // 構建圖片的完整路徑
-            String filePath = "C:\\ThinkEat\\images\\";
+            String filePath = "C:\\ThinkEat\\image\\";
             /*
             學校電腦圖片資料夾路徑: "C:\\Users\\NTPU\\Desktop\\IdeaProjects\\ThinkEatJAR\\img\\"
             筆電圖片資料夾路徑: "C:\\Users\\marge\\OneDrive\\Desktop\\MyClassDemo\\ThinkEatJAR\\img\\"
@@ -82,7 +82,7 @@ public class PictureService {
 
             // 設定圖片路徑
             picture.setFilePath(filePath + fileName);
-            picture.setHtmlPath("http://localhost:9990/ThinkEat/image/" + fileName);
+            picture.setHtmlPath("http://13.208.190.112:9995/ThinkEat/image/" + fileName);
             pictureDao.save(picture);
             return picture.getId();
         } catch (IOException e) {
