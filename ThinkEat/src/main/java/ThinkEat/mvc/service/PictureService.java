@@ -47,7 +47,7 @@ public class PictureService {
             System.out.println("副檔名為" + formatName);
 
             // 構建圖片的完整路徑
-            String filePath = "C:\\Users\\kogor\\Desktop\\MyJavaProject\\IntelliJ\\ThinkEatJAR\\img\\";
+            String filePath = "C:\\ThinkEat\\images\\";
             /*
             學校電腦圖片資料夾路徑: "C:\\Users\\NTPU\\Desktop\\IdeaProjects\\ThinkEatJAR\\img\\"
             筆電圖片資料夾路徑: "C:\\Users\\marge\\OneDrive\\Desktop\\MyClassDemo\\ThinkEatJAR\\img\\"
