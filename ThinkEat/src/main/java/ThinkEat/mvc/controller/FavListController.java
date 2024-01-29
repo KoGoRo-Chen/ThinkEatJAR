@@ -56,10 +56,7 @@ public class FavListController {
                                  @SessionAttribute(name = "presetFavListId", required = false) Integer presetFavListId,
                                  Authentication authentication) {
 
-        //找出會員資訊
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        User user = userService.findUserByUsername(userDetails.getUsername());
-        if (user == null) {
+        if (authentication == null) {
             if (presetFavListId == null) {
                 //處理訪客邏輯
                 FavList favList = new FavList();
@@ -72,8 +69,10 @@ public class FavListController {
                 //訪客已經有預設清單，導入至預設清單
                 return "redirect:/ThinkEat/FavList/GuestList/";
             }
-
         } else {
+            //找出會員資訊
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            User user = userService.findUserByUsername(userDetails.getUsername());
             List<FavList> favListList = user.getFavLists();
             List<Integer> listCountList = new ArrayList<>();
             for (FavList favListToGetListCount : favListList) {
@@ -81,12 +80,10 @@ public class FavListController {
             }
             Integer firstListCount = listCountList.get(0);
 
-
             redirectAttributes.addAttribute("userId", user.getId());
             redirectAttributes.addAttribute("favListCount", firstListCount);
 
             return "redirect:/ThinkEat/FavList/{userId}/List/{favListCount}/";
-
         }
     }
 
