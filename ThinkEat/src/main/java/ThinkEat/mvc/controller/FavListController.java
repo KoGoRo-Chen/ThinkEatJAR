@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -52,10 +53,12 @@ public class FavListController {
     //顯示收藏清單頁面(跳轉用)
     @GetMapping("/")
     public String getFavListPage(RedirectAttributes redirectAttributes,
-                                 @SessionAttribute(name = "presetFavListId", required = false) Integer presetFavListId) {
+                                 @SessionAttribute(name = "presetFavListId", required = false) Integer presetFavListId,
+                                 Authentication authentication) {
 
         //找出會員資訊
-        User user = (User) httpSession.getAttribute("user");
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = userService.findUserByUsername(userDetails.getUsername());
         if (user == null) {
             if (presetFavListId == null) {
                 //處理訪客邏輯
@@ -71,8 +74,16 @@ public class FavListController {
             }
 
         } else {
+            List<FavList> favListList = user.getFavLists();
+            List<Integer> listCountList = new ArrayList<>();
+            for (FavList favListToGetListCount : favListList) {
+                listCountList.add(favListToGetListCount.getListCount());
+            }
+            Integer firstListCount = listCountList.get(0);
+
+
             redirectAttributes.addAttribute("userId", user.getId());
-            redirectAttributes.addAttribute("favListCount", 1);
+            redirectAttributes.addAttribute("favListCount", firstListCount);
 
             return "redirect:/ThinkEat/FavList/{userId}/List/{favListCount}/";
 
@@ -147,6 +158,13 @@ public class FavListController {
         List<FavList> favListList = user.getFavLists();
         model.addAttribute("favListList", favListList);
 
+        //從每個清單中獲取listCount
+        List<Integer> listCountList = new ArrayList<>();
+        for (FavList favListToGetListCount : favListList) {
+            listCountList.add(favList.getListCount());
+        }
+        model.addAttribute("listCountList", listCountList);
+
         FavList thisFavList = favListService.findFavListByUserAndListCount(userId, listCount);
         Integer favListId = thisFavList.getId();
 
@@ -202,8 +220,10 @@ public class FavListController {
         favList.setFavList_User(user);
 
         Integer favListId = favListService.addFavList(favList);
-        model.addAttribute("favListId", favListId);
-        return "FavList/FavList";
+        Integer listCount = favListService.getFavListById(favListId).getListCount();
+        redirectAttributes.addAttribute("userId", userId);
+        redirectAttributes.addAttribute("listCount", listCount);
+        return "redirect:/ThinkEat/FavList/{userId}/List/{listCount}/";
     }
 
     //送出清單編輯結果
@@ -245,17 +265,19 @@ public class FavListController {
     }
 
     //在收藏清單中移除餐廳
-    @PostMapping("/RemoveRestaurant/{restaurantId}")
-    public String RemoveRestaurantFromList(@PathVariable("restaurantId") Integer restaurantId,
+    @PostMapping("/RemoveRestaurant")
+    public String RemoveRestaurantFromList(@RequestParam("restaurantId") Integer restaurantId,
                                            @RequestParam("favListId") Integer favListId,
+                                           @RequestParam("listCount") Integer listCount,
+                                           @RequestParam("userId") Integer userId,
                                            RedirectAttributes redirectAttributes) {
         //將餐廳從清單中移除
         List<Restaurant> restaurantList = favListService.removeRestaurantFromFavList(favListId, restaurantId);
 
-        redirectAttributes.addFlashAttribute("restaurantList", restaurantList);
-        redirectAttributes.addAttribute("favListId", favListId);
+        redirectAttributes.addAttribute("listCount", listCount);
+        redirectAttributes.addAttribute("userId", userId);
 
-        return "redirect:/ThinkEat/FavList/{favListId}";
+        return "redirect:/ThinkEat/FavList/{userId}/List/{listCount}/";
     }
 
     //處理餐廳抽選
@@ -267,34 +289,17 @@ public class FavListController {
 
         FavList favList = favListService.getFavListById(favListId);
         if (count <= favList.getFavList_EatRepoList().size()) {
-            List<Integer> gachaResult = favListService.pickRestaurantsByCount(favListId, count);
-            model.addAttribute("gachaResult", gachaResult);
+            List<Restaurant> selectedRestaurants = favListService.pickRestaurantsByCount(favListId, count);
+            model.addAttribute("selectedRestaurants", selectedRestaurants);
         }
 
         return "FavList/GachaResult";
     }
 
 
-    @GetMapping("/GachaResult/")
-    public String GetGachaResultPage(@ModelAttribute("gachaResult") List<Integer> gachaResult,
-                                     @RequestParam(name = "page", defaultValue = "0") int page,
-                                     @RequestParam(name = "size", defaultValue = "12") int size,
+    @GetMapping("/GachaResult")
+    public String GetGachaResultPage(@ModelAttribute("selectedRestaurants") List<Restaurant> selectedRestaurants,
                                      Model model) {
-
-        //處理分頁
-
-        Pageable pageable = PageRequest.of(page, size);
-        RestaurantPageDto restaurantPageDto = favListService.getGachaResult(gachaResult, pageable);
-        model.addAttribute("restaurantPageDto", restaurantPageDto);
-
-        Integer maxPage = restaurantPageDto.getTotalPage();
-        model.addAttribute("maxPage", maxPage);
-
-        Integer curPage = restaurantPageDto.getCurrentPage();
-        model.addAttribute("curPage", curPage);
-
-
-
 
         return "FavList/GachaResult";
     }

@@ -225,9 +225,9 @@ public class FavListService {
     }
 
 
-    // 隨機抽出指定數量的餐廳ID
+    // 隨機抽出指定數量的餐廳
     @Transactional
-    public List<Integer> pickRestaurantsByCount(Integer favListId, Integer count) {
+    public List<Restaurant> pickRestaurantsByCount(Integer favListId, Integer count) {
         // 根據 favListId 找出 FavList
         Optional<FavList> favListOpt = favListDao.findById(favListId);
 
@@ -238,17 +238,17 @@ public class FavListService {
             List<EatRepo> eatRepoListInFavList = favList.getFavList_EatRepoList();
 
             // 用 Set 來確保餐廳不會重複
-            Set<Integer> gachaResult = new HashSet<>();
+            Set<Restaurant> uniqueRestaurants = new HashSet<>();
 
             // 遍歷每一個食記，取得對應的餐廳
             for (EatRepo eatRepo : eatRepoListInFavList) {
-                Integer restaurantId = eatRepo.getRestaurant().getId();
+                Restaurant restaurant = eatRepo.getRestaurant();
 
                 // 將餐廳加入 Set
-                gachaResult.add(restaurantId);
+                uniqueRestaurants.add(restaurant);
             }
 
-            List<Integer> restaurantList = new ArrayList<>(gachaResult);
+            List<Restaurant> restaurantList = new ArrayList<>(uniqueRestaurants);
             Collections.shuffle(restaurantList);
 
             return restaurantList.stream()

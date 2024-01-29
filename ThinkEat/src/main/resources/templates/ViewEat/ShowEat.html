@@ -43,7 +43,7 @@
                                                 style="min-height: 150px; min-width: 150px;">
                                             <img th:src="${restaurant.resPicList.get(0).htmlPath}"
                                                  class="img-thumbnail"
-                                                 style="min-height: 150px; min-width: 150px; background-color: red;">
+                                                 style="height: 200px; width: 200px; background-color: red;">
                                             <div class="text-center my-1">
                                                 <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
                                                    th:text="${restaurant.name}"></a>
@@ -52,7 +52,7 @@
                                         <figure th:unless="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
                                                 class="m-3 d-flex flex-column align-items-center"
                                                 style="min-height: 150px; min-width: 150px;">
-                                            <img style="min-height: 150px; min-width: 150px; background-color: darkgray;"
+                                            <img style="height: 200px; width: 200px; background-color: darkgray;"
                                                  class="img-thumbnail">
                                             <div class="text-center  my-1">
                                                 <a class="text-center fs-6"

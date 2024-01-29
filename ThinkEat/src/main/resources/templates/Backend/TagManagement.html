@@ -71,10 +71,10 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" th:action="@{/ThinkEat/Backend/UpdateTag}" class="">
+                                        <form method="post" th:action="@{/ThinkEat/Backend/UpdateTag/}" class="">
                                             <!-- Tag -->
                                             <div class="mb-3 row col-12">
-                                                <label for="tagName" class="col-3 col-form-label">價位：</label>
+                                                <label for="tagName" class="col-3 col-form-label">名稱：</label>
                                                 <div class="col-9">
                                                     <input type="text" class="form-control"
                                                            id="tagName" name="tagName">
@@ -100,7 +100,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">增加新標籤</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">新增標籤</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                     </div>
@@ -109,7 +109,7 @@
                                             <fieldset>
                                                 <!-- 新標籤 -->
                                                 <div class="m-3 row">
-                                                    <label for="name" class="col-form-label col-3">輸入新Tag：</label>
+                                                    <label for="name" class="col-form-label col-3">名稱：</label>
                                                     <div class="col-9">
                                                         <input type="text" class="form-control"
                                                                id="name" name="name" required/>
@@ -159,7 +159,7 @@
                                     <!-- 刪除標籤 -->
                                     <td class="m-2 text-center">
                                         <form method="post"
-                                              th:action="@{/ThinkEat/Backend/DeleteTag}">
+                                              th:action="@{/ThinkEat/Backend/DeleteTag/}">
                                             <input type="hidden" id="tagId" name="tagId"
                                                    th:value="${tag.id}">
                                             <input type="submit" class="btn btn-danger" value="刪除標籤">
