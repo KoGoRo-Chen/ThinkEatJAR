@@ -128,7 +128,6 @@ public class FavListController {
                                      @PathVariable("listCount") Integer listCount,
                                      @RequestParam(name = "page", defaultValue = "0") int page,
                                      @RequestParam(name = "size", defaultValue = "12") int size,
-                                     @ModelAttribute Restaurant restaurant,
                                      RedirectAttributes redirectAttributes,
                                      Authentication authentication,
                                      Model model) {
@@ -154,7 +153,7 @@ public class FavListController {
         //載入清單中的所有餐廳
         Pageable pageable = PageRequest.of(page, size);
         RestaurantPageDto restaurantPageDto = favListService.getAllRestaurantInFavList(pageable, favListId);
-        model.addAttribute("showEatPageDto", restaurantPageDto);
+        model.addAttribute("restaurantPageDto", restaurantPageDto);
         Integer maxPage = restaurantPageDto.getTotalPage();
         model.addAttribute("maxPage", maxPage);
 

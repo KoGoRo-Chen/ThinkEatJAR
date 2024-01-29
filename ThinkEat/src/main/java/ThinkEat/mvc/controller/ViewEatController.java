@@ -184,9 +184,6 @@ public class ViewEatController {
             model.addAttribute("guestList", guestList);
         }
 
-
-
-
         //處理留言
         List<Comment> commentList = eatRepoService.findAllCommentByEatRepoId(eatRepoId);
         model.addAttribute("commentList", commentList);

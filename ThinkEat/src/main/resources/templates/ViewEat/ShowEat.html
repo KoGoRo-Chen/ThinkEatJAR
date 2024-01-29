@@ -34,23 +34,25 @@
                 <section class="d-flex justify-content-center align-items-center Intro">
                     <div class="bg-light" style="width: 90%; height: 95%">
                         <!-- 接收所有餐廳資訊，生成縮圖 -->
-                        <div class="pagination d-flex flex-wrap justify-content-center mt-4">
+                        <div class="pagination d-flex flex-wrap justify-content-center mt-4" style="min-height:50vh">
                             <div class="row">
                                 <th:block th:each="restaurant : ${restaurantPageDto.restaurantList}">
                                     <div class="col-3">
                                         <figure th:if="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
-                                                class="m-2 d-flex flex-column align-items-center">
+                                                class="m-3 d-flex flex-column align-items-center"
+                                                style="min-height: 150px; min-width: 150px;">
                                             <img th:src="${restaurant.resPicList.get(0).htmlPath}"
                                                  class="img-thumbnail"
-                                                 style="height: 150px; width: 150px; background-color: red;">
+                                                 style="min-height: 150px; min-width: 150px; background-color: red;">
                                             <div class="text-center my-1">
                                                 <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
                                                    th:text="${restaurant.name}"></a>
                                             </div>
                                         </figure>
                                         <figure th:unless="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
-                                                class="m-2 d-flex flex-column align-items-center">
-                                            <img style="height: 150px; width: 150px; background-color: darkgray;"
+                                                class="m-3 d-flex flex-column align-items-center"
+                                                style="min-height: 150px; min-width: 150px;">
+                                            <img style="min-height: 150px; min-width: 150px; background-color: darkgray;"
                                                  class="img-thumbnail">
                                             <div class="text-center  my-1">
                                                 <a class="text-center fs-6"
