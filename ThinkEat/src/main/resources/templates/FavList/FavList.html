@@ -34,16 +34,18 @@
                           th:action="@{/ThinkEat/FavList/Create}">
                         <fieldset>
                             <div class="m-3 row">
-                                <label for="name" class="col-form-label col-3">請輸入清單名稱：</label>
-                                <div class="col-9">
+                                <label for="name" class="col-form-label col-5">請輸入清單名稱：</label>
+                                <div class="col-7">
                                     <input type="text" class="form-control"
                                            id="name" name="name" required/>
                                 </div>
                             </div>
-                            <!--送出-->
-                            <input type="submit" th:value="建立清單">
-                            <!--清除-->
-                            <input type="reset" th:value="清除">
+                            <div class="my-5">
+                                <!--送出-->
+                                <input type="submit" class="btn btn-success" th:value="建立清單">
+                                <!--清除-->
+                                <input type="reset" class="btn btn-danger" th:value="清除">
+                            </div>
                         </fieldset>
                     </form>
                 </div>
@@ -65,18 +67,20 @@
                           th:action="@{/ThinkEat/FavList/EditList}">
                         <fieldset>
                             <div class="m-3 row">
-                                <label for="name" class="col-form-label col-3">修改清單名稱：</label>
-                                <div class="col-9">
+                                <label for="name" class="col-form-label col-5">修改清單名稱：</label>
+                                <div class="col-7">
                                     <input type="text" class="form-control"
                                            id="name" name="name" required/>
                                 </div>
                             </div>
                             <input id="listCount" name="listCount" th:value="${listCount}" type="hidden">
                             <input id="userId" name="userId" th:value="${userId}" type="hidden">
-                            <!--送出-->
-                            <input type="submit" th:value="修改清單">
-                            <!--送出-->
-                            <input type="reset" th:value="清除">
+                            <div class="my-5">
+                                <!--送出-->
+                                <input type="submit" class="btn btn-success" th:value="修改清單">
+                                <!--清除-->
+                                <input type="reset" class="btn btn-danger" th:value="清除">
+                            </div>
                         </fieldset>
                     </form>
                 </div>
@@ -219,10 +223,10 @@
                                         </a>
                                     </li>
 
-                                    <!-- 最後一頁一頁 -->
+                                    <!-- 最後一頁 -->
                                     <li class="page-item" th:if="${curPage < maxPage - 1}">
                                         <a class="page-link"
-                                           th:href="@{/ThinkEat/FavList/{userId}/List/{listCount}/(page=${maxPage-1}, userId=${userId}, listCount=${listCount}}">
+                                           th:href="@{/ThinkEat/FavList/{userId}/List/{listCount}/(page=${maxPage-1}, userId=${userId}, listCount=${listCount})}">
                                             最後一頁
                                         </a>
                                     </li>

@@ -30,20 +30,89 @@
                         <h3>抽選結果</h3>
                     </div>
 
-                    <!-- 清單顯示區 -->
-                    <th:block d-flex justify-content-center
-                              th:each="restaurant : ${selectedRestaurants}">
-                        <div>
-                            <img th:src="${restaurant.resPicList.get(0).htmlPath}"
-                                 style="height: 360px; width: 360px; background-color: red;">
-                            <figcaption class="d-flex flex-column mt-2">
-                                <div>
-                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
-                                       th:text="${restaurant.name}"></a>
+                    <!-- 接收所有餐廳資訊，生成縮圖 -->
+                    <div class="pagination d-flex flex-wrap justify-content-center mt-4" style="min-height:50vh">
+                        <div class="row">
+                            <th:block th:each="restaurant : ${restaurantPageDto.restaurantList}">
+                                <div class="col-3">
+                                    <figure th:if="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
+                                            class="m-2 d-flex flex-column align-items-center"
+                                            style="min-height: 150px; min-width: 150px;">
+                                        <img th:src="${restaurant.resPicList.get(0).htmlPath}"
+                                             class="img-thumbnail"
+                                             style="min-height: 150px; min-width: 150px; background-color: red;">
+                                        <div class="text-center my-1">
+                                            <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                               th:text="${restaurant.name}"></a>
+                                        </div>
+                                    </figure>
+                                    <figure th:unless="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
+                                            class="m-2 d-flex flex-column align-items-center"
+                                            style="min-height: 150px; min-width: 150px;">
+                                        <img style="min-height: 150px; min-width: 150px; background-color: darkgray;"
+                                             class="img-thumbnail">
+                                        <div class="text-center  my-1">
+                                            <a class="text-center fs-6"
+                                               th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                               th:text="${restaurant.name}"></a>
+                                        </div>
+                                    </figure>
                                 </div>
-                            </figcaption>
+                            </th:block>
                         </div>
-                    </th:block>
+                    </div>
+
+                    <!-- 分頁頁籤 -->
+                    <div class="d-flex justify-content-center">
+                        <div class="bg-light mt-5 align-self-center">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <!-- 第一頁 -->
+                                    <li class="page-item" th:if="${curPage > 0}">
+                                        <a class="page-link"
+                                           th:href="@{/ThinkEat/FavList/GachaResult/(page=0)}">
+                                            第一頁
+                                        </a>
+                                    </li>
+
+                                    <!-- 上一頁 -->
+                                    <li class="page-item" th:if="${curPage > 0}">
+                                        <a class="page-link"
+                                           th:href="@{/ThinkEat/FavList/GachaResult/(page=${curPage - 1})}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- 以頁碼切換 -->
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, maxPage -1)}">
+                                        <th:block th:if="${i >= 0}">
+                                            <a class="page-link"
+                                               th:href="@{/ThinkEat/FavList/GachaResult/(page=${i})}"
+                                               th:text="${i + 1}"></a>
+                                        </th:block>
+                                    </li>
+
+                                    <!-- 下一頁 -->
+                                    <li class="page-item" th:if="${curPage < maxPage - 1}">
+                                        <a class="page-link"
+                                           th:href="@{/ThinkEat/FavList/GachaResult/(page=${curPage + 1})}"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- 最後一頁 -->
+                                    <li class="page-item" th:if="${curPage < maxPage - 1}">
+                                        <a class="page-link"
+                                           th:href="@{/ThinkEat/FavList/GachaResult/(page=${maxPage-1})}">
+                                            最後一頁
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div> <!-- 分頁頁籤結束 -->
+                    </div>
                 </div><!-- 餐廳縮圖區結束 -->
             </div> <!-- 大div區結束 -->
         </section>

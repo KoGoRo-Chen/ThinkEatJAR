@@ -176,9 +176,9 @@
                                 <tr th:if="${not #lists.isEmpty(restaurantPageDto.restaurantList)}"
                                     th:each="restaurant : ${restaurantPageDto.restaurantList}">
                                     <!-- 餐廳編號 -->
-                                    <td class="m-2" th:text="${restaurant.id}"></td>
+                                    <td class="m-2 text-center" th:text="${restaurant.id}"></td>
                                     <!-- 縮圖 -->
-                                    <td class="m-2">
+                                    <td class="m-2 text-center">
                                         <th:block>
                                             <figure th:if="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
                                                     class="m-1">

@@ -267,17 +267,34 @@ public class FavListController {
 
         FavList favList = favListService.getFavListById(favListId);
         if (count <= favList.getFavList_EatRepoList().size()) {
-            List<Restaurant> selectedRestaurants = favListService.pickRestaurantsByCount(favListId, count);
-            model.addAttribute("selectedRestaurants", selectedRestaurants);
+            List<Integer> gachaResult = favListService.pickRestaurantsByCount(favListId, count);
+            model.addAttribute("gachaResult", gachaResult);
         }
 
         return "FavList/GachaResult";
     }
 
 
-    @GetMapping("/GachaResult")
-    public String GetGachaResultPage(@ModelAttribute("selectedRestaurants") List<Restaurant> selectedRestaurants,
+    @GetMapping("/GachaResult/")
+    public String GetGachaResultPage(@ModelAttribute("gachaResult") List<Integer> gachaResult,
+                                     @RequestParam(name = "page", defaultValue = "0") int page,
+                                     @RequestParam(name = "size", defaultValue = "12") int size,
                                      Model model) {
+
+        //處理分頁
+
+        Pageable pageable = PageRequest.of(page, size);
+        RestaurantPageDto restaurantPageDto = favListService.getGachaResult(gachaResult, pageable);
+        model.addAttribute("restaurantPageDto", restaurantPageDto);
+
+        Integer maxPage = restaurantPageDto.getTotalPage();
+        model.addAttribute("maxPage", maxPage);
+
+        Integer curPage = restaurantPageDto.getCurrentPage();
+        model.addAttribute("curPage", curPage);
+
+
+
 
         return "FavList/GachaResult";
     }
@@ -285,6 +302,7 @@ public class FavListController {
     //刪除收藏清單
     @PostMapping("/DeleteFavList")
     public String DeleteFavList(@RequestParam("favListId") Integer favListId,
+
                                 RedirectAttributes redirectAttributes) {
         //找到留言
         FavList favList = favListService.getFavListById(favListId);

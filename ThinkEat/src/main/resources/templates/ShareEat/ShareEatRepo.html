@@ -72,16 +72,25 @@
                           th:action="@{/ThinkEat/ShareEat/CreateNewTag}">
                         <fieldset>
                             <!-- 新標籤 -->
-                            輸入新Tag：<input type="text" id="name" name="name" th:field="${tag.name}"/>
-                            <p/>
+                            <div class="m-3 row">
+                                <label for="name" class="col-form-label col-3">標籤名稱：</label>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" th:field="${tag.name}"
+                                           id="name" name="name" required/>
+                                </div>
+                            </div>
                             <!-- 餐廳ID -->
                             <input id="restaurantId" name="restaurantId" th:value="${restaurant.id}" type="hidden"/>
                             <!-- 食記ID -->
                             <input id="eatRepoId" name="eatRepoId" th:value="${eatRepoId}" type="hidden"/>
-                            <!-- 前往食記發表 -->
-                            <input type="submit" value="確認送出"/>
-                            <!-- 清空輸入的內容 -->
-                            <button type="reset">清空</button>
+                            <!-- 按鍵區 -->
+                            <div class="mt-4">
+                                <!-- 前往食記發表 -->
+                                <input type="submit" class="btn btn-warning mx-3" value="確認"/>
+
+                                <!-- 一鍵清除所有內容(javascript) -->
+                                <button type="reset" class="btn btn-danger mx-3">清空</button>
+                            </div>
                         </fieldset>
                     </form>
                 </div>
@@ -100,21 +109,25 @@
                     <!-- 食記圖片上傳區 -->
                     <div class="m-2 row">
                         <label for="progressbarTWInput" class="col-form-label col-2">上傳圖片</label>
-                        <div class="col-10">
+                        <div class="col-7">
                             <input type="file" class="form-control" id="progressbarTWInput" name="multipartFileList"
                                    accept="image/**" required>
                             <div id="preview_progressbarTW_imgs"
                                  style="width:100%; height: fit-content; overflow:scroll">
                             </div>
                         </div>
+                        <div class="col-3">
+                        </div>
                     </div>
 
                     <!-- 標題 -->
                     <div class="m-2 row">
                         <label for="eatRepoTitle" class="col-form-label col-2">標題：</label>
-                        <div class="col-10">
+                        <div class="col-7">
                             <input type="text" class="form-control" id="eatRepoTitle" name="eatRepoTitle"
                                    th:field="*{title}" required/>
+                        </div>
+                        <div class="col-3">
                         </div>
                     </div>
 
@@ -143,21 +156,23 @@
                     <!-- 品嘗日期 -->
                     <div class="m-2 row">
                         <label for="date" class="col-form-label col-2">日期：</label>
-                        <div class="col-10">
+                        <div class="col-7">
                             <input type="date" class="form-control" id="date" name="date" th:field="*{date}" required/>
+                        </div>
+                        <div class="col-3">
                         </div>
                     </div>
                     <!-- 價位 -->
                     <div class="m-2 row">
                         <label for="price" class="col-form-label col-2">價位</label>
-                        <div class="col-8">
+                        <div class="col-7">
                             <select class="form-select" id="price" name="priceId">
                                 <option th:each="price : ${prices}"
                                         th:value="${price.id}"
                                         th:text="${price.name}"></option>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-3">
                             <!-- 建立新價位 互動視窗 -->
                             <button type="button" class="btn btn-primary"
                                     data-bs-toggle="modal"
@@ -170,13 +185,13 @@
                     <!-- 標籤 -->
                     <div class="m-2 row">
                         <label for="tag" class="col-form-label col-2">標籤</label>
-                        <div class="col-8">
+                        <div class="col-7">
                             <div class="form-check form-check-inline" th:each="tag : ${tags}">
                                 <input type="checkbox" class="form-check-input" id="tag" name="tagIds"
                                        th:value="${tag.id}" th:text="${tag.name}">
                             </div>
                         </div>
-                        <div class="col-2">
+                        <div class="col-3">
                             <!-- 建立新標籤 -->
                             <button type="button" class="btn btn-primary"
                                     data-bs-toggle="modal"
@@ -190,9 +205,12 @@
                     <!-- 食記 -->
                     <div class="m-2 row">
                         <label for="date" class="col-form-label col-2">食記：</label>
-                        <div class="col-10">
+                        <div class="col-7">
                             <textarea type="text" rows="10" class="form-control" id="article" name="article"
                                       th:field="*{article}" required></textarea>
+                        </div>
+
+                        <div class="col-3">
                         </div>
                     </div>
 

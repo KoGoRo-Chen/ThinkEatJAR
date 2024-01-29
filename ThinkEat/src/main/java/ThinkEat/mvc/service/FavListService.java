@@ -225,9 +225,9 @@ public class FavListService {
     }
 
 
-    // 隨機抽出指定數量的餐廳
+    // 隨機抽出指定數量的餐廳ID
     @Transactional
-    public List<Restaurant> pickRestaurantsByCount(Integer favListId, Integer count) {
+    public List<Integer> pickRestaurantsByCount(Integer favListId, Integer count) {
         // 根據 favListId 找出 FavList
         Optional<FavList> favListOpt = favListDao.findById(favListId);
 
@@ -238,17 +238,17 @@ public class FavListService {
             List<EatRepo> eatRepoListInFavList = favList.getFavList_EatRepoList();
 
             // 用 Set 來確保餐廳不會重複
-            Set<Restaurant> uniqueRestaurants = new HashSet<>();
+            Set<Integer> gachaResult = new HashSet<>();
 
             // 遍歷每一個食記，取得對應的餐廳
             for (EatRepo eatRepo : eatRepoListInFavList) {
-                Restaurant restaurant = eatRepo.getRestaurant();
+                Integer restaurantId = eatRepo.getRestaurant().getId();
 
                 // 將餐廳加入 Set
-                uniqueRestaurants.add(restaurant);
+                gachaResult.add(restaurantId);
             }
 
-            List<Restaurant> restaurantList = new ArrayList<>(uniqueRestaurants);
+            List<Integer> restaurantList = new ArrayList<>(gachaResult);
             Collections.shuffle(restaurantList);
 
             return restaurantList.stream()
@@ -258,6 +258,34 @@ public class FavListService {
 
         return null;
     }
+
+    // 將抽選結果進行分頁
+    public RestaurantPageDto getGachaResult(List<Integer> gachaResult,
+                                            Pageable pageable) {
+        List<Restaurant> restaurantList = new ArrayList<>();
+        for (Integer restaurantId : gachaResult) {
+            Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+            restaurantList.add(restaurant);
+        }
+
+        // 將餐廳列表轉換成分頁對象
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<Restaurant> pageRestaurantList;
+
+        if (restaurantList.size() < startItem) {
+            pageRestaurantList = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, restaurantList.size());
+            pageRestaurantList = restaurantList.subList(startItem, toIndex);
+        }
+
+        // 創建分頁對象並返回
+        Page<Restaurant> gachaPage = new PageImpl<>(pageRestaurantList, pageable, restaurantList.size());
+        return new RestaurantPageDto(gachaPage);
+    }
+
 
     //從ListCount及會員找到對應的清單
     public FavList findFavListByUserAndListCount(Integer userId, Integer listcount) {
