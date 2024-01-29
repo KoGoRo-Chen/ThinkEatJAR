@@ -107,9 +107,9 @@
                  style="background-color: rgb(240, 240, 240);">
             <div class="bg-light p-2 align-items-start m-5 w-50">
                 <div class="my-3">
-                    <div class="row my-3">
+                    <div class="row my-3 align-items-center">
                         <!-- 會員暱稱 -->
-                        <strong class="col-3">會員暱稱:</strong>
+                        <strong class="col-3">會員暱稱：</strong>
                         <span class="col-5" id="nickname" name="nickname" th:text="${user.nickname}"></span>
                         <span class="col-4">
                             <!-- 更改暱稱 -->
@@ -121,13 +121,19 @@
                             </button>
                         </span>
                     </div>
+                    <!-- 權限 -->
+                    <div class="row my-3 align-items-center">
+                        <strong class="col-3">權限：</strong>
+                        <span class="col-5" id="authority" name="authority"
+                              th:text="${user.authority.name}"></span>
+                    </div>
                     <!-- 加入日期 -->
-                    <div class="row my-3">
-                        <strong class="col-3">加入日期:</strong>
+                    <div class="row my-3 align-items-center">
+                        <strong class="col-3">加入日期：</strong>
                         <span class="col-5" id="date" name="date" th:text="${user.date}"></span>
                     </div>
                     <!-- 會員帳號 -->
-                    <div class="row my-3">
+                    <div class="row my-3 align-items-center">
                         <strong class="col-3">會員帳號:</strong>
                         <span class="col-5" id="username" name="username" th:text="${user.username}"></span>
                         <span class="col-4">

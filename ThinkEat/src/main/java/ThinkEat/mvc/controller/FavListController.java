@@ -179,7 +179,8 @@ public class FavListController {
 
     //創造收藏清單
     @PostMapping("/Create")
-    public String CreateFavListPage(@ModelAttribute("favList") FavList favlist,
+    public String CreateFavListPage(@RequestParam("name") String name,
+                                    @RequestParam("userId") Integer userId,
                                     RedirectAttributes redirectAttributes,
                                     Authentication authentication,
                                     Model model) {
@@ -190,13 +191,18 @@ public class FavListController {
             redirectAttributes.addFlashAttribute("SessionExpiredError", "會員 Session 已過期，請重新登入。");
             return "redirect:/ThinkEat/Login";
         }
+
+        //建立一個新的Favlist
+        FavList favList = new FavList();
+        favList.setName(name);
+
         //找出會員資訊
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
         User user = userService.findUserByUsername(username);
-        favlist.setFavList_User(user);
+        favList.setFavList_User(user);
 
-        Integer favListId = favListService.addFavList(favlist);
+        Integer favListId = favListService.addFavList(favList);
         model.addAttribute("favListId", favListId);
         return "FavList/FavList";
     }

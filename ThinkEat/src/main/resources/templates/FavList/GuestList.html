@@ -70,27 +70,32 @@
 
                     <!-- 接收所有餐廳資訊，生成縮圖 -->
                     <div class="pagination d-flex flex-wrap justify-content-center mt-4">
-                        <th:block th:each="restaurant : ${restaurantPageDto.restaurantList}">
-                            <figure th:if="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
-                                    class="m-2">
-                                <img th:src="${restaurant.resPicList.get(0).htmlPath}"
-                                     class="img-thumbnail"
-                                     style="height: 180px; width: 180px; background-color: red;">
-                                <div class="d-flex justify-content-center my-1">
-                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
-                                       th:text="${restaurant.name}"></a>
+                        <div class="row">
+                            <th:block th:each="restaurant : ${restaurantPageDto.restaurantList}">
+                                <div class="col-3">
+                                    <figure th:if="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
+                                            class="m-2 d-flex flex-column align-items-center">
+                                        <img th:src="${restaurant.resPicList.get(0).htmlPath}"
+                                             class="img-thumbnail"
+                                             style="height: 150px; width: 150px; background-color: red;">
+                                        <div class="text-center my-1">
+                                            <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                               th:text="${restaurant.name}"></a>
+                                        </div>
+                                    </figure>
+                                    <figure th:unless="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
+                                            class="m-2 d-flex flex-column align-items-center">
+                                        <img style="height: 150px; width: 150px; background-color: darkgray;"
+                                             class="img-thumbnail">
+                                        <div class="text-center  my-1">
+                                            <a class="text-center fs-6"
+                                               th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                               th:text="${restaurant.name}"></a>
+                                        </div>
+                                    </figure>
                                 </div>
-                            </figure>
-                            <figure th:unless="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
-                                    class="m-2">
-                                <img style="height: 180px; width: 180px; background-color: darkgray;"
-                                     class="img-thumbnail">
-                                <div class="d-flex justify-content-center">
-                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
-                                       th:text="${restaurant.name}"></a>
-                                </div>
-                            </figure>
-                        </th:block>
+                            </th:block>
+                        </div>
                     </div>
 
                     <!-- 分頁頁籤 -->

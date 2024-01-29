@@ -26,22 +26,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">建立新的收藏清單</h5>
+                    <h5 class="modal-title" id="addFavListModalLabel">建立新的收藏清單</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form method="Post"
-                          th:object="${favList}"
                           th:action="@{/ThinkEat/FavList/Create}">
                         <fieldset>
-                            請輸入清單名稱：
-                            <!-- 輸入清單名字 -->
-                            <input id="name"
-                                   name="name"
-                                   th:field="*{name}">
+                            <div class="m-3 row">
+                                <label for="name" class="col-form-label col-3">請輸入清單名稱：</label>
+                                <div class="col-9">
+                                    <input type="text" class="form-control"
+                                           id="name" name="name" required/>
+                                </div>
+                            </div>
                             <!--送出-->
                             <input type="submit" th:value="建立清單">
-                            <!--送出-->
+                            <!--清除-->
                             <input type="reset" th:value="清除">
                         </fieldset>
                     </form>
@@ -56,18 +57,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">修改收藏清單</h5>
+                    <h5 class="modal-title" id="editFavListModalLabel">修改收藏清單</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form method="Post"
-                          th:object="${favList}"
                           th:action="@{/ThinkEat/FavList/EditList}">
                         <fieldset>
-                            請輸入新的清單名稱：
-                            <!-- 輸入清單名字 -->
-                            <input id="name" name="name"
-                                   th:field="*{name}">
+                            <div class="m-3 row">
+                                <label for="name" class="col-form-label col-3">修改清單名稱：</label>
+                                <div class="col-9">
+                                    <input type="text" class="form-control"
+                                           id="name" name="name" required/>
+                                </div>
+                            </div>
                             <input id="listCount" name="listCount" th:value="${listCount}" type="hidden">
                             <input id="userId" name="userId" th:value="${userId}" type="hidden">
                             <!--送出-->
@@ -81,8 +84,9 @@
         </div>
     </div>
 
-    <!-- 側邊攔 -->
+
     <div class="container-fluid d-flex mx-0 px-0" style="min-height: 100vh; ">
+        <!-- 側邊攔 -->
         <aside class="mh-100" style="background-color: rgb(254, 241, 154); width: 15%">
             <div class="sidebar_header  text-center pt-2 fs-5">清單一覽</div>
             <nav class="sidebar mx-2"
@@ -96,8 +100,7 @@
             <span class="mx-2 mt-1">
               <button type="button" class="btn btn-success"
                       data-bs-toggle="modal"
-                      data-bs-target="#addFavListModal"
-                      onclick="clearModalContent()">
+                      data-bs-target="#addFavListModal">
                   建立新的清單
                </button>
             </span>
@@ -116,8 +119,7 @@
                             <button type="button"
                                     class="mx-2 btn btn-warning"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#editFavListModal"
-                                    onclick="clearModalContent()">
+                                    data-bs-target="#editFavListModal">
                                 修改這張清單
                             </button>
                         <!-- 刪除 -->
@@ -128,7 +130,6 @@
                                        class="btn btn-warning">
                             </form>
                         </div>
-                        <!-- 功能區結束 -->
                     </section>
                     <!-- 抽選功能區 -->
                     <section class="d-flex justify-content-between my-3">
@@ -148,27 +149,32 @@
 
                     <!-- 接收所有餐廳資訊，生成縮圖 -->
                     <div class="pagination d-flex flex-wrap justify-content-center mt-4">
-                        <th:block th:each="restaurant : ${restaurantPageDto.restaurantList}">
-                            <figure th:if="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
-                                    class="m-2">
-                                <img th:src="${restaurant.resPicList.get(0).htmlPath}"
-                                     class="img-thumbnail"
-                                     style="height: 180px; width: 180px; background-color: red;">
-                                <div class="d-flex justify-content-center my-1">
-                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
-                                       th:text="${restaurant.name}"></a>
+                        <div class="row">
+                            <th:block th:each="restaurant : ${restaurantPageDto.restaurantList}">
+                                <div class="col-3">
+                                    <figure th:if="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
+                                            class="m-2 d-flex flex-column align-items-center">
+                                        <img th:src="${restaurant.resPicList.get(0).htmlPath}"
+                                             class="img-thumbnail"
+                                             style="height: 150px; width: 150px; background-color: red;">
+                                        <div class="text-center my-1">
+                                            <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                               th:text="${restaurant.name}"></a>
+                                        </div>
+                                    </figure>
+                                    <figure th:unless="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
+                                            class="m-2 d-flex flex-column align-items-center">
+                                        <img style="height: 150px; width: 150px; background-color: darkgray;"
+                                             class="img-thumbnail">
+                                        <div class="text-center  my-1">
+                                            <a class="text-center fs-6"
+                                               th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
+                                               th:text="${restaurant.name}"></a>
+                                        </div>
+                                    </figure>
                                 </div>
-                            </figure>
-                            <figure th:unless="${restaurant.resPicList != null and not #lists.isEmpty(restaurant.resPicList)}"
-                                    class="m-2">
-                                <img style="height: 180px; width: 180px; background-color: darkgray;"
-                                     class="img-thumbnail">
-                                <div class="d-flex justify-content-center">
-                                    <a th:href="@{/ThinkEat/ViewEat/ResInfo/{id}(id=${restaurant.id})}"
-                                       th:text="${restaurant.name}"></a>
-                                </div>
-                            </figure>
-                        </th:block>
+                            </th:block>
+                        </div>
                     </div>
 
                     <!-- 分頁頁籤 -->
@@ -221,11 +227,13 @@
                                 </ul>
                             </nav>
                         </div> <!-- 分頁頁籤結束 -->
-
-            </div> <!-- 大div區結束 -->
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+</html>
