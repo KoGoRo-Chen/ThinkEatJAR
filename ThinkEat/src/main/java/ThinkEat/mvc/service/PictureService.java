@@ -78,7 +78,7 @@ public class PictureService {
 
             // 設定圖片路徑
             picture.setFilePath(filePath + fileName);
-            picture.setHtmlPath("https://13.208.190.112:80/ThinkEat/image/" + fileName);
+            picture.setHtmlPath("https://localhost:9990/ThinkEat/image/" + fileName);
             pictureDao.save(picture);
             return picture.getId();
         } catch (IOException e) {
