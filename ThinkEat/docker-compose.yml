@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  thinkeatdb:
+    image: mysql:5.7
+    container_name: thinkeatdb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: thinkeat
+      MYSQL_USER: web
+      MYSQL_PASSWORD: 12345678
+      restart: always
+    volumes:
+      - thinkeatvolume001:/var/lib/mysql
+      - ./dockerDB:/docker-entrypoint-initdb.d/
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  thinkeat:
+    image: thinkeat-jar:001
+    container_name: thinkeat
+    ports:
+      - "9990:9990"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://thinkeatdb:3306/thinkeat?serverTimezone=Asia/Taipei
+      SPRING_DATASOURCE_USERNAME: web
+      SPRING_DATASOURCE_PASSWORD: 12345678
+    depends_on:
+      - thinkeatdb
+
+volumes:
+  thinkeatvolume001:
